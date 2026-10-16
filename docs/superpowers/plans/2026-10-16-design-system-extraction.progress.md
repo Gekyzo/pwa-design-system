@@ -32,7 +32,7 @@ the 🎯 indicators (terminal status bar, tab ring, overlord tile) draw from thi
 | 2 | design-system.css | ☑ |  | 2026-10-16 |  |
 | 3 | rules.js and sync.mjs | ☑ |  | 2026-10-16 |  |
 | 4 | Catalogue page | ☑ |  | 2026-10-16 |  |
-| 5 | pwa-template | ◐ |  |  |  |
+| 5 | pwa-template | ☑ |  | 2026-10-16 |  |
 | 11 | Close | ☐ |  |  |  |
 
 ## Blockers
