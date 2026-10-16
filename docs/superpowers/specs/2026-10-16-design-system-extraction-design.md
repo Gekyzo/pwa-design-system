@@ -158,3 +158,12 @@ user's call.
   rule comes from.
 - The exact hash check of the vendored files.
 - How to compare screenshots (pixel diff or visual reading).
+
+## As built (2026-10-17)
+
+- Sync runs as `node ../pwa-design-system/sync.mjs` from each app (`npm run ds`). No app has a `scripts/ds-sync.mjs`.
+- An override is marked by a `/* @extends <name> … */` block. The block carries the extra parts, variants and states of the app. Only the rules that differ from the shared ones stay after it (design system 0.2.0).
+- The three layout tokens `--rail-width`, `--content-max` and `--pane-list` are shared.
+- A shared rule that an app never had is a "leak" (`split.mjs --leaks`). The app neutralises it in its own CSS.
+- pwa-shopping-list names LAY-3 and LAY-4 as exceptions.
+- A former DS-n rule of an app is renamed DSV-n.
