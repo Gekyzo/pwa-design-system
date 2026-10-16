@@ -99,14 +99,60 @@
 - [ ] **Step 4:** Screenshots again; compare with Step 1 (pixel diff with `scripts/png.mjs`); stop the server and load offline.
 - [ ] **Step 5:** Commit in `pwa-template`: `Load the design system from pwa-design-system`, body naming the vendored version and the checks.
 
-### Tasks 6–10: one app each
+### Task 6: pwa-shopping-list
 
-Same steps and files as Task 5, in this order: `pwa-shopping-list` (Task 6), `pwa-wardrobe` (7), `pwa-shifts` (8), `pwa-nexus` (9), `pwa-financial-calculator` (10). Per app:
-- Its divergent components (spec, "Measured starting point") stay as overrides; add resets until Step 4 shows no difference.
+Same steps and files as Task 5, plus:
+- Its divergent components (spec, "Measured starting point") stay as overrides; add resets until the screenshot diff shows no difference.
+- `node ../pwa-design-system/scripts/split.mjs --leaks styles.css` lists shared rules the app never had; neutralise each one app-side.
 - Its own spec file name and its own viewports (its `WORKFLOW.md`).
-- `pwa-shopping-list`: LAY-3 is named as an exception in its spec and skipped in its design test; its `rows.js` test stays as an app test.
 - Its own components and tokens stay in `styles.css`, with their blocks.
+- Copy `tests/vendor.test.js` and `tests/design.test.js` from `../pwa-template` and tighten them: the listing of `vendor/design-system/` equals the keys of `SOURCE.json` plus `SOURCE.json`; `designs/index.html` also links the shared sheet first; an `Overrides <name>` comment names a shared component; `RULES.length > 0`; one negative run (a copied shared rule makes the test fail), reported.
 - If the app has a `pre-commit` spec hook, the commit changes its spec file, so no `--no-verify`.
+- LAY-3 is named as an exception in `15-design-system.md` and skipped in its design test; its `rows.js` test stays as an app test. Leaks: 16 lines (the 600px rules of nav-bar, nav-item, toast, fab; `.item-row.done .item-row-name`; the pane rules; the layout tokens).
+
+### Task 7: pwa-wardrobe
+
+Same steps and files as Task 5, plus:
+- Its divergent components (spec, "Measured starting point") stay as overrides; add resets until the screenshot diff shows no difference.
+- `node ../pwa-design-system/scripts/split.mjs --leaks styles.css` lists shared rules the app never had; neutralise each one app-side.
+- Its own spec file name and its own viewports (its `WORKFLOW.md`).
+- Its own components and tokens stay in `styles.css`, with their blocks.
+- Copy `tests/vendor.test.js` and `tests/design.test.js` from `../pwa-template` and tighten them: the listing of `vendor/design-system/` equals the keys of `SOURCE.json` plus `SOURCE.json`; `designs/index.html` also links the shared sheet first; an `Overrides <name>` comment names a shared component; `RULES.length > 0`; one negative run (a copied shared rule makes the test fail), reported.
+- If the app has a `pre-commit` spec hook, the commit changes its spec file, so no `--no-verify`.
+- Leaks: `.item-row` `transition` and `.item-row.lifted`.
+
+### Task 8: pwa-shifts
+
+Same steps and files as Task 5, plus:
+- Its divergent components (spec, "Measured starting point") stay as overrides; add resets until the screenshot diff shows no difference.
+- `node ../pwa-design-system/scripts/split.mjs --leaks styles.css` lists shared rules the app never had; neutralise each one app-side.
+- Its own spec file name and its own viewports (its `WORKFLOW.md`).
+- Its own components and tokens stay in `styles.css`, with their blocks.
+- Copy `tests/vendor.test.js` and `tests/design.test.js` from `../pwa-template` and tighten them: the listing of `vendor/design-system/` equals the keys of `SOURCE.json` plus `SOURCE.json`; `designs/index.html` also links the shared sheet first; an `Overrides <name>` comment names a shared component; `RULES.length > 0`; one negative run (a copied shared rule makes the test fail), reported.
+- If the app has a `pre-commit` spec hook, the commit changes its spec file, so no `--no-verify`.
+- Override: `chip`.
+
+### Task 9: pwa-nexus
+
+Same steps and files as Task 5, plus:
+- Its divergent components (spec, "Measured starting point") stay as overrides; add resets until the screenshot diff shows no difference.
+- `node ../pwa-design-system/scripts/split.mjs --leaks styles.css` lists shared rules the app never had; neutralise each one app-side.
+- Its own spec file name and its own viewports (its `WORKFLOW.md`).
+- Its own components and tokens stay in `styles.css`, with their blocks.
+- Copy `tests/vendor.test.js` and `tests/design.test.js` from `../pwa-template` and tighten them: the listing of `vendor/design-system/` equals the keys of `SOURCE.json` plus `SOURCE.json`; `designs/index.html` also links the shared sheet first; an `Overrides <name>` comment names a shared component; `RULES.length > 0`; one negative run (a copied shared rule makes the test fail), reported.
+- If the app has a `pre-commit` spec hook, the commit changes its spec file, so no `--no-verify`.
+- Overrides: `input`, `field`, `section-head`, `item-row`.
+
+### Task 10: pwa-financial-calculator
+
+Same steps and files as Task 5, plus:
+- Its divergent components (spec, "Measured starting point") stay as overrides; add resets until the screenshot diff shows no difference.
+- `node ../pwa-design-system/scripts/split.mjs --leaks styles.css` lists shared rules the app never had; neutralise each one app-side.
+- Its own spec file name and its own viewports (its `WORKFLOW.md`).
+- Its own components and tokens stay in `styles.css`, with their blocks.
+- Copy `tests/vendor.test.js` and `tests/design.test.js` from `../pwa-template` and tighten them: the listing of `vendor/design-system/` equals the keys of `SOURCE.json` plus `SOURCE.json`; `designs/index.html` also links the shared sheet first; an `Overrides <name>` comment names a shared component; `RULES.length > 0`; one negative run (a copied shared rule makes the test fail), reported.
+- If the app has a `pre-commit` spec hook, the commit changes its spec file, so no `--no-verify`.
+- No override expected.
 
 ### Task 11: Close
 
