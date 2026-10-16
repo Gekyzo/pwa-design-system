@@ -137,7 +137,9 @@ export const appPart = (appCss, sharedCss) => {
     // In base, the rules after a block may be the app's own (a media rule on body), so extras are allowed.
     const extras = pool.length > 0 && part.leaves[0]?.path[0] !== '@layer base';
     if (matched.includes(null) || extras) {
-      part.leaves.forEach((leaf) => kept.add(leaf));
+      // A rule identical to a shared one goes as outside an override; a differing rule stays whole.
+      part.leaves.filter((leaf) => !sharedKeys.has(leaf.key)).forEach((leaf) => kept.add(leaf));
+      part.leaves.filter((leaf) => sharedKeys.has(leaf.key)).forEach((leaf) => gone.add(leaf));
       const indent = appCss.slice(appCss.lastIndexOf('\n', part.start) + 1, part.start);
       const held = new Set(entriesOf(model.text).map(entryKey));
       const added = entriesOf(part.text).filter((entry) => !held.has(entryKey(entry)));
@@ -165,7 +167,7 @@ export const appPart = (appCss, sharedCss) => {
   // A comment alone on its line or lines, right above `start`, leads that node.
   const leadingStart = (start) => {
     const before = appCss.slice(0, lineStart(start));
-    const comment = app.comments.find((c) => c.end === before.trimEnd().length && !app.blocks.includes(c));
+    const comment = app.comments.find((c) => c.end === before.trimEnd().length && !app.blocks.some((block) => block.start === c.start));
     if (!comment) return start;
     const alone = appCss.slice(lineStart(comment.start), comment.start).trim() === '';
     const lines = (before.slice(comment.end).match(/\n/g) ?? []).length;

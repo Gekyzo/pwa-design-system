@@ -94,7 +94,7 @@ test('appPart keeps an overriding version under an @extends block', () => {
   const out = appPart(wrap('components', component), SHARED);
   assert.doesNotMatch(out, /@component|@summary|@example|Overrides/);
   assert.match(out, /  \/\* @extends pill\n     @part pill-end The end.\n     @variant big Bigger\. \*\/\n  \.pill \{\n    padding: 8px;/);
-  assert.match(out, /\.pill\.on/);
+  assert.doesNotMatch(out, /\.pill\.on/);
 });
 
 test('appPart keeps an app rule that follows a removed shared component, and an app-only component', () => {
@@ -192,4 +192,26 @@ test('leaksOf lists nothing for an app that has every rule', () => {
 test('leaksOf reads a rule split in several rules of the app', () => {
   const app = '@layer components {\n  .pill {\n    padding: 4px;\n  }\n  .pill {\n    color: red;\n  }\n  @media (min-width: 600px) {\n    .pill {\n      margin: 0;\n    }\n  }\n}\n';
   assert.deepEqual(leaksOf(app, MEDIA), []);
+});
+
+test('appPart keeps only the differing rule of an overridden component, after the @extends block', () => {
+  const component = `  /* @component pill
+     @summary Another label.
+     @example <span class="pill">A</span> */
+  .pill {
+    padding: 8px;
+    margin: 0;
+  }
+
+  .pill.on {
+    color: red;
+  }
+
+  .pill.off {
+    color: grey;
+  }
+`;
+  const shared = SHARED.replace('  .pill.on {', '  .pill.off {\n    color: grey;\n  }\n\n  .pill.on {');
+  const out = appPart(wrap('components', component), shared);
+  assert.equal(out, wrap('components', '  /* @extends pill */\n  .pill {\n    padding: 8px;\n    margin: 0;\n  }\n'));
 });
