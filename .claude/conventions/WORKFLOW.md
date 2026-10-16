@@ -17,4 +17,4 @@ copies drift — which is the whole reason this is a link.
 
 ## Local overrides
 
-- **Definition of done:** the test command is `npm test`. This repository has no app and no deploy; there is no browser check of an app. A change to the catalogue page is checked in a browser.
+- **Definition of done:** the test command is `npm test`. This repository has no app; a push to `main` publishes the catalogue page to GitHub Pages. A change to the catalogue page is checked in a browser.

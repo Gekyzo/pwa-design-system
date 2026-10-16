@@ -8,7 +8,7 @@ description: The shape of this component - its boundaries, its seams, and what i
 
 # Architecture
 
-The shared design system of the pwa apps. It has no app and no deploy.
+The shared design system of the pwa apps. It has no app; a push to `main` publishes its catalogue page to GitHub Pages.
 
 **Stack:** plain CSS and ES modules. No build step and no dependencies. `node:test` for unit
 tests (Node 20 or later).

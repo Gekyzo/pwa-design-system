@@ -17,4 +17,4 @@ copies drift — which is the whole reason this is a link.
 
 ## Local overrides
 
-- **Remote and release:** none. This repository has no deploy, no release script and no hooks. A change lands as a commit on `main`.
+- **Remote and release:** `origin` is `git@github-personal:Gekyzo/pwa-design-system.git`. A push to `main` publishes the catalogue page (`.github/workflows/pages.yml`). No release script and no hooks. A change lands as a commit on `main`.
