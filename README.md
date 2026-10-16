@@ -4,7 +4,8 @@ The shared design system of the offline PWAs: pwa-template, pwa-shopping-list,
 pwa-wardrobe, pwa-shifts, pwa-nexus and pwa-financial-calculator. Plain CSS and ES
 modules; no build step and no dependencies.
 
-This repository has no app and no deploy.
+This repository has no app. A push to `main` publishes the catalogue page to
+https://gekyzo.github.io/pwa-design-system/ (`.github/workflows/pages.yml`).
 
 ## Commands
 
