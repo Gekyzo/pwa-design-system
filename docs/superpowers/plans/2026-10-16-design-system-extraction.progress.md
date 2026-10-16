@@ -36,8 +36,8 @@ the 🎯 indicators (terminal status bar, tab ring, overlord tile) draw from thi
 | 11 | Close | ☐ |  |  |  |
 | 6 | pwa-shopping-list | ☑ | | 2026-10-16 | |
 | 7 | pwa-wardrobe | ☑ | | 2026-10-16 | |
-| 8 | pwa-shifts | ☐ | | | |
-| 9 | pwa-nexus | ☐ | | | |
+| 8 | pwa-shifts | ☑ | | 2026-10-17 | |
+| 9 | pwa-nexus | ◐ | | | |
 | 10 | pwa-financial-calculator | ☐ | | | |
 
 ## Blockers
