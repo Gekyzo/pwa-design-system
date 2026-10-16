@@ -1,5 +1,6 @@
 // Gives the part of an app's styles.css that the design system does not already hold.
 // Usage: node scripts/split.mjs <app styles.css> [design-system.css]
+// The declarations of a rule are split on `;`: a `;` inside url() or a string is not supported.
 
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';

@@ -20,7 +20,9 @@ npm run serve    # http://localhost:8090
 - `rules.js`: the DS rules an app checks.
 - `index.html` and `page.js`: the catalogue page. Run `npm run serve`, open
   http://localhost:8090/. Add the CSS of an app with `?css=styles.css,more.css`.
-- `sync.mjs`: copies the shared files into an app.
+- `sync.mjs`: copies the shared files into an app. It refuses a target with no `package.json` or
+  one that holds `design-system.css`, and a source with uncommitted changes to a copied file or to
+  `version.json`.
 
 ## Use in an app
 

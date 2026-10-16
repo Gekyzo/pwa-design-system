@@ -91,11 +91,14 @@ el('li', { className: [
 });
 
 test('parseCatalog gives the size scale to each size token, and colour only to a colour', () => {
-  const css = '@layer tokens { :root { --tap: 44px; --arrow: 6px; --art-width: 240px; --scrim: rgb(0 0 0 / 0.45); --knob: #fff; } }';
+  const css = '@layer tokens { :root { --tap: 44px; --arrow: 6px; --art-width: 240px; --rail-width: 80px; --content-max: 640px; --pane-list: 360px; --scrim: rgb(0 0 0 / 0.45); --knob: #fff; } }';
   assert.deepEqual(parseCatalog({ css, sprite: '' }).tokens.map((token) => [token.name, token.scale]), [
     ['--tap', 'size'],
     ['--arrow', 'size'],
     ['--art-width', 'size'],
+    ['--rail-width', 'size'],
+    ['--content-max', 'size'],
+    ['--pane-list', 'size'],
     ['--scrim', 'colour'],
     ['--knob', 'colour'],
   ]);
@@ -161,4 +164,23 @@ test('an @extends of an unknown component is an error', () => {
 test('a component tells the sheet that documents it', () => {
   const sheets = parseCatalog({ css: [SHEET('alpha'), SHEET('beta')], sprite: '' }).components.map(({ sheet }) => sheet);
   assert.deepEqual(sheets, [0, 1]);
+});
+
+test('an @extends block adds its examples to the component', () => {
+  const extension = '/* @extends alpha\n   @example <i class="alpha wide"></i> */\n';
+  const [alpha] = parseCatalog({ css: [SHEET('alpha'), extension], sprite: '' }).components;
+  assert.deepEqual(alpha.examples, ['<i class="alpha"></i>', '<i class="alpha wide"></i>']);
+});
+
+test('an @extends block reports a tag other than extends, part, variant, state and example', () => {
+  const extension = '/* @extends alpha\n   @summary Text.\n   @scope list\n   @part alpha-end The end. */\n';
+  assert.deepEqual(parseCatalog({ css: [SHEET('alpha'), extension], sprite: '' }).errors, ['alpha: unknown tag @summary', 'alpha: unknown tag @scope']);
+});
+
+test('an @extends block does not add a part, variant or state that the component already has', () => {
+  const sheet = '@layer components {\n  /* @component alpha\n   @summary Text.\n   @part alpha-end The end.\n   @variant corner A corner.\n   @example <i class="alpha"></i> */\n  .alpha { color: red; }\n}\n';
+  const [alpha] = parseCatalog({ css: [sheet, EXTENDS], sprite: '' }).components;
+  assert.deepEqual(alpha.parts, [{ name: 'alpha-end', text: 'The end.' }]);
+  assert.deepEqual(alpha.variants, [{ name: 'corner', text: 'A corner.' }]);
+  assert.deepEqual(alpha.states, [{ name: 'bought', text: 'Bought.' }]);
 });

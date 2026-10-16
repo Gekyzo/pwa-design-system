@@ -64,3 +64,17 @@ test('sync refuses a directory with no package.json', () => {
   assert.throws(() => sync({ from, to }), /not an app/);
   assert.equal(existsSync(join(to, 'vendor')), false);
 });
+
+test('sync refuses when version.json has uncommitted changes', () => {
+  const { from, to } = fixture();
+  writeFileSync(join(from, 'version.json'), '{ "version": "9.9.9" }\n');
+  assert.throws(() => sync({ from, to }), /uncommitted changes in pwa-design-system/);
+  assert.equal(existsSync(join(to, 'vendor')), false);
+});
+
+test('sync refuses the design system itself as a target', () => {
+  const { from, to } = fixture();
+  writeFileSync(join(to, 'design-system.css'), '@layer tokens;\n');
+  assert.throws(() => sync({ from, to }), /not an app/);
+  assert.equal(existsSync(join(to, 'vendor')), false);
+});

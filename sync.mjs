@@ -13,7 +13,8 @@ const git = (cwd, ...args) => execFileSync('git', args, { cwd, encoding: 'utf8' 
 
 export const sync = ({ from, to }) => {
   if (!existsSync(join(to, 'package.json'))) throw new Error(`not an app: ${to} has no package.json`);
-  if (git(from, 'status', '--porcelain', '--', ...FILES)) throw new Error('uncommitted changes in pwa-design-system');
+  if (existsSync(join(to, 'design-system.css'))) throw new Error(`not an app: ${to} holds design-system.css`);
+  if (git(from, 'status', '--porcelain', '--', ...FILES, 'version.json')) throw new Error('uncommitted changes in pwa-design-system');
   const dir = join(to, 'vendor/design-system');
   mkdirSync(dir, { recursive: true });
   const files = {};

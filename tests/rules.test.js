@@ -35,6 +35,11 @@ test('DS-1 reports a sheet without the layer statement and a rule outside the la
   assert.equal(check({ css: [`${LAYERS}.x { margin: 0; }`] }).length, 1);
 });
 
+test('DS-1 names the sheet that has no layer statement by its index in css', () => {
+  const check = rule('DS-1', 'five layers').check;
+  assert.deepEqual(check({ css: [shared, 'a { margin: 0; }'] }).filter((text) => text.includes('layer statement')), ['css[1] does not start with the layer statement']);
+});
+
 test('DS-2 reports a raw value outside the tokens layer', () => {
   const check = rule('DS-2', 'raw value of a token property').check;
   assert.equal(check({ css: [`${LAYERS}@layer screens { .x { padding: 12px; } }`] }).length, 1);

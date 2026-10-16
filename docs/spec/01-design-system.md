@@ -42,7 +42,9 @@ app holds its screens and its own overrides. `rules.js` checks the rules; each a
   `@example`. `@state` names a class that the code sets for a passing state. The comments of
   `design-system.css` carry no word of one app. An app that adds a part, variant or state to a
   shared component documents it in a block that starts with `@extends <name>` and holds only
-  `@part`, `@variant` and `@state` entries; it is not a second `@component` block. The examples
+  `@part`, `@variant`, `@state` and `@example` entries; any other tag is an error. The entries
+  join those of the component, and a part, variant or state that the component already names is
+  not added twice. It is not a second `@component` block. The examples
   of the shared sheet may use icons that the sprite of the app lacks; only the examples of the
   app's own sheets must use icons of its sprite.
 - **DS-7** The catalogue page of the app, served by `npm run serve`, shows the tokens, the icons
