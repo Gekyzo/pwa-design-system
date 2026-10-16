@@ -154,3 +154,40 @@ test('appPart treats a shared component with one rule more as an override', () =
   assert.match(out, /Overrides pill of the design system/);
   assert.match(out, /\.pill\.off/);
 });
+
+import { leaksOf } from '../scripts/split.mjs';
+
+const MEDIA = `@layer tokens, base, components;
+
+@layer components {
+  .pill {
+    padding: 4px;
+    color: red;
+  }
+
+  @media (min-width: 600px) {
+    .pill {
+      margin: 0;
+    }
+  }
+}
+`;
+
+test('leaksOf lists a shared rule that the app lacks, with its media context', () => {
+  const app = '@layer components {\n  .pill {\n    padding: 4px;\n    color: red;\n  }\n}\n';
+  assert.deepEqual(leaksOf(app, MEDIA), ['components @media (min-width: 600px) .pill']);
+});
+
+test('leaksOf lists a shared declaration that the rule of the app does not set', () => {
+  const app = '@layer components {\n  .pill {\n    padding: 8px;\n  }\n  @media (min-width: 600px) {\n    .pill {\n      margin: 1px;\n    }\n  }\n}\n';
+  assert.deepEqual(leaksOf(app, MEDIA), ['components .pill: color']);
+});
+
+test('leaksOf lists nothing for an app that has every rule', () => {
+  assert.deepEqual(leaksOf(MEDIA, MEDIA), []);
+});
+
+test('leaksOf reads a rule split in several rules of the app', () => {
+  const app = '@layer components {\n  .pill {\n    padding: 4px;\n  }\n  .pill {\n    color: red;\n  }\n  @media (min-width: 600px) {\n    .pill {\n      margin: 0;\n    }\n  }\n}\n';
+  assert.deepEqual(leaksOf(app, MEDIA), []);
+});

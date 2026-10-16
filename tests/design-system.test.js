@@ -34,14 +34,14 @@ test('the layer statement comes first', () => {
   assert.ok(css.startsWith('@layer tokens, base, components, layouts, screens;\n'));
 });
 
-test('the tokens layer holds 52 distinct selector and property pairs', () => {
+test('the tokens layer holds 55 distinct selector and property pairs', () => {
   const pairs = new Set(rules.filter((rule) => rule.layer === 'tokens').flatMap((rule) => rule.declarations.map((d) => `${rule.selector} ${d.property}`)));
-  assert.equal(pairs.size, 52);
+  assert.equal(pairs.size, 55);
 });
 
-test('the shared tokens leave out the ones that an app may lack', () => {
+test('the shared tokens hold the layout tokens that the layouts use', () => {
   const names = catalog.tokens.map((token) => token.name);
-  for (const name of ['--rail-width', '--content-max', '--pane-list']) assert.ok(!names.includes(name), name);
+  for (const name of ['--rail-width', '--content-max', '--pane-list']) assert.ok(names.includes(name), name);
 });
 
 test('the layouts layer holds 17 rules and the base layer 11', () => {

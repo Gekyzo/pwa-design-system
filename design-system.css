@@ -50,6 +50,10 @@
     --icon-s: 20px;
     --arrow: 6px; /* the arrow of a select */
     --nav-height: 60px;
+    /* The adaptive layout (LAY-1): the rail from 600px, the two panes from 840px. */
+    --rail-width: 80px;
+    --content-max: 640px;
+    --pane-list: 360px;
     --art-width: 240px; /* the drawings of the walkthrough */
     --logo: 96px; /* the app icon at the top of the walkthrough */
 
@@ -1225,6 +1229,7 @@
     overflow-x: auto;
     scrollbar-width: none;
   }
+
   /* @component input-row
      @summary An input that grows, and the button that submits it.
      @example <div class="input-row"><input class="input" type="text" placeholder="New tag"><button class="button primary" type="button">Add</button></div> */
@@ -1236,6 +1241,7 @@
   .input-row > .input {
     flex: 1;
   }
+
   /* @component split
      @summary Two equal columns. Each child takes the full width of its column.
      @part hand-side  The child that stands at the side of the hand: right, or left with the left hand.

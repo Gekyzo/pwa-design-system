@@ -182,6 +182,33 @@ export const appPart = (appCss, sharedCss) => {
   return finish(appCss, edits, lineStart, lineEnd);
 };
 
+const where = (leaf) => {
+  const [layer, ...contexts] = leaf.path;
+  return [layer?.replace('@layer ', '') ?? '', ...contexts].join(' ');
+};
+
+// One line for each shared rule that the app does not define, and for each shared declaration
+// that no app rule with the same layer, context and selector sets.
+export const leaksOf = (appCss, sharedCss) => {
+  const app = parse(appCss);
+  const shared = parse(sharedCss);
+  const keyOf = (leaf) => `${leaf.path.join('>')}|${leaf.prelude}`;
+  const set = new Map();
+  for (const leaf of app.leaves) {
+    const properties = set.get(keyOf(leaf)) ?? new Set();
+    (leaf.declarations ?? []).forEach((d) => properties.add(d.property));
+    set.set(keyOf(leaf), properties);
+  }
+  return shared.leaves.flatMap((leaf) => {
+    const properties = set.get(keyOf(leaf));
+    const name = `${where(leaf)} ${leaf.prelude}`;
+    if (!properties) return [name];
+    return [...new Set((leaf.declarations ?? []).map((d) => d.property))]
+      .filter((property) => !properties.has(property))
+      .map((property) => `${name}: ${property}`);
+  });
+};
+
 const finish = (css, edits, lineStart, lineEnd) => {
   const spans = edits
     .map((edit) => (edit.text === '' ? { ...edit, start: lineStart(edit.start), end: lineEnd(edit.end) } : edit))
@@ -202,10 +229,15 @@ const finish = (css, edits, lineStart, lineEnd) => {
 };
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const [appPath, sharedPath = fileURLToPath(new URL('../design-system.css', import.meta.url))] = process.argv.slice(2);
+  const args = process.argv.slice(2);
+  const leaks = args[0] === '--leaks';
+  const [appPath, sharedPath = fileURLToPath(new URL('../design-system.css', import.meta.url))] = leaks ? args.slice(1) : args;
   if (!appPath) {
-    console.error('Usage: node scripts/split.mjs <app styles.css> [design-system.css]');
+    console.error('Usage: node scripts/split.mjs [--leaks] <app styles.css> [design-system.css]');
     process.exit(1);
   }
-  process.stdout.write(appPart(readFileSync(appPath, 'utf8'), readFileSync(sharedPath, 'utf8')));
+  const app = readFileSync(appPath, 'utf8');
+  const shared = readFileSync(sharedPath, 'utf8');
+  if (leaks) leaksOf(app, shared).forEach((line) => console.log(line));
+  else process.stdout.write(appPart(app, shared));
 }
