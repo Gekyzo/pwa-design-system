@@ -29,7 +29,7 @@ the 🎯 indicators (terminal status bar, tab ring, overlord tile) draw from thi
 | # | Task | Status | Commit (subject) | Landed | Notes |
 |---|---|---|---|---|---|
 | 1 | Repository and parser | ☑ |  | 2026-10-16 |  |
-| 2 | design-system.css | ☐ |  |  |  |
+| 2 | design-system.css | ◐ |  |  |  |
 | 3 | rules.js and sync.mjs | ☐ |  |  |  |
 | 4 | Catalogue page | ☐ |  |  |  |
 | 5 | pwa-template | ☐ |  |  |  |
