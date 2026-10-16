@@ -31,8 +31,8 @@ the 🎯 indicators (terminal status bar, tab ring, overlord tile) draw from thi
 | 1 | Repository and parser | ☑ |  | 2026-10-16 |  |
 | 2 | design-system.css | ☑ |  | 2026-10-16 |  |
 | 3 | rules.js and sync.mjs | ☑ |  | 2026-10-16 |  |
-| 4 | Catalogue page | ◐ |  |  |  |
-| 5 | pwa-template | ☐ |  |  |  |
+| 4 | Catalogue page | ☑ |  | 2026-10-16 |  |
+| 5 | pwa-template | ◐ |  |  |  |
 | 11 | Close | ☐ |  |  |  |
 
 ## Blockers
