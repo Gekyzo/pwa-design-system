@@ -40,7 +40,11 @@ app holds its screens and its own overrides. `rules.js` checks the rules; each a
 - **DS-6** Each component, layout and screen part has one comment block before its first rule,
   with the tags `@component`, `@summary`, `@scope`, `@part`, `@variant`, `@state` and
   `@example`. `@state` names a class that the code sets for a passing state. The comments of
-  `design-system.css` carry no word of one app.
+  `design-system.css` carry no word of one app. An app that adds a part, variant or state to a
+  shared component documents it in a block that starts with `@extends <name>` and holds only
+  `@part`, `@variant` and `@state` entries; it is not a second `@component` block. The examples
+  of the shared sheet may use icons that the sprite of the app lacks; only the examples of the
+  app's own sheets must use icons of its sprite.
 - **DS-7** The catalogue page of the app, served by `npm run serve`, shows the tokens, the icons
   and each documented part with its live examples, its snippet and the files that use it. A menu
   lists each section and part and links to its anchor (`#button`): a sidebar on a wide screen, a

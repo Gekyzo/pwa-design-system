@@ -171,9 +171,11 @@ export const RULES = [
 
   define('DS-6', 'each example of the catalogue uses known classes and icons (DS-6)', ['css', 'sprite'], ({ catalog, known, symbols }) => {
     const examples = catalog.components.flatMap((part) => part.examples);
+    // The shared sheet (css[0]) shows icons that an app's sprite may lack: only the app's sheets are checked.
+    const own = catalog.components.filter((part) => part.sheet > 0).flatMap((part) => part.examples);
     return [
       ...examples.flatMap(classesOf).filter((name) => !known.has(name)),
-      ...examples.flatMap(iconsOf).filter((id) => !symbols.includes(id)),
+      ...own.flatMap(iconsOf).filter((id) => !symbols.includes(id)),
     ];
   }),
 

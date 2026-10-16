@@ -77,9 +77,11 @@ test('appPart removes the block and the rules of an identical shared component',
   assert.doesNotMatch(out, /@layer components \{/);
 });
 
-test('appPart keeps an overriding version under an Overrides comment', () => {
+test('appPart keeps an overriding version under an @extends block', () => {
   const component = `  /* @component pill
      @summary Another label.
+     @part pill-end The end.
+     @variant big Bigger.
      @example <span class="pill">A</span> */
   .pill {
     padding: 8px;
@@ -90,8 +92,8 @@ test('appPart keeps an overriding version under an Overrides comment', () => {
   }
 `;
   const out = appPart(wrap('components', component), SHARED);
-  assert.doesNotMatch(out, /@component|@summary/);
-  assert.match(out, /  \/\* Overrides pill of the design system\. \*\/\n  \.pill \{\n    padding: 8px;/);
+  assert.doesNotMatch(out, /@component|@summary|@example|Overrides/);
+  assert.match(out, /  \/\* @extends pill\n     @part pill-end The end.\n     @variant big Bigger\. \*\/\n  \.pill \{\n    padding: 8px;/);
   assert.match(out, /\.pill\.on/);
 });
 
@@ -151,7 +153,7 @@ test('appPart treats a shared component with one rule more as an override', () =
   }
 `;
   const out = appPart(wrap('components', component), SHARED);
-  assert.match(out, /Overrides pill of the design system/);
+  assert.match(out, /@extends pill \*\//);
   assert.match(out, /\.pill\.off/);
 });
 

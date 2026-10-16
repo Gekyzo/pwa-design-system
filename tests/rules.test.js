@@ -70,3 +70,11 @@ test('LAY-4 reads the body padding from the app sheet only', () => {
   const body = `${LAYERS}@layer base { body { padding-inline-start: env(safe-area-inset-left); padding-inline-end: env(safe-area-inset-right); } }`;
   assert.deepEqual(check({ css: [shared, body] }), []);
 });
+
+test('the icons of the examples are checked only in the sheets of the app', () => {
+  const check = rule('DS-6', 'each example').check;
+  const sheet = (name) => `${LAYERS}@layer components {\n  /* @component ${name}\n   @summary Text.\n   @example <i class="${name}"><svg><use href="icons.svg#note"/></svg></i> */\n  .${name} { color: var(--x); }\n}\n`;
+  const sprite = '<svg><symbol id="cart"/></svg>';
+  assert.deepEqual(check({ css: [sheet('alpha')], sprite }), []);
+  assert.deepEqual(check({ css: [sheet('alpha'), sheet('beta')], sprite }), ['note']);
+});

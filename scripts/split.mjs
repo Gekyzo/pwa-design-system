@@ -97,6 +97,18 @@ const componentsOf = ({ nodes, blocks, leaves }) =>
     return { ...block, leaves: leaves.filter((leaf) => leaf.start > block.end && leaf.start < stop) };
   });
 
+// The @part, @variant and @state entries of a block comment, each with its continuation lines.
+const entriesOf = (text) => {
+  const entries = [];
+  for (const raw of text.slice(2, -2).split('\n')) {
+    const row = raw.trim().replace(/^\*\s?/, '');
+    if (/^@\w+/.test(row)) entries.push([row]);
+    else if (row && entries.length) entries.at(-1).push(row);
+  }
+  return entries.filter(([first]) => /^@(part|variant|state)\s/.test(first));
+};
+const entryKey = ([first]) => first.split(/\s+/).slice(0, 2).join(' ');
+
 const isToken = (leaf) => leaf.path[0] === '@layer tokens';
 const declarationKey = (leaf, declaration) => `${leaf.path.join('>')}|${leaf.prelude}|${declaration.property}`;
 
@@ -127,7 +139,10 @@ export const appPart = (appCss, sharedCss) => {
     if (matched.includes(null) || extras) {
       part.leaves.forEach((leaf) => kept.add(leaf));
       const indent = appCss.slice(appCss.lastIndexOf('\n', part.start) + 1, part.start);
-      edits.push({ start: part.start, end: part.end, text: `/* Overrides ${part.name} of the design system. */`, indent });
+      const held = new Set(entriesOf(model.text).map(entryKey));
+      const added = entriesOf(part.text).filter((entry) => !held.has(entryKey(entry)));
+      const lines = [`/* @extends ${part.name}`, ...added.flat().map((row) => `${indent}   ${row}`)];
+      edits.push({ start: part.start, end: part.end, text: added.length ? `${lines.join('\n')} */` : `${lines[0]} */`, indent });
     } else {
       matched.forEach((leaf) => gone.add(leaf));
       cut(part.start, part.end);

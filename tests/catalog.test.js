@@ -137,3 +137,28 @@ test('parseCatalog joins an array of css', () => {
   assert.deepEqual(names([a, b]), ['alpha', 'beta']);
   assert.deepEqual(parseCatalog({ css: [a, b], sprite: '' }).errors, []);
 });
+
+const SHEET = (name, extra = '') => `@layer components {\n  /* @component ${name}\n   @summary Text.\n   @example <i class="${name}"></i> */\n  .${name} { color: red; }\n}\n${extra}`;
+const EXTENDS = '@layer components {\n  /* @extends alpha\n   @part alpha-end The end.\n   @variant corner A corner.\n   @state bought Bought. */\n  .alpha-end { color: red; }\n}\n';
+
+test('an @extends block adds its parts, variants and states to the component', () => {
+  const [alpha] = parseCatalog({ css: [SHEET('alpha'), EXTENDS], sprite: '' }).components;
+  assert.deepEqual(alpha.parts, [{ name: 'alpha-end', text: 'The end.' }]);
+  assert.deepEqual(alpha.variants, [{ name: 'corner', text: 'A corner.' }]);
+  assert.deepEqual(alpha.states, [{ name: 'bought', text: 'Bought.' }]);
+});
+
+test('an @extends block is not a component, is not documented twice and needs no summary or example', () => {
+  const catalog = parseCatalog({ css: [SHEET('alpha'), EXTENDS], sprite: '' });
+  assert.deepEqual(catalog.components.map(({ name }) => name), ['alpha']);
+  assert.deepEqual(catalog.errors, []);
+});
+
+test('an @extends of an unknown component is an error', () => {
+  assert.deepEqual(parseCatalog({ css: [SHEET('beta'), EXTENDS], sprite: '' }).errors, ['alpha: @extends of an unknown component']);
+});
+
+test('a component tells the sheet that documents it', () => {
+  const sheets = parseCatalog({ css: [SHEET('alpha'), SHEET('beta')], sprite: '' }).components.map(({ sheet }) => sheet);
+  assert.deepEqual(sheets, [0, 1]);
+});
