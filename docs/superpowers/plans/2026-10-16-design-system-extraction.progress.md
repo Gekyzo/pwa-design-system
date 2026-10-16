@@ -33,7 +33,7 @@ the 🎯 indicators (terminal status bar, tab ring, overlord tile) draw from thi
 | 3 | rules.js and sync.mjs | ☑ |  | 2026-10-16 |  |
 | 4 | Catalogue page | ☑ |  | 2026-10-16 |  |
 | 5 | pwa-template | ☑ |  | 2026-10-16 |  |
-| 11 | Close | ◐ |  |  |  |
+| 11 | Close | ☑ |  | 2026-10-17 |  |
 | 6 | pwa-shopping-list | ☑ | | 2026-10-16 | |
 | 7 | pwa-wardrobe | ☑ | | 2026-10-16 | |
 | 8 | pwa-shifts | ☑ | | 2026-10-17 | |
