@@ -19,6 +19,8 @@ npm run serve    # http://localhost:8090
 - `design-system.css`: tokens, base, components, layouts and screen parts.
 - `catalog.js`: reads the `@component` comments of the CSS into the catalogue.
 - `rules.js`: the DS rules an app checks.
+- `sheet.js`: drag a sheet down to close it (`dismissed`, `bindSheetDrag`). An app imports it from
+  `vendor/design-system/sheet.js`.
 - `index.html` and `page.js`: the catalogue page. Run `npm run serve`, open
   http://localhost:8090/. Add the CSS of an app with `?css=styles.css,more.css`.
 - `sync.mjs`: copies the shared files into an app. It refuses a target with no `package.json` or

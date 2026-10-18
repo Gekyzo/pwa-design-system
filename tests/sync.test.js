@@ -7,7 +7,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { sync } from '../sync.mjs';
 
-const FILES = { 'design-system.css': '@layer tokens;\n', 'catalog.js': 'export {};\n', 'rules.js': 'export const RULES = [];\n' };
+const FILES = { 'design-system.css': '@layer tokens;\n', 'catalog.js': 'export {};\n', 'rules.js': 'export const RULES = [];\n', 'sheet.js': 'export const dismissed = () => false;\n' };
 const sha = (text) => createHash('sha256').update(text).digest('hex');
 const git = (cwd, ...args) => execFileSync('git', ['-c', 'user.name=t', '-c', 'user.email=t@t', ...args], { cwd, encoding: 'utf8' }).trim();
 
@@ -24,7 +24,7 @@ const fixture = () => {
   return { from, to };
 };
 
-test('sync writes the three files and SOURCE.json with the hashes of their content', () => {
+test('sync writes the shared files and SOURCE.json with the hashes of their content', () => {
   const { from, to } = fixture();
   const source = sync({ from, to });
   const dir = join(to, 'vendor/design-system');

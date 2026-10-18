@@ -31,7 +31,7 @@ the 🎯 indicators (terminal status bar, tab ring, overlord tile) draw from thi
 | 1 | Tokens for 0.3.0 | ☑ |  | 2026-10-18 |  |
 | 2 | Small component fixes | ☑ |  | 2026-10-18 |  |
 | 3 | Rules TAP-1, TAP-2, TXT-1, FOCUS-1 and release 0.3.0 | ☑ |  | 2026-10-18 |  |
-| 4 | sheet.js and its sync | ☐ |  |  |  |
+| 4 | sheet.js and its sync | ☑ |  | 2026-10-18 |  |
 | 5 | Sheet head, body and foot, and SHEET-1 | ☐ |  |  |  |
 | 6 | input-row mirrored and pinned, field errors, HAND-1 | ☐ |  |  |  |
 | 7 | action-bar, settings rows, empty state with an action, STATE-1 | ☐ |  |  |  |
