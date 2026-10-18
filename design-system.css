@@ -973,7 +973,7 @@
   .empty-state.low .button {
     width: 100%;
     min-height: var(--tap-l);
-    margin-top: var(--space-2);
+    margin-top: 0;
   }
 
   .empty-state-title {

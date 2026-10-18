@@ -157,6 +157,8 @@ test('STATE-1 needs an action in an empty state, except an inline one', () => {
   assert.equal(check({ html: '<main></main>' }).length, 0);
   const two = '<div class="empty-state"><button>a</button></div><div class="empty-state"><p>b</p></div>';
   assert.equal(check({ html: two }).length, 1);
+  assert.equal(check({ html: '<div class="empty-state"><p>x</p></div><nav><button>b</button></nav>' }).length, 1);
+  assert.equal(check({ html: '<div class="empty-state"><div><p>x</p></div><button>a</button></div>' }).length, 0);
 });
 
 test('a settings row with danger passes the variant rule, danger on an unrelated block does not', () => {

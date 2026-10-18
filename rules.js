@@ -313,11 +313,23 @@ export const RULES = [
       .map((part) => part.slice(0, 60));
   }),
 
-  // An empty state of the app holds a button, except an inline one. It ends at the next empty state.
+  // An empty state of the app holds a button, except an inline one. The part ends at the close tag of its own element.
   define('STATE-1', 'each empty state holds a button, except an inline one (STATE-1)', ['html'], ({ html }) => {
-    const opens = [...html.matchAll(/class="([^"]*)"/g)].filter(([, value]) => value.split(/\s+/).includes('empty-state') && !value.split(/\s+/).includes('inline'));
-    return opens
-      .map((open) => html.slice(open.index, [...html.matchAll(/class="([^"]*)"/g)].find((next) => next.index > open.index && next[1].split(/\s+/).includes('empty-state'))?.index ?? html.length))
+    const tags = [...html.matchAll(/<(\/?)([a-zA-Z][\w-]*)\b([^>]*)>/g)];
+    const ends = (start) => {
+      const name = tags[start][2].toLowerCase();
+      let depth = 0;
+      for (let i = start; i < tags.length; i += 1) {
+        if (tags[i][2].toLowerCase() !== name) continue;
+        depth += tags[i][1] ? -1 : tags[i][3].endsWith('/') ? 0 : 1;
+        if (depth === 0) return tags[i].index;
+      }
+      return html.length;
+    };
+    return tags
+      .map((tag, i) => ({ tag, i }))
+      .filter(({ tag }) => !tag[1] && (/\bclass="([^"]*)"/.exec(tag[3])?.[1].split(/\s+/) ?? []).some((name) => name === 'empty-state') && !/\bclass="[^"]*\binline\b/.test(tag[3]))
+      .map(({ tag, i }) => html.slice(tag.index, ends(i)))
       .filter((part) => !/<button\b/.test(part))
       .map((part) => part.slice(0, 60));
   }),
