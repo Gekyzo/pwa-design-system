@@ -259,3 +259,44 @@ test('a row label holds two lines, and a tick row is the tick target', () => {
   const row = catalog.components.find((part) => part.name === 'item-row');
   assert.ok(row.states.some((state) => state.name === 'tick'));
 });
+
+const allValues = (selector, property) =>
+  rules.filter((rule) => rule.selector === selector).flatMap((rule) => rule.declarations.filter((d) => d.property === property).map((d) => d.value));
+
+test('the dock is fixed above the bottom bar and is hidden from 600px', () => {
+  assert.equal(declaration('.dock', 'position'), 'fixed');
+  assert.equal(declaration('.dock', 'bottom'), 'calc(var(--nav-height) + env(safe-area-inset-bottom))');
+  assert.equal(declaration('.dock', 'height'), 'var(--dock-height)');
+  assert.equal(declaration('.dock', 'background'), 'var(--surface)');
+  assert.ok(allValues('.dock', 'display').includes('none'));
+  const padding = declaration('.dock', 'padding-inline');
+  assert.match(padding, /safe-area-inset-left/);
+  assert.match(padding, /safe-area-inset-right/);
+});
+
+test('the dock mirrors for the left hand and has a field and a clear part', () => {
+  assert.equal(declaration('[data-hand="left"] .dock', 'flex-direction'), 'row-reverse');
+  assert.equal(declaration('.dock-clear', 'color'), 'var(--muted)');
+  assert.equal(declaration('.dock-clear', 'width'), 'var(--tap)');
+  const dock = catalog.components.find((part) => part.name === 'dock');
+  for (const name of ['dock-field', 'dock-clear']) assert.ok(dock.parts.some((part) => part.name === name), name);
+});
+
+test('a dock lifts the add button and the main padding below 600px', () => {
+  assert.match(allValues('body:has(.dock:not([hidden])) .fab', 'bottom').join(), /var\(--dock-height\)/);
+  assert.match(allValues('body:has(.dock:not([hidden])) main', 'padding-bottom')[0], /var\(--dock-height\)/);
+});
+
+test('the add button collapses to a square tap target', () => {
+  assert.equal(declaration('.fab.collapsed', 'width'), 'var(--tap)');
+  assert.equal(declaration('.fab.collapsed', 'height'), 'var(--tap)');
+  assert.match(declaration('.fab', 'transition'), /width var\(--motion-fast\) var\(--ease\)/);
+  const fab = catalog.components.find((part) => part.name === 'fab');
+  assert.ok(fab.states.some((state) => state.name === 'collapsed'));
+});
+
+test('the header title is one line with an ellipsis, and the ring text has equal digits', () => {
+  assert.equal(declaration('.app-header-title', 'white-space'), 'nowrap');
+  assert.equal(declaration('.app-header-title', 'text-overflow'), 'ellipsis');
+  assert.equal(declaration('.ring-text', 'font-variant-numeric'), 'tabular-nums');
+});

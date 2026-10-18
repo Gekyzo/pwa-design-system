@@ -4,6 +4,10 @@ User-visible changes, newest first.
 
 ## Unreleased
 
+- New `dock` component with the parts `dock-field`, `dock-input` and `dock-clear`: the filter and the search of a list, fixed above the bottom bar below 600px and hidden from 600px. The left hand mirrors it. `main` and `fab` clear a visible dock.
+- New `fab` state `collapsed`: a square of the tap size, animated.
+- The `app-header-title` keeps one line with an ellipsis. The `ring-text` uses tabular digits.
+
 ## 0.4.0 - 2026-10-18
 
 - New `swipe-action-label` part and `neutral` variant. A swipe action stacks its icon over a label, is 72px
