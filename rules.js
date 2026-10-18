@@ -273,8 +273,8 @@ export const RULES = [
           .filter((d) => {
             if (/(^|[^\d.])44px/.test(d.value)) return true;
             if (!lastClasses(rule.selector).some((name) => TAP_CLASSES.includes(name))) return false;
-            if (d.value.includes('var(--tap')) return false;
             const tokens = [...d.value.matchAll(/var\((--[\w-]+)\)/g)].map(([, token]) => token);
+            if (tokens.length && tokens.every((token) => TAP_TOKENS.includes(token))) return false;
             const pixels = [...d.value.matchAll(/(\d+(?:\.\d+)?)px/g)].map(([, px]) => Number(px));
             return tokens.some((token) => !TAP_TOKENS.includes(token)) || pixels.some((px) => px < 48);
           })

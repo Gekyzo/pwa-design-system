@@ -96,6 +96,8 @@ test('TAP-1 reports a 44px height and a control under the tap size', () => {
   assert.equal(check({ css: [inScreens('.input { min-height: 40px; }')] }).length, 1);
   assert.equal(check({ css: [inScreens('.segment { min-height: var(--tap-l); }')] }).length, 0);
   assert.equal(check({ css: [inScreens('.button.x { min-height: calc(var(--tap) + 2px); }')] }).length, 0);
+  assert.equal(check({ css: [inScreens('.button.x { min-height: max(var(--icon), var(--tap)); }')] }).length, 1);
+  assert.equal(check({ css: [inScreens('.button.x { min-height: var(--tapx); }')] }).length, 1);
   assert.equal(check({ css: [inScreens('.switch-input { height: 26px; }')] }).length, 0);
 });
 
