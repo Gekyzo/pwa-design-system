@@ -356,3 +356,46 @@ test('the right hand puts the side sheet at the end, next to the rail', () => {
   assert.equal(declaration(`${layer} .sheet`, 'border-start-end-radius'), '0');
   assert.equal(declaration(`${layer}[hidden] .sheet`, 'transform'), 'translateX(100%)');
 });
+
+test('the dock input shows one focus indicator and no native clear', () => {
+  assert.equal(declaration('.dock-input:focus-visible', 'outline'), 'none');
+  assert.equal(declaration('.dock-input::-webkit-search-cancel-button', 'appearance'), 'none');
+});
+
+test('a visible dock lifts the toast above itself below 600px and not from 600px', () => {
+  const selector = 'body:has(.dock:not([hidden])) .toast';
+  const values = allValues(selector, 'bottom');
+  assert.equal(values.length, 2);
+  assert.match(values[0], /var\(--dock-height\)/);
+  assert.doesNotMatch(values[1], /var\(--dock-height\)/);
+  assert.equal(values[1], allValues('.toast', 'bottom')[1]);
+});
+
+test('a headed sheet clears the bottom and the top safe areas', () => {
+  const inset = (name) => new RegExp(`calc\\(var\\(--space-\\d\\) \\+ env\\(safe-area-inset-${name}\\)\\)`);
+  assert.match(declaration('.sheet:has(.sheet-head):not(:has(.sheet-foot)) .sheet-body', 'padding-bottom'), inset('bottom'));
+  assert.match(inLayouts('.input-row.pinned:last-child', 'padding-bottom'), inset('bottom'));
+  assert.match(declaration('.sheet-layer:has(.sheet-head) .sheet-head', 'padding-top'), inset('top'));
+});
+
+test('the dock field fits the compact dock and its input fills the field', () => {
+  assert.equal(declaration('.dock-field', 'height'), 'calc(var(--dock-height) - var(--space-2))');
+  assert.equal(declaration('.dock-field', 'min-height'), '0');
+  assert.equal(declaration('.dock-input', 'min-height'), '0');
+  assert.equal(declaration('.dock-input', 'align-self'), 'stretch');
+});
+
+test('the add button collapsed has a catalogue example', () => {
+  const fab = catalog.components.find((part) => part.name === 'fab');
+  assert.ok(fab.examples.some((example) => /class="fab collapsed"/.test(example)));
+});
+
+test('a strong input keeps its text still when the border grows on focus', () => {
+  assert.equal(declaration('.input.strong:focus-visible', 'padding-inline'), 'calc(var(--space-3) - 1px)');
+});
+
+test('an open sheet moves the toast to the top after every rule that sets its bottom', () => {
+  const order = rules.filter((rule) => rule.layer === 'components' && /\.toast$/.test(rule.selector));
+  const sheetOpen = order.findIndex((rule) => rule.selector === 'body:has(.sheet-layer:not([hidden])) .toast');
+  assert.equal(sheetOpen, order.length - 1);
+});

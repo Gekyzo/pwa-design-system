@@ -473,8 +473,10 @@
     border: 1px solid var(--accent);
   }
 
+  /* The border grows by 1px on each side, so the padding shrinks by 1px and the text stays still. */
   .input.strong:focus-visible {
     border-width: 2px;
+    padding-inline: calc(var(--space-3) - 1px);
   }
 
   /* @component field
@@ -715,7 +717,7 @@
   }
 
   /* @component sheet
-     @summary A panel that comes up from the bottom over a veil. The layer is hidden to close it.
+     @summary A panel that comes up from the bottom over a veil; from 840px a sheet with a head is a side sheet. The layer is hidden to close it.
      @part sheet-layer  The fixed layer that holds the veil and the sheet.
      @part sheet-veil   The dark veil; a tap on it closes the sheet.
      @part sheet-grab   The handle at the top. A drag on it closes the sheet.
@@ -841,6 +843,11 @@
     padding: 0 var(--space-4);
   }
 
+  /* A headed sheet without a foot ends at the screen edge, so its body clears the bottom inset. */
+  .sheet:has(.sheet-head):not(:has(.sheet-foot)) .sheet-body {
+    padding-bottom: calc(var(--space-4) + env(safe-area-inset-bottom));
+  }
+
   .sheet-foot {
     display: flex;
     flex: none;
@@ -928,6 +935,11 @@
       display: none;
     }
 
+    /* With no grab above it, the head clears the top inset. */
+    .sheet-layer:has(.sheet-head) .sheet-head {
+      padding-top: calc(var(--space-3) + env(safe-area-inset-top));
+    }
+
     :root[data-hand="right"] .sheet-layer:has(.sheet-head) {
       justify-content: flex-end;
       padding-inline-start: 0;
@@ -1007,10 +1019,9 @@
     }
   }
 
-  /* An open sheet has the bottom of the screen, so the toast goes to the top. */
-  body:has(.sheet-layer:not([hidden])) .toast {
-    top: calc(var(--space-2) + env(safe-area-inset-top));
-    bottom: auto;
+  /* Below 600px a visible dock stands under the toast, so the toast clears it. */
+  body:has(.dock:not([hidden])) .toast {
+    bottom: calc(var(--nav-height) + env(safe-area-inset-bottom) + var(--dock-height) + var(--tap-l) + var(--space-6));
   }
 
   .toast-text {
@@ -1024,10 +1035,20 @@
       left: calc(var(--rail-width) + env(safe-area-inset-left) + var(--space-3));
     }
 
+    body:has(.dock:not([hidden])) .toast {
+      bottom: calc(env(safe-area-inset-bottom) + var(--tap-l) + var(--space-6));
+    }
+
     :root[data-hand="right"] .toast {
       left: calc(var(--space-3) + env(safe-area-inset-left));
       right: calc(var(--rail-width) + env(safe-area-inset-right) + var(--space-3));
     }
+  }
+
+  /* Last, so it wins over the dock lift above. An open sheet has the bottom of the screen, so the toast goes to the top. */
+  body:has(.sheet-layer:not([hidden])) .toast {
+    top: calc(var(--space-2) + env(safe-area-inset-top));
+    bottom: auto;
   }
 
   /* @component banner
@@ -1524,7 +1545,8 @@
   /* @component fab
      @summary The add button, fixed above the bottom bar at the side of the hand.
      @state collapsed  A square of the tap size with the icon only, for example while a list scrolls.
-     @example <button class="fab" type="button" style="position: static">+</button> */
+     @example <button class="fab" type="button" style="position: static">+</button>
+     @example <button class="fab collapsed" type="button" style="position: static">+</button> */
   .fab {
     position: fixed;
     right: calc(var(--space-4) + env(safe-area-inset-right));
@@ -1655,7 +1677,8 @@
     display: flex;
     align-items: center;
     min-width: 0;
-    min-height: var(--tap);
+    min-height: 0;
+    height: calc(var(--dock-height) - var(--space-2));
     border: 2px solid var(--line);
     border-radius: var(--radius-pill);
     background: var(--surface-2);
@@ -1667,13 +1690,23 @@
 
   .dock-input {
     flex: 1;
+    align-self: stretch;
     min-width: 0;
-    min-height: var(--tap);
+    min-height: 0;
     padding: 0 var(--space-4);
     border: 0;
     background: transparent;
     color: inherit;
     font: inherit;
+  }
+
+  /* The field draws the focus, so the input has no outline and no native clear. */
+  .dock-input:focus-visible {
+    outline: none;
+  }
+
+  .dock-input::-webkit-search-cancel-button {
+    appearance: none;
   }
 
   .dock-clear {
@@ -1748,6 +1781,11 @@
     bottom: 0;
     padding-block: var(--space-2);
     background: var(--surface);
+  }
+
+  /* The last child of a sheet body without a foot stands at the screen edge: it clears the inset. */
+  .input-row.pinned:last-child {
+    padding-bottom: calc(var(--space-2) + env(safe-area-inset-bottom));
   }
 
   [data-hand="left"] .input-row {

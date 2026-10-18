@@ -134,6 +134,8 @@ test('FOCUS-1 keeps one focus ring: the input drops the global outline and draws
   assert.equal(check({ css: [inScreens(`${global} .input:focus-visible { outline: none !important; }`)] }).length, 0);
   assert.equal(check({ css: [inScreens(`${global} .input:focus-visible { outline: none; } .field:focus-within .input { outline: 1px solid red; }`)] }).length, 0);
   assert.equal(check({ css: [inScreens('.field-input:focus { outline: 1px solid var(--accent); }')] }).length, 1);
+  assert.equal(check({ css: [inScreens(`${global} .dock-input:focus-visible { outline: 2px solid var(--accent); }`)] }).length, 2);
+  assert.equal(check({ css: [inScreens(`${global} .input:focus-visible { outline: none; } .dock-input:focus-visible { outline: none; }`)] }).length, 0);
 });
 
 test('SHEET-1 reports a sheet without a head and passes one with a head and a button', () => {

@@ -299,7 +299,7 @@ export const RULES = [
     const outlines = rules.flatMap((rule) => rule.declarations.filter((d) => d.property === 'outline').map((d) => ({ rule, d })));
     const visible = ({ d }) => !/^(none|0)$/.test(d.value.replace(/\s*!important$/, '').trim());
     const lastCompound = (selector) => selector.split(',').map((part) => part.trim().split(/[\s>+~]+/).pop() ?? '');
-    const isInput = (compound) => /\.(input|field-input)(?![\w-])/.test(compound);
+    const isInput = (compound) => /\.(input|field-input|dock-input)(?![\w-])/.test(compound);
     const focus = /:focus(-visible)?(?![\w-])/;
     const onInput = ({ rule }) => lastCompound(rule.selector).some((compound) => isInput(compound) && focus.test(compound));
     const global = outlines.filter((o) => visible(o) && /:focus-visible(?![\w-])/.test(o.rule.selector) && !onInput(o));
