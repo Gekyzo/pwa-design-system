@@ -70,6 +70,8 @@ app holds its screens and its own overrides. `rules.js` checks the rules; each a
 - **HAND-1** Each of `app-header`, `input-row`, `sheet-head`, `sheet-foot`, `item-row-end` and `dock` that the
   css defines has a `[data-hand="left"]` rule that mirrors it. A pinned `input-row` sits at the bottom of a
   sheet body; the app orders the list above it.
+- **STATE-1** Each `empty-state` holds a button, except `inline`. A `low` empty state sits at the bottom of
+  its area; the app gives that area a height.
 
 ## Parts
 

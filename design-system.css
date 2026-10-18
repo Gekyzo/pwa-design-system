@@ -938,9 +938,12 @@
   }
 
   /* @component empty-state
-     @summary The text of a list or a part with nothing in it, with an optional action.
+     @summary The text of a list or a part with nothing in it. Holds a button, except inline (STATE-1).
      @variant inline  In a sheet: aligned with the content, with less space.
+     @variant low     At the bottom of its area, in reach of the thumb. The app gives the list area a height, as the percent needs one.
+     @part empty-state-title  The short title above the text.
      @example <div class="empty-state"><p>The list is empty.</p><button class="button primary" type="button">Bring from Later</button></div>
+     @example <div class="empty-state low" style="height: 240px"><h2 class="empty-state-title">Nothing here</h2><p>Add the first note.</p><button class="button primary" type="button">Add a note</button></div>
      @example <p class="empty-state inline">No note matches.</p> */
   .empty-state {
     margin: calc(var(--space-6) * 2) var(--space-6);
@@ -955,6 +958,29 @@
   .empty-state.inline {
     margin: var(--space-3) 0;
     text-align: left;
+  }
+
+  .empty-state.low {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-2);
+    min-height: 50%;
+    margin: 0 var(--space-5) var(--space-6);
+  }
+
+  .empty-state.low .button {
+    width: 100%;
+    min-height: var(--tap-l);
+    margin-top: var(--space-2);
+  }
+
+  .empty-state-title {
+    margin: 0;
+    color: var(--text);
+    font-size: var(--text-l);
+    font-weight: var(--weight-strong);
   }
 
   /* @component item-list
@@ -1216,9 +1242,17 @@
      @part list-row-text  The main text of a row that has two.
      @part list-row-meta  A muted text at the end of a row.
      @variant accent      On list-row: the row that makes a new thing.
+     @variant card        No border: a soft shadow lifts the box.
+     @part list-group-head      The quiet title above a group.
+     @part settings-row         A tall row of a group: a label, a value and a chevron.
+     @part settings-row-label   The text of a settings row.
+     @part settings-row-value   The muted value at the end of a settings row.
+     @part chevron              The muted end mark of a settings row (see section-head).
+     @variant danger      On settings-row: the row of a risky action, in the danger colour.
      @example <div class="list-group" style="width: 100%"><button class="list-row" type="button"><svg class="icon" aria-hidden="true"><use href="icons.svg#help"/></svg><span>Show the introduction</span></button><select class="select" aria-label="Language"><option>English</option></select></div>
      @example <div class="list-group pair" style="width: 100%"><button class="list-row" type="button"><svg class="icon" aria-hidden="true"><use href="icons.svg#export"/></svg><span>Export</span></button><button class="list-row" type="button"><svg class="icon" aria-hidden="true"><use href="icons.svg#import"/></svg><span>Import</span></button></div>
-     @example <ul class="list-group plain" style="width: 100%"><li><button class="list-row" type="button"><span class="list-row-text">Buy milk</span><span class="list-row-meta">In Notes</span></button></li><li><button class="list-row accent" type="button">Create «Buy»</button></li></ul> */
+     @example <ul class="list-group plain" style="width: 100%"><li><button class="list-row" type="button"><span class="list-row-text">Buy milk</span><span class="list-row-meta">In Notes</span></button></li><li><button class="list-row accent" type="button">Create «Buy»</button></li></ul>
+     @example <h3 class="list-group-head">Data</h3><div class="list-group card" style="width: 100%"><button class="settings-row" type="button"><span class="settings-row-label">Language</span><span class="settings-row-value">English</span><span class="chevron">›</span></button><button class="settings-row danger" type="button"><span class="settings-row-label">Delete all</span></button></div> */
   .list-group {
     margin: 0 var(--space-3);
     border: 1px solid var(--line);
@@ -1288,6 +1322,54 @@
     font-size: var(--text-xs);
   }
 
+  .list-group.card {
+    border: 0;
+    box-shadow: var(--shadow-s);
+  }
+
+  .list-group-head {
+    margin: var(--space-5) var(--space-4) var(--space-2);
+    color: var(--muted);
+    font-size: var(--text-s);
+    font-weight: var(--weight-medium);
+  }
+
+  .settings-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    width: 100%;
+    min-height: var(--tap-l);
+    padding: 0 var(--space-3) 0 var(--space-4);
+    border-radius: 0;
+    color: var(--text);
+    font-size: var(--text-m);
+    text-align: start;
+  }
+
+  .settings-row + .settings-row {
+    border-top: 1px solid var(--line);
+  }
+
+  .settings-row-label {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .settings-row-value {
+    color: var(--muted);
+  }
+
+  .settings-row .chevron {
+    flex: none;
+    color: var(--muted);
+  }
+
+  .settings-row.danger {
+    color: var(--danger);
+    font-weight: var(--weight-medium);
+  }
+
   /* @component fab
      @summary The add button, fixed above the bottom bar at the side of the hand.
      @example <button class="fab" type="button" style="position: static">+</button> */
@@ -1304,6 +1386,24 @@
     font-size: var(--text-xl);
     line-height: 1;
     box-shadow: var(--shadow-l);
+  }
+
+  /* @component action-bar
+     @summary A row of buttons stuck to the bottom of a scroll area, over a fade.
+     @example <div class="action-bar" style="position: static"><button class="button" type="button">Cancel</button><button class="button primary" type="button">Save</button></div> */
+  .action-bar {
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    background: linear-gradient(transparent, var(--bg) var(--space-4));
+  }
+
+  .action-bar .button {
+    flex: 1;
+    min-height: var(--tap-l);
+    white-space: nowrap;
   }
 
   /* Left hand: the controls change side. Text stays aligned to the left, and a row slides as before. */

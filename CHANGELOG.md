@@ -4,6 +4,7 @@ User-visible changes, newest first.
 
 ## Unreleased
 
+- New `action-bar`, the `list-group` parts `list-group-head` and `settings-row` (with `settings-row-label`, `settings-row-value`, a `danger` variant and the `chevron`) and a `card` variant, and the `empty-state` `low` variant and `empty-state-title` part. New rule STATE-1: an empty state holds a button, except inline.
 - The `input-row` is mirrored for the left hand, has a `pinned` variant that sticks to the bottom of a sheet,
   and its disabled button has no fill. New `input[aria-invalid="true"]` state and `input-help` part with
   a `danger` variant. New rule HAND-1.

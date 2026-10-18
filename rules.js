@@ -313,6 +313,15 @@ export const RULES = [
       .map((part) => part.slice(0, 60));
   }),
 
+  // An empty state of the app holds a button, except an inline one. It ends at the next empty state.
+  define('STATE-1', 'each empty state holds a button, except an inline one (STATE-1)', ['html'], ({ html }) => {
+    const opens = [...html.matchAll(/class="([^"]*)"/g)].filter(([, value]) => value.split(/\s+/).includes('empty-state') && !value.split(/\s+/).includes('inline'));
+    return opens
+      .map((open) => html.slice(open.index, [...html.matchAll(/class="([^"]*)"/g)].find((next) => next.index > open.index && next[1].split(/\s+/).includes('empty-state'))?.index ?? html.length))
+      .filter((part) => !/<button\b/.test(part))
+      .map((part) => part.slice(0, 60));
+  }),
+
   // The blocks that mirror for the left hand: each one the css defines needs a [data-hand="left"] rule.
   define('HAND-1', 'each mirrored block that the css defines has a left-hand rule (HAND-1)', ['css'], ({ rules }) => {
     const parts = rules.flatMap((rule) => rule.selector.split(',').map((part) => part.trim()));

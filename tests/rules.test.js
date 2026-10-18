@@ -17,7 +17,7 @@ test('each rule has a unique title and an id of a known family', () => {
 
 test('each id of DS-1 to DS-8, LAY-3, LAY-4, TAP-1, TAP-2, TXT-1 and FOCUS-1 has a rule', () => {
   const ids = new Set(RULES.map((entry) => entry.id));
-  for (const id of ['DS-1', 'DS-2', 'DS-3', 'DS-4', 'DS-5', 'DS-6', 'DS-7', 'DS-8', 'LAY-3', 'LAY-4', 'TAP-1', 'TAP-2', 'TXT-1', 'FOCUS-1', 'SHEET-1', 'HAND-1']) assert.ok(ids.has(id), id);
+  for (const id of ['DS-1', 'DS-2', 'DS-3', 'DS-4', 'DS-5', 'DS-6', 'DS-7', 'DS-8', 'LAY-3', 'LAY-4', 'TAP-1', 'TAP-2', 'TXT-1', 'FOCUS-1', 'SHEET-1', 'HAND-1', 'STATE-1']) assert.ok(ids.has(id), id);
 });
 
 test('each rule that reads only css passes over design-system.css', () => {
@@ -146,4 +146,22 @@ test('HAND-1 needs a left-hand rule for each mirrored block that the css defines
   assert.equal(check({ css: [wrap('.card { display: flex; }')] }).length, 0);
   assert.equal(check({ css: [wrap('.dock { display: flex; }')] }).length, 1);
   assert.deepEqual(check({ css: [shared] }), []);
+});
+
+test('STATE-1 needs an action in an empty state, except an inline one', () => {
+  const check = rule('STATE-1', 'empty').check;
+  assert.equal(check({ html: '<div class="empty-state"><p>x</p></div>' }).length, 1);
+  assert.equal(check({ html: '<div class="empty-state"><p>x</p><button class="button" type="button">Add</button></div>' }).length, 0);
+  assert.equal(check({ html: '<p class="empty-state inline">x</p>' }).length, 0);
+  assert.equal(check({ html: '<div class="empty-state low"><p>x</p></div>' }).length, 1);
+  assert.equal(check({ html: '<main></main>' }).length, 0);
+  const two = '<div class="empty-state"><button>a</button></div><div class="empty-state"><p>b</p></div>';
+  assert.equal(check({ html: two }).length, 1);
+});
+
+test('a settings row with danger passes the variant rule, danger on an unrelated block does not', () => {
+  const check = rule('DS-3', 'a variant is used with its block').check;
+  assert.deepEqual(check({ css: [shared], html: '<div class="list-group"><button class="settings-row danger">x</button></div>' }), []);
+  assert.deepEqual(check({ css: [shared], html: '<button class="button danger">x</button>' }), []);
+  assert.equal(check({ css: [shared], html: '<div class="pill danger"></div>' }).length, 1);
 });

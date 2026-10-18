@@ -187,3 +187,40 @@ test('an invalid input has a danger border, and input-help shows the error in da
   assert.ok(input.states.some((state) => state.name === 'invalid'));
   assert.ok(input.variants.some((variant) => variant.name === 'danger'));
 });
+
+test('the action bar sticks to the bottom and its buttons keep the large tap size', () => {
+  assert.equal(declaration('.action-bar', 'position'), 'sticky');
+  assert.equal(declaration('.action-bar', 'bottom'), '0');
+  assert.equal(declaration('.action-bar', 'background'), 'linear-gradient(transparent, var(--bg) var(--space-4))');
+  assert.equal(declaration('.action-bar', 'padding'), 'var(--space-2) var(--space-4)');
+  assert.equal(declaration('.action-bar .button', 'min-height'), 'var(--tap-l)');
+  assert.equal(declaration('.action-bar .button', 'white-space'), 'nowrap');
+  assert.ok(catalog.components.some((part) => part.name === 'action-bar' && part.examples.length));
+});
+
+test('a settings row is a tall row, danger is red, and the group head is a quiet title', () => {
+  assert.equal(declaration('.settings-row', 'min-height'), 'var(--tap-l)');
+  assert.equal(declaration('.settings-row.danger', 'color'), 'var(--danger)');
+  assert.equal(declaration('.list-group-head', 'color'), 'var(--muted)');
+  assert.equal(declaration('.list-group-head', 'font-weight'), 'var(--weight-medium)');
+  assert.equal(declaration('.list-group-head', 'text-transform'), undefined);
+  assert.equal(declaration('.settings-row .chevron', 'color'), 'var(--muted)');
+  assert.equal(declaration('.list-group.card', 'box-shadow'), 'var(--shadow-s)');
+  assert.equal(declaration('.list-group.card', 'border'), '0');
+  const group = catalog.components.find((part) => part.name === 'list-group');
+  for (const name of ['list-group-head', 'settings-row', 'settings-row-label', 'settings-row-value']) assert.ok(group.parts.some((part) => part.name === name), name);
+  assert.ok(group.variants.some((variant) => variant.name === 'danger'));
+  assert.ok(group.variants.some((variant) => variant.name === 'card'));
+});
+
+test('a low empty state sits at the bottom of its area with a large button', () => {
+  const selector = '.empty-state.low';
+  assert.equal(declaration(selector, 'display'), 'flex');
+  assert.equal(declaration(selector, 'flex-direction'), 'column');
+  assert.equal(declaration(selector, 'justify-content'), 'flex-end');
+  assert.equal(declaration(selector, 'min-height'), '50%');
+  assert.equal(declaration('.empty-state.low .button', 'min-height'), 'var(--tap-l)');
+  const empty = catalog.components.find((part) => part.name === 'empty-state');
+  assert.ok(empty.variants.some((variant) => variant.name === 'low'));
+  assert.ok(empty.parts.some((part) => part.name === 'empty-state-title'));
+});
