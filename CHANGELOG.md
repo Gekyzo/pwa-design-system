@@ -15,6 +15,14 @@ User-visible changes, newest first.
 - New token `--side-sheet`. New `:root[data-density="compact"]` sets `--tap-l` to 48px, `--nav-height` to 56px and `--dock-height` to 48px; `--tap` does not change.
 - An app with its own rail override drops it: LAY-2 now does it.
 
+Migration per app (`node scripts/try-apps.mjs`, an app with DS 0.5.0 synced into a copy; failing rule ids):
+
+- pwa-template — SHEET-1, STATE-1
+- pwa-wardrobe — SHEET-1, STATE-1
+- pwa-shifts — SHEET-1, STATE-1
+- pwa-nexus — SHEET-1, STATE-1
+- pwa-financial-calculator — none
+
 ## 0.4.0 - 2026-10-18
 
 - New `swipe-action-label` part and `neutral` variant. A swipe action stacks its icon over a label, is 72px

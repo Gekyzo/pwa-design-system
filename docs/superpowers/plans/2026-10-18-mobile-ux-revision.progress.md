@@ -39,7 +39,7 @@ the 🎯 indicators (terminal status bar, tab ring, overlord tile) draw from thi
 | 9 | The dock, the collapsing add button and the header | ☑ |  | 2026-10-18 |  |
 | 10 | Nav pill and LAY-2 at the side of the hand | ☑ |  | 2026-10-18 |  |
 | 11 | Side sheets, compact density, release 0.5.0 | ☑ |  | 2026-10-18 |  |
-| 12 | Measure the siblings and check the catalogue | ☐ |  |  |  |
+| 12 | Measure the siblings and check the catalogue | ☑ |  | 2026-10-18 |  |
 
 ## Blockers
 
