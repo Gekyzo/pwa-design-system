@@ -14,14 +14,14 @@ const CORE = [
   'swipe-action', 'switch', 'toast',
 ];
 
-// The 60 shared tokens: 57 custom properties of :root and the colour scheme of :root and of each theme.
+// The 61 shared tokens: 58 custom properties of :root and the colour scheme of :root and of each theme.
 const TOKENS = [
   '--bg', '--surface', '--surface-2', '--text', '--muted', '--line', '--accent', '--accent-text', '--accent-soft', '--danger',
   '--warning', '--toast-bg', '--toast-text', '--knob', '--scrim', '--font', '--font-mono', '--text-xs', '--text-s',
   '--text-m', '--text-l', '--text-xl', '--weight-normal', '--weight-medium', '--weight-strong', '--space-half', '--space-1', '--space-2',
   '--space-3', '--space-4', '--space-5', '--space-6', '--space-7', '--radius-s', '--radius-m', '--radius-l', '--radius-xl',
   '--radius-pill', '--radius-round', '--tap', '--tap-l', '--dock-height', '--icon', '--icon-s', '--arrow', '--nav-height',
-  '--rail-width', '--content-max', '--pane-list', '--art-width', '--logo', '--shadow-s', '--shadow-l', '--motion-fast',
+  '--rail-width', '--side-sheet', '--content-max', '--pane-list', '--art-width', '--logo', '--shadow-s', '--shadow-l', '--motion-fast',
   '--motion', '--motion-slow', '--ease',
 ];
 const SCHEMES = [':root color-scheme', ':root[data-theme="light"] color-scheme', ':root[data-theme="dark"] color-scheme'];
@@ -45,8 +45,8 @@ test('the layer statement comes first', () => {
   assert.ok(css.startsWith('@layer tokens, base, components, layouts, screens;\n'));
 });
 
-test('the tokens layer holds the 60 shared tokens', () => {
-  assert.equal(TOKENS.length + SCHEMES.length, 60);
+test('the tokens layer holds the 61 shared tokens', () => {
+  assert.equal(TOKENS.length + SCHEMES.length, 61);
   const pairs = new Set(rules.filter((rule) => rule.layer === 'tokens').flatMap((rule) => rule.declarations.map((d) => `${rule.selector} ${d.property}`)));
   for (const name of TOKENS) assert.ok(pairs.has(`:root ${name}`), name);
   for (const pair of SCHEMES) assert.ok(pairs.has(pair), pair);
@@ -54,7 +54,7 @@ test('the tokens layer holds the 60 shared tokens', () => {
 
 test('the layout tokens are a size scale', () => {
   const scales = new Map(catalog.tokens.map((token) => [token.name, token.scale]));
-  for (const name of ['--rail-width', '--content-max', '--pane-list']) assert.equal(scales.get(name), 'size', name);
+  for (const name of ['--rail-width', '--content-max', '--pane-list', '--side-sheet']) assert.equal(scales.get(name), 'size', name);
 });
 
 test('no rule is in screens, and each rule is in a layer', () => {
@@ -324,4 +324,35 @@ test('the header title is one line with an ellipsis, and the ring text has equal
   assert.equal(declaration('.app-header-title', 'white-space'), 'nowrap');
   assert.equal(declaration('.app-header-title', 'text-overflow'), 'ellipsis');
   assert.equal(declaration('.ring-text', 'font-variant-numeric'), 'tabular-nums');
+});
+
+test('the compact density sets three tokens in the tokens layer and leaves --tap alone', () => {
+  const rule = rules.find((r) => r.layer === 'tokens' && r.selector === ':root[data-density="compact"]');
+  assert.ok(rule);
+  assert.deepEqual(rule.declarations.map((d) => [d.property, d.value]), [['--tap-l', '48px'], ['--nav-height', '56px'], ['--dock-height', '48px']]);
+  assert.equal(valueIn('tokens', ':root', '--side-sheet'), '400px');
+});
+
+test('from 840px a sheet with a head is a side sheet next to the rail', () => {
+  const layer = '.sheet-layer:has(.sheet-head)';
+  const sheet = '.sheet-layer:has(.sheet-head) .sheet';
+  assert.equal(declaration(layer, 'flex-direction'), 'row');
+  assert.match(declaration(layer, 'padding-inline-start'), /var\(--rail-width\) \+ env\(safe-area-inset-left\)/);
+  assert.equal(declaration(sheet, 'height'), '100%');
+  assert.equal(declaration(sheet, 'max-height'), '100%');
+  assert.equal(declaration(sheet, 'width'), 'var(--side-sheet)');
+  assert.equal(declaration(sheet, 'border-start-end-radius'), 'var(--radius-xl)');
+  assert.equal(declaration(sheet, 'border-start-start-radius'), '0');
+  assert.equal(declaration(`${layer}[hidden] .sheet`, 'transform'), 'translateX(-100%)');
+  assert.equal(declaration('.sheet:has(.sheet-head) .sheet-grab', 'display'), 'none');
+});
+
+test('the right hand puts the side sheet at the end, next to the rail', () => {
+  const layer = ':root[data-hand="right"] .sheet-layer:has(.sheet-head)';
+  assert.equal(declaration(layer, 'justify-content'), 'flex-end');
+  assert.match(declaration(layer, 'padding-inline-end'), /var\(--rail-width\) \+ env\(safe-area-inset-right\)/);
+  assert.equal(declaration(layer, 'padding-inline-start'), '0');
+  assert.equal(declaration(`${layer} .sheet`, 'border-start-start-radius'), 'var(--radius-xl)');
+  assert.equal(declaration(`${layer} .sheet`, 'border-start-end-radius'), '0');
+  assert.equal(declaration(`${layer}[hidden] .sheet`, 'transform'), 'translateX(100%)');
 });

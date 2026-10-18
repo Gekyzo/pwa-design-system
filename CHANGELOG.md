@@ -4,11 +4,16 @@ User-visible changes, newest first.
 
 ## Unreleased
 
+## 0.5.0 - 2026-10-18
+
 - The current `nav-item` is a pill behind its icon (`--accent-soft`); its label is `--text` at `--weight-medium`.
 - From 600px `:root[data-hand="right"]` puts the `nav-bar` rail at the end side, and the `toast` and `fab` clear it. New rule LAY-2. The app pads its body on the rail side. The `dock-field` has a 2px border that turns accent on focus.
 - New `dock` component with the parts `dock-field`, `dock-input` and `dock-clear`: the filter and the search of a list, fixed above the bottom bar below 600px and hidden from 600px. The left hand mirrors it. `main` and `fab` clear a visible dock.
 - New `fab` state `collapsed`: a square of the tap size, animated.
 - The `app-header-title` keeps one line with an ellipsis. The `ring-text` uses tabular digits.
+- From 840px a sheet with a `sheet-head` is a side sheet: full height, `--side-sheet` (400px) wide, at the start side next to the rail, or at the end side with `:root[data-hand="right"]`. It enters sideways and has no grab. A sheet without a head keeps the bottom sheet.
+- New token `--side-sheet`. New `:root[data-density="compact"]` sets `--tap-l` to 48px, `--nav-height` to 56px and `--dock-height` to 48px; `--tap` does not change.
+- An app with its own rail override drops it: LAY-2 now does it.
 
 ## 0.4.0 - 2026-10-18
 
