@@ -28,7 +28,7 @@ the 🎯 indicators (terminal status bar, tab ring, overlord tile) draw from thi
 
 | # | Task | Status | Commit (subject) | Landed | Notes |
 |---|---|---|---|---|---|
-| 1 | Tokens for 0.3.0 | ☐ |  |  |  |
+| 1 | Tokens for 0.3.0 | ☑ |  | 2026-10-18 |  |
 | 2 | Small component fixes | ☐ |  |  |  |
 | 3 | Rules TAP-1, TAP-2, TXT-1, FOCUS-1 and release 0.3.0 | ☐ |  |  |  |
 | 4 | sheet.js and its sync | ☐ |  |  |  |
