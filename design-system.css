@@ -428,7 +428,7 @@
      @example <input class="input" type="text" placeholder="New tag">
      @example <input class="input raised" type="search" placeholder="Search">
      @example <input class="input strong" type="text" placeholder="Añadir artículo a la lista">
-     @state invalid  aria-invalid="true": the border takes --danger.
+     @state invalid  aria-invalid="true": the border takes --danger, also on focus.
      @part input-help  A line of help or error below the box.
      @variant danger  On input-help: the error text in --danger.
      @example <div><input class="input" type="text" value="Notes" aria-invalid="true"><p class="input-help danger">Enter a name</p></div> */
@@ -477,6 +477,23 @@
   .input.strong:focus-visible {
     border-width: 2px;
     padding-inline: calc(var(--space-3) - 1px);
+  }
+
+  /* An invalid box keeps the danger border on focus, strong and in a field. */
+  .input[aria-invalid="true"]:focus-visible {
+    border-color: var(--danger);
+  }
+
+  .input.strong[aria-invalid="true"] {
+    border-color: var(--danger);
+  }
+
+  .input.strong[aria-invalid="true"]:focus-visible {
+    border-color: var(--danger);
+  }
+
+  .field-input[aria-invalid="true"]:focus {
+    border-color: var(--danger);
   }
 
   /* @component field

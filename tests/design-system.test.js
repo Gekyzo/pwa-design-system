@@ -121,6 +121,15 @@ test('the sheet has a head, a body, a foot and a saved note', () => {
   assert.ok(sheet.states.some((state) => state.name === 'on'));
 });
 
+test('an invalid input keeps the danger border on focus, also strong and in a field', () => {
+  for (const selector of [
+    '.input[aria-invalid="true"]:focus-visible',
+    '.input.strong[aria-invalid="true"]',
+    '.input.strong[aria-invalid="true"]:focus-visible',
+    '.field-input[aria-invalid="true"]:focus',
+  ]) assert.equal(declaration(selector, 'border-color'), 'var(--danger)', selector);
+});
+
 test('a sheet with a head is a column that scrolls in its body', () => {
   const selector = '.sheet:has(.sheet-head)';
   assert.equal(declaration(selector, 'padding'), '0');
