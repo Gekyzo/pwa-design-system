@@ -1,6 +1,6 @@
 {
   "name": "pwa-design-system",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "The shared design system of the pwa apps: tokens, components, icons and the catalogue parser",
   "private": true,
   "type": "module",

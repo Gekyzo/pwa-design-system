@@ -4,6 +4,21 @@ User-visible changes, newest first.
 
 ## Unreleased
 
+## 0.3.0 - 2026-10-18
+
+- Breaking for an app: `--tap` is 48px (was 44px), so a base button, input and chip are taller. An
+  app that sets a 44px height of its own must use `--tap`; TAP-1 flags it.
+- New tokens `--dock-height`, `--surface-2`, `--weight-medium`, `--space-7` and `--ease`. The dark
+  `--surface` and `--surface-2` separate from `--bg` more clearly (the old pair was 1.11:1). Every
+  transition uses `--ease`.
+- The idle toggle is in `--muted`; the pressed one takes the accent over a soft accent shape.
+- An input shows one focus indicator, the accent border, with no outline. The `strong` input is 1px,
+  and 2px on focus. The native clear button of a search input is removed.
+- The actions of a closed swipe row are hidden. A scrolling cluster fades its end.
+- New rules TAP-1 (no 44px height; a button, chip, input, swipe action or segment is at least
+  `--tap`), TAP-2 (`--line` is a border colour, never a text colour), TXT-1 (no justified text) and
+  FOCUS-1 (an input has a border focus and no outline).
+
 ## 0.2.1 - 2026-10-17
 
 - DS-1 names the sheet with no layer statement by its index in the css list.

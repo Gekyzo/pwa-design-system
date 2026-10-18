@@ -6,18 +6,18 @@ import { RULES } from '../rules.js';
 const shared = readFileSync(new URL('../design-system.css', import.meta.url), 'utf8');
 const rule = (id, match) => RULES.find((entry) => entry.id === id && entry.title.includes(match));
 
-test('each rule has a unique title and an id of the form DS-n or LAY-n', () => {
+test('each rule has a unique title and an id of a known family', () => {
   assert.ok(RULES.length > 0);
   assert.equal(new Set(RULES.map((entry) => entry.title)).size, RULES.length);
   for (const entry of RULES) {
-    assert.match(entry.id, /^(DS|LAY)-\d+$/);
+    assert.match(entry.id, /^(DS|LAY|TAP|TXT|FOCUS|SHEET|HAND|STATE)-\d+$/);
     assert.ok(entry.reads.length > 0 && typeof entry.check === 'function', entry.title);
   }
 });
 
-test('each id of DS-1 to DS-8 and LAY-3 and LAY-4 has a rule', () => {
+test('each id of DS-1 to DS-8, LAY-3, LAY-4, TAP-1, TAP-2, TXT-1 and FOCUS-1 has a rule', () => {
   const ids = new Set(RULES.map((entry) => entry.id));
-  for (const id of ['DS-1', 'DS-2', 'DS-3', 'DS-4', 'DS-5', 'DS-6', 'DS-7', 'DS-8', 'LAY-3', 'LAY-4']) assert.ok(ids.has(id), id);
+  for (const id of ['DS-1', 'DS-2', 'DS-3', 'DS-4', 'DS-5', 'DS-6', 'DS-7', 'DS-8', 'LAY-3', 'LAY-4', 'TAP-1', 'TAP-2', 'TXT-1', 'FOCUS-1']) assert.ok(ids.has(id), id);
 });
 
 test('each rule that reads only css passes over design-system.css', () => {
@@ -82,4 +82,40 @@ test('the icons of the examples are checked only in the sheets of the app', () =
   const sprite = '<svg><symbol id="cart"/></svg>';
   assert.deepEqual(check({ css: [sheet('alpha')], sprite }), []);
   assert.deepEqual(check({ css: [sheet('alpha'), sheet('beta')], sprite }), ['note']);
+});
+
+const inScreens = (body) => `${LAYERS}@layer components { ${body} }`;
+
+test('TAP-1 reports a 44px height and a control under the tap size', () => {
+  const check = rule('TAP-1', 'tap').check;
+  assert.equal(check({ css: [inScreens('.x { min-height: 44px; }')] }).length, 1);
+  assert.equal(check({ css: [inScreens('.x { height: 44px; }')] }).length, 1);
+  assert.equal(check({ css: [inScreens('.x { min-height: var(--tap); }')] }).length, 0);
+  assert.equal(check({ css: [inScreens('.chip { min-height: var(--icon); }')] }).length, 1);
+  assert.equal(check({ css: [inScreens('.button.small { height: var(--icon); }')] }).length, 1);
+  assert.equal(check({ css: [inScreens('.input { min-height: 40px; }')] }).length, 1);
+  assert.equal(check({ css: [inScreens('.segment { min-height: var(--tap-l); }')] }).length, 0);
+  assert.equal(check({ css: [inScreens('.switch-input { height: 26px; }')] }).length, 0);
+});
+
+test('TAP-2 reports --line as a text colour', () => {
+  const check = rule('TAP-2', 'line').check;
+  assert.equal(check({ css: [inScreens('.button.x { color: var(--line); }')] }).length, 1);
+  assert.equal(check({ css: [inScreens('.button.x { border-color: var(--line); }')] }).length, 0);
+});
+
+test('TXT-1 reports justified text', () => {
+  const check = rule('TXT-1', 'justif').check;
+  assert.equal(check({ css: [inScreens('.x { text-align: justify; }')] }).length, 1);
+  assert.equal(check({ css: [inScreens('.x { text-align: start; }')] }).length, 0);
+});
+
+test('FOCUS-1 keeps one focus ring: the input drops the global outline and draws a border', () => {
+  const check = rule('FOCUS-1', 'focus').check;
+  const global = ':focus-visible { outline: 2px solid var(--accent); }';
+  assert.deepEqual(check({ css: [shared] }), []);
+  assert.equal(check({ css: [inScreens(global)] }).length, 1);
+  assert.equal(check({ css: [inScreens(`${global} .input:focus-visible { outline: none; border-color: var(--accent); }`)] }).length, 0);
+  assert.equal(check({ css: [inScreens(`${global} .input:focus-visible { outline: 2px solid var(--accent); }`)] }).length, 2);
+  assert.equal(check({ css: [inScreens('.field-input:focus { outline: 1px solid var(--accent); }')] }).length, 1);
 });

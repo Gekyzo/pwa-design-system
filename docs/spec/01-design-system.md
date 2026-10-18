@@ -56,6 +56,16 @@ app holds its screens and its own overrides. `rules.js` checks the rules; each a
   breakpoints of the size classes (LAY-1). No other width and no `max-width` condition. A rule for
   a size class sits inside the block of its component.
 
+## Touch, text and focus
+
+- **TAP-1** No height or min-height is `44px`. A `button`, `chip`, `input`, `swipe-action` or
+  `segment` has a height of `--tap` or `--tap-l`, or more. `switch-input` is exempt: the checkbox is
+  drawn at 26px inside the 56px row of `switch`, which owns the hit area.
+- **TAP-2** The `--line` colour is for borders and dividers. It is never the `color` of text.
+- **TXT-1** Text is never `text-align: justify`. Use `start`.
+- **FOCUS-1** One focus ring. The global `:focus-visible` outline is the ring of every control. An
+  input (`.input`, `.field-input`) sets `outline: none` on focus and draws the focus as a border.
+
 ## Parts
 
 The parts of the shared stylesheet, by layer. A request for a screen names them.
