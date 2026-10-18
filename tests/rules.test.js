@@ -17,7 +17,7 @@ test('each rule has a unique title and an id of a known family', () => {
 
 test('each id of DS-1 to DS-8, LAY-3, LAY-4, TAP-1, TAP-2, TXT-1 and FOCUS-1 has a rule', () => {
   const ids = new Set(RULES.map((entry) => entry.id));
-  for (const id of ['DS-1', 'DS-2', 'DS-3', 'DS-4', 'DS-5', 'DS-6', 'DS-7', 'DS-8', 'LAY-3', 'LAY-4', 'TAP-1', 'TAP-2', 'TXT-1', 'FOCUS-1', 'SHEET-1']) assert.ok(ids.has(id), id);
+  for (const id of ['DS-1', 'DS-2', 'DS-3', 'DS-4', 'DS-5', 'DS-6', 'DS-7', 'DS-8', 'LAY-3', 'LAY-4', 'TAP-1', 'TAP-2', 'TXT-1', 'FOCUS-1', 'SHEET-1', 'HAND-1']) assert.ok(ids.has(id), id);
 });
 
 test('each rule that reads only css passes over design-system.css', () => {
@@ -135,4 +135,15 @@ test('SHEET-1 reports a sheet without a head and passes one with a head and a bu
   assert.equal(check({ html: '<div class="sheet"><header class="sheet-head"><h2>Note</h2></header><button>Done</button></div>' }).length, 1);
   const two = '<div class="sheet"><header class="sheet-head"><button>x</button></header></div><div class="sheet"><p>no head</p></div>';
   assert.equal(check({ html: two }).length, 1);
+});
+
+test('HAND-1 needs a left-hand rule for each mirrored block that the css defines', () => {
+  const check = rule('HAND-1', 'left').check;
+  const wrap = (body) => `${LAYERS}@layer layouts { ${body} }`;
+  assert.equal(check({ css: [wrap('.input-row { display: flex; }')] }).length, 1);
+  assert.equal(check({ css: [wrap('.input-row { display: flex; } [data-hand="left"] .input-row { flex-direction: row-reverse; }')] }).length, 0);
+  assert.equal(check({ css: [wrap('.input-row.pinned { position: sticky; }')] }).length, 1);
+  assert.equal(check({ css: [wrap('.card { display: flex; }')] }).length, 0);
+  assert.equal(check({ css: [wrap('.dock { display: flex; }')] }).length, 1);
+  assert.deepEqual(check({ css: [shared] }), []);
 });

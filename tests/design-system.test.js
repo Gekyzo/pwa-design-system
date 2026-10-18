@@ -160,3 +160,30 @@ test('the saved note shows with the state on, and the sheet moves with --ease', 
   assert.equal(declaration('.sheet-saved.on', 'opacity'), '1');
   assert.equal(declaration('.sheet', 'transition'), 'transform var(--motion) var(--ease)');
 });
+
+const inLayouts = (selector, property) => valueIn('layouts', selector, property);
+
+test('the input row reverses for the left hand and pins to the bottom of a sheet', () => {
+  assert.equal(inLayouts('[data-hand="left"] .input-row', 'flex-direction'), 'row-reverse');
+  assert.equal(inLayouts('.input-row.pinned', 'position'), 'sticky');
+  assert.equal(inLayouts('.input-row.pinned', 'bottom'), '0');
+  assert.equal(inLayouts('.input-row.pinned', 'background'), 'var(--surface)');
+  const row = catalog.components.find((part) => part.name === 'input-row');
+  assert.ok(row.variants.some((variant) => variant.name === 'pinned'));
+});
+
+test('a disabled submit button of the input row has no fill', () => {
+  const selector = '.input-row > .button:disabled';
+  assert.equal(inLayouts(selector, 'background'), 'var(--surface-2)');
+  assert.equal(inLayouts(selector, 'color'), 'var(--muted)');
+  assert.equal(inLayouts(selector, 'opacity'), '1');
+});
+
+test('an invalid input has a danger border, and input-help shows the error in danger', () => {
+  assert.equal(declaration('.input[aria-invalid="true"]', 'border-color'), 'var(--danger)');
+  assert.equal(declaration('.input-help.danger', 'color'), 'var(--danger)');
+  const input = catalog.components.find((part) => part.name === 'input');
+  assert.ok(input.parts.some((part) => part.name === 'input-help'));
+  assert.ok(input.states.some((state) => state.name === 'invalid'));
+  assert.ok(input.variants.some((variant) => variant.name === 'danger'));
+});

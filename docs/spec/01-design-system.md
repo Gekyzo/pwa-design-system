@@ -67,6 +67,9 @@ app holds its screens and its own overrides. `rules.js` checks the rules; each a
   input (`.input`, `.field-input`) sets `outline: none` on focus and draws the focus as a border.
 - **SHEET-1** Each sheet has a `sheet-head` with a close or Done button. The head, the body and the foot
   are parts of `sheet`; only the body scrolls.
+- **HAND-1** Each of `app-header`, `input-row`, `sheet-head`, `sheet-foot`, `item-row-end` and `dock` that the
+  css defines has a `[data-hand="left"]` rule that mirrors it. A pinned `input-row` sits at the bottom of a
+  sheet body; the app orders the list above it.
 
 ## Parts
 

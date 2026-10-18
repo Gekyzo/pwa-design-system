@@ -4,6 +4,9 @@ User-visible changes, newest first.
 
 ## Unreleased
 
+- The `input-row` is mirrored for the left hand, has a `pinned` variant that sticks to the bottom of a sheet,
+  and its disabled button has no fill. New `input[aria-invalid="true"]` state and `input-help` part with
+  a `danger` variant. New rule HAND-1.
 - New sheet parts `sheet-head`, `sheet-body`, `sheet-foot` and `sheet-saved`, the `main` title and rule
   SHEET-1. A sheet without a head keeps its old padding, scroll and handle.
 - `sheet.js`: a pause after a flick no longer closes the sheet, and a mouse drag needs the main button.

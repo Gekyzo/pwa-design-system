@@ -33,7 +33,7 @@ the 🎯 indicators (terminal status bar, tab ring, overlord tile) draw from thi
 | 3 | Rules TAP-1, TAP-2, TXT-1, FOCUS-1 and release 0.3.0 | ☑ |  | 2026-10-18 |  |
 | 4 | sheet.js and its sync | ☑ |  | 2026-10-18 |  |
 | 5 | Sheet head, body and foot, and SHEET-1 | ☑ |  | 2026-10-18 |  |
-| 6 | input-row mirrored and pinned, field errors, HAND-1 | ☐ |  |  |  |
+| 6 | input-row mirrored and pinned, field errors, HAND-1 | ☑ |  | 2026-10-18 |  |
 | 7 | action-bar, settings rows, empty state with an action, STATE-1 | ☐ |  |  |  |
 | 8 | Labelled swipe actions and the row trailing slot, release 0.4.0 | ☐ |  |  |  |
 | 9 | The dock, the collapsing add button and the header | ☐ |  |  |  |

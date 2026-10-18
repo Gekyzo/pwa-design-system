@@ -312,4 +312,14 @@ export const RULES = [
       .filter((part) => !/class="[^"]*\bsheet-head\b[^"]*"[^>]*>(?:(?!<\/header>|<\/div>)[\s\S])*?<button\b/.test(part))
       .map((part) => part.slice(0, 60));
   }),
+
+  // The blocks that mirror for the left hand: each one the css defines needs a [data-hand="left"] rule.
+  define('HAND-1', 'each mirrored block that the css defines has a left-hand rule (HAND-1)', ['css'], ({ rules }) => {
+    const parts = rules.flatMap((rule) => rule.selector.split(',').map((part) => part.trim()));
+    const has = (part, name) => new RegExp(`\\.${name}(?![\\w-])`).test(part);
+    return ['app-header', 'input-row', 'sheet-head', 'sheet-foot', 'item-row-end', 'dock']
+      .filter((name) => parts.some((part) => !part.includes('[data-hand="left"]') && has(part, name)))
+      .filter((name) => !parts.some((part) => part.includes('[data-hand="left"]') && has(part, name)))
+      .map((name) => `.${name} has no [data-hand="left"] rule`);
+  }),
 ];

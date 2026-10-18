@@ -408,7 +408,11 @@
      @variant strong  The main box of a sheet, with an accent border.
      @example <input class="input" type="text" placeholder="New tag">
      @example <input class="input raised" type="search" placeholder="Search">
-     @example <input class="input strong" type="text" placeholder="Añadir artículo a la lista"> */
+     @example <input class="input strong" type="text" placeholder="Añadir artículo a la lista">
+     @state invalid  aria-invalid="true": the border takes --danger.
+     @part input-help  A line of help or error below the box.
+     @variant danger  On input-help: the error text in --danger.
+     @example <div><input class="input" type="text" value="Notes" aria-invalid="true"><p class="input-help danger">Enter a name</p></div> */
   .input {
     width: 100%;
     min-width: 0;
@@ -430,6 +434,20 @@
 
   .input::-webkit-search-cancel-button {
     appearance: none;
+  }
+
+  .input[aria-invalid="true"] {
+    border-color: var(--danger);
+  }
+
+  .input-help {
+    margin: var(--space-1) 0 0;
+    color: var(--muted);
+    font-size: var(--text-s);
+  }
+
+  .input-help.danger {
+    color: var(--danger);
   }
 
   .input.strong {
@@ -1355,8 +1373,11 @@
   }
 
   /* @component input-row
-     @summary An input that grows, and the button that submits it.
-     @example <div class="input-row"><input class="input" type="text" placeholder="New tag"><button class="button primary" type="button">Add</button></div> */
+     @summary An input that grows, and the button that submits it. With the left hand the button is on the left.
+       The button has no fill while it is disabled, so an empty box reads as not ready.
+     @variant pinned  Sticks to the bottom of a sheet body, on --surface.
+     @example <div class="input-row"><input class="input" type="text" placeholder="New tag"><button class="button primary" type="button">Add</button></div>
+     @example <div class="input-row pinned" style="position: static"><input class="input" type="text" placeholder="New tag"><button class="button primary" type="button" disabled>Add</button></div> */
   .input-row {
     display: flex;
     gap: var(--space-2);
@@ -1364,6 +1385,23 @@
 
   .input-row > .input {
     flex: 1;
+  }
+
+  .input-row > .button:disabled {
+    background: var(--surface-2);
+    color: var(--muted);
+    opacity: 1;
+  }
+
+  .input-row.pinned {
+    position: sticky;
+    bottom: 0;
+    padding-block: var(--space-2);
+    background: var(--surface);
+  }
+
+  [data-hand="left"] .input-row {
+    flex-direction: row-reverse;
   }
 
   /* @component split
