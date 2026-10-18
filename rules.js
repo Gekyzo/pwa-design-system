@@ -272,8 +272,8 @@ export const RULES = [
           .filter((d) => /^(min-)?height$/.test(d.property))
           .filter((d) => {
             if (/(^|[^\d.])44px/.test(d.value)) return true;
-            if (d.property !== 'min-height' && d.property !== 'height') return false;
             if (!lastClasses(rule.selector).some((name) => TAP_CLASSES.includes(name))) return false;
+            if (d.value.includes('var(--tap')) return false;
             const tokens = [...d.value.matchAll(/var\((--[\w-]+)\)/g)].map(([, token]) => token);
             const pixels = [...d.value.matchAll(/(\d+(?:\.\d+)?)px/g)].map(([, px]) => Number(px));
             return tokens.some((token) => !TAP_TOKENS.includes(token)) || pixels.some((px) => px < 48);
@@ -286,15 +286,18 @@ export const RULES = [
       .flatMap((rule) => rule.declarations.filter((d) => d.property === 'color' && /var\(--line\)/.test(d.value)).map((d) => where(rule, d)))),
 
   define('TXT-1', 'text is never justified (TXT-1)', ['css'], ({ rules }) =>
-    rules.flatMap((rule) => rule.declarations.filter((d) => d.property === 'text-align' && d.value === 'justify').map((d) => where(rule, d)))),
+    rules.flatMap((rule) => rule.declarations.filter((d) => d.property === 'text-align' && d.value.replace(/\s*!important$/, '') === 'justify').map((d) => where(rule, d)))),
 
   // One focus ring: the global :focus-visible outline, and an input that draws a border instead.
   define('FOCUS-1', 'an input draws its focus as a border, with no outline (FOCUS-1)', ['css'], ({ rules }) => {
     const outlines = rules.flatMap((rule) => rule.declarations.filter((d) => d.property === 'outline').map((d) => ({ rule, d })));
-    const visible = ({ d }) => !/^(none|0)$/.test(d.value.trim());
-    const onInput = ({ rule }) => /\.(input|field-input)(?![\w-])/.test(rule.selector) && /:focus(-visible)?/.test(rule.selector);
-    const global = outlines.filter((o) => visible(o) && /:focus-visible/.test(o.rule.selector) && !/\.(input|field-input)(?![\w-])/.test(o.rule.selector));
-    const dropped = outlines.some((o) => !visible(o) && /\.input:focus(-visible)?/.test(o.rule.selector));
+    const visible = ({ d }) => !/^(none|0)$/.test(d.value.replace(/\s*!important$/, '').trim());
+    const lastCompound = (selector) => selector.split(',').map((part) => part.trim().split(/[\s>+~]+/).pop() ?? '');
+    const isInput = (compound) => /\.(input|field-input)(?![\w-])/.test(compound);
+    const focus = /:focus(-visible)?(?![\w-])/;
+    const onInput = ({ rule }) => lastCompound(rule.selector).some((compound) => isInput(compound) && focus.test(compound));
+    const global = outlines.filter((o) => visible(o) && /:focus-visible(?![\w-])/.test(o.rule.selector) && !onInput(o));
+    const dropped = outlines.some((o) => !visible(o) && lastCompound(o.rule.selector).some((compound) => /\.input(?![\w-])/.test(compound) && focus.test(compound)));
     return [
       ...(global.length && !dropped ? ['no .input:focus-visible rule sets outline: none'] : []),
       ...outlines.filter((o) => onInput(o) && visible(o)).map(({ rule, d }) => where(rule, d)),

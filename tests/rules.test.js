@@ -95,6 +95,7 @@ test('TAP-1 reports a 44px height and a control under the tap size', () => {
   assert.equal(check({ css: [inScreens('.button.small { height: var(--icon); }')] }).length, 1);
   assert.equal(check({ css: [inScreens('.input { min-height: 40px; }')] }).length, 1);
   assert.equal(check({ css: [inScreens('.segment { min-height: var(--tap-l); }')] }).length, 0);
+  assert.equal(check({ css: [inScreens('.button.x { min-height: calc(var(--tap) + 2px); }')] }).length, 0);
   assert.equal(check({ css: [inScreens('.switch-input { height: 26px; }')] }).length, 0);
 });
 
@@ -107,6 +108,7 @@ test('TAP-2 reports --line as a text colour', () => {
 test('TXT-1 reports justified text', () => {
   const check = rule('TXT-1', 'justif').check;
   assert.equal(check({ css: [inScreens('.x { text-align: justify; }')] }).length, 1);
+  assert.equal(check({ css: [inScreens('.x { text-align: justify !important; }')] }).length, 1);
   assert.equal(check({ css: [inScreens('.x { text-align: start; }')] }).length, 0);
 });
 
@@ -117,5 +119,7 @@ test('FOCUS-1 keeps one focus ring: the input drops the global outline and draws
   assert.equal(check({ css: [inScreens(global)] }).length, 1);
   assert.equal(check({ css: [inScreens(`${global} .input:focus-visible { outline: none; border-color: var(--accent); }`)] }).length, 0);
   assert.equal(check({ css: [inScreens(`${global} .input:focus-visible { outline: 2px solid var(--accent); }`)] }).length, 2);
+  assert.equal(check({ css: [inScreens(`${global} .input:focus-visible { outline: none !important; }`)] }).length, 0);
+  assert.equal(check({ css: [inScreens(`${global} .input:focus-visible { outline: none; } .field:focus-within .input { outline: 1px solid red; }`)] }).length, 0);
   assert.equal(check({ css: [inScreens('.field-input:focus { outline: 1px solid var(--accent); }')] }).length, 1);
 });
