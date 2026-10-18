@@ -4,6 +4,8 @@ User-visible changes, newest first.
 
 ## Unreleased
 
+- The current `nav-item` is a pill behind its icon (`--accent-soft`); its label is `--text` at `--weight-medium`.
+- From 600px `:root[data-hand="right"]` puts the `nav-bar` rail at the end side, and the `toast` and `fab` clear it. New rule LAY-2. The app pads its body on the rail side. The `dock-field` has a 2px border that turns accent on focus.
 - New `dock` component with the parts `dock-field`, `dock-input` and `dock-clear`: the filter and the search of a list, fixed above the bottom bar below 600px and hidden from 600px. The left hand mirrors it. `main` and `fab` clear a visible dock.
 - New `fab` state `collapsed`: a square of the tap size, animated.
 - The `app-header-title` keeps one line with an ellipsis. The `ring-text` uses tabular digits.

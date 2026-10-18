@@ -611,7 +611,7 @@
   }
 
   /* @component nav-bar
-     @summary The bottom bar below 600px, a rail at the start side from 600px: one item for each section that is on.
+     @summary The bottom bar below 600px, a rail from 600px at the start side, or at the end side with data-hand="right" on the root (the app pads its body on the rail side): one item for each section that is on.
      @part nav-item  A section: its icon and its name. The current one has aria-current="page".
      @example <nav class="nav-bar" style="width: 100%"><button class="nav-item" type="button" aria-current="page"><svg class="icon" aria-hidden="true"><use href="icons.svg#note"/></svg><span>Notes</span></button><button class="nav-item" type="button"><svg class="icon" aria-hidden="true"><use href="icons.svg#settings"/></svg><span>Later</span><em class="badge">2</em></button></nav> */
   .nav-bar {
@@ -636,9 +636,18 @@
     font-size: var(--text-xs);
   }
 
+  /* The current section is a pill behind its icon; its label stays plain. */
   .nav-item[aria-current="page"] {
+    color: var(--text);
+    font-weight: var(--weight-medium);
+  }
+
+  .nav-item[aria-current="page"] .icon {
+    box-sizing: content-box;
+    padding: var(--space-1) var(--space-5);
+    border-radius: var(--radius-pill);
+    background: var(--accent-soft);
     color: var(--accent);
-    font-weight: var(--weight-strong);
   }
 
   /* From 600px the bar is a rail at the start side, so a tablet or a phone on its side keeps its
@@ -660,6 +669,20 @@
 
     .nav-item {
       flex: none;
+    }
+  }
+
+  /* The right hand puts the rail at the end side, where the thumb is. The app pads its body on the
+     rail side. */
+  @media (min-width: 600px) {
+    :root[data-hand="right"] .nav-bar {
+      inset-inline-start: auto;
+      right: 0;
+      width: calc(var(--rail-width) + env(safe-area-inset-right));
+      padding-inline-start: 0;
+      padding-right: env(safe-area-inset-right);
+      border-inline-end: 0;
+      border-left: 1px solid var(--line);
     }
   }
 
@@ -933,6 +956,11 @@
     .toast {
       bottom: calc(env(safe-area-inset-bottom) + var(--tap-l) + var(--space-6));
       left: calc(var(--rail-width) + env(safe-area-inset-left) + var(--space-3));
+    }
+
+    :root[data-hand="right"] .toast {
+      left: calc(var(--space-3) + env(safe-area-inset-left));
+      right: calc(var(--rail-width) + env(safe-area-inset-right) + var(--space-3));
     }
   }
 
@@ -1520,6 +1548,10 @@
       left: calc(var(--rail-width) + env(safe-area-inset-left) + var(--space-4));
     }
 
+    :root[data-hand="right"] .fab {
+      right: calc(var(--rail-width) + env(safe-area-inset-right) + var(--space-4));
+    }
+
     body:has(.dock:not([hidden])) .fab {
       bottom: calc(env(safe-area-inset-bottom) + var(--space-4));
     }
@@ -1558,9 +1590,13 @@
     align-items: center;
     min-width: 0;
     min-height: var(--tap);
-    border: 1px solid var(--line);
+    border: 2px solid var(--line);
     border-radius: var(--radius-pill);
     background: var(--surface-2);
+  }
+
+  .dock-field:focus-within {
+    border-color: var(--accent);
   }
 
   .dock-input {

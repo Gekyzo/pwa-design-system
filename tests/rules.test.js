@@ -15,9 +15,9 @@ test('each rule has a unique title and an id of a known family', () => {
   }
 });
 
-test('each id of DS-1 to DS-8, LAY-3, LAY-4, TAP-1, TAP-2, TXT-1 and FOCUS-1 has a rule', () => {
+test('each id of DS-1 to DS-8, LAY-2, LAY-3, LAY-4, TAP-1, TAP-2, TXT-1 and FOCUS-1 has a rule', () => {
   const ids = new Set(RULES.map((entry) => entry.id));
-  for (const id of ['DS-1', 'DS-2', 'DS-3', 'DS-4', 'DS-5', 'DS-6', 'DS-7', 'DS-8', 'LAY-3', 'LAY-4', 'TAP-1', 'TAP-2', 'TXT-1', 'FOCUS-1', 'SHEET-1', 'HAND-1', 'STATE-1']) assert.ok(ids.has(id), id);
+  for (const id of ['DS-1', 'DS-2', 'DS-3', 'DS-4', 'DS-5', 'DS-6', 'DS-7', 'DS-8', 'LAY-2', 'LAY-3', 'LAY-4', 'TAP-1', 'TAP-2', 'TXT-1', 'FOCUS-1', 'SHEET-1', 'HAND-1', 'STATE-1']) assert.ok(ids.has(id), id);
 });
 
 test('each rule that reads only css passes over design-system.css', () => {
@@ -66,6 +66,16 @@ test('DS-8 reports a width query that is not a min-width breakpoint', () => {
   const base = '@media (min-width: 600px) {} @media (min-width: 840px) {}';
   assert.deepEqual(check({ css: [base] }), []);
   assert.deepEqual(check({ css: [`${base} @media (max-width: 500px) {}`] }), ['max-500px']);
+});
+
+test('LAY-2 needs a rail at the end side beside the rail at the start side', () => {
+  const check = rule('LAY-2', 'rail').check;
+  assert.deepEqual(check({ css: [shared] }), []);
+  const start = `${LAYERS}@layer components { @media (min-width: 600px) { .nav-bar { inset-inline-start: 0; } } }`;
+  assert.deepEqual(check({ css: [start] }), ['no [data-hand="right"] .nav-bar']);
+  const both = start.replace(/ \}$/, ' @media (min-width: 600px) { :root[data-hand="right"] .nav-bar { right: 0; } } }');
+  assert.deepEqual(check({ css: [both] }), []);
+  assert.deepEqual(check({ css: [`${LAYERS}@layer components { .nav-bar { display: flex; } }`] }), []);
 });
 
 test('LAY-4 reads the body padding from the app sheet only', () => {

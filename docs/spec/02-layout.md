@@ -14,8 +14,9 @@ areas and the pane layout.
   | expanded | 840px and up | rail at the start side | the `pane` layout: list and detail side by side |
 
 - **LAY-2** The navigation is one element, `.nav-bar`. Below 600px it is the bar at the bottom;
-  from 600px the same element is a rail of `--rail-width` at the start side, and the page, the
-  toast and the add button move beside it.
+  from 600px the same element is a rail of `--rail-width`. The rail stands at the start side, or at
+  the end side with `data-hand="right"` on the root. The toast and the add button clear it. The app
+  pads its body on the rail side, so the page moves beside it.
 - **LAY-3** A section with a list and a detail uses the `pane` layout. Below 840px it shows the
   list, or the detail alone while an entry is open, with a **Back** button (`pane-back`). From
   840px it shows both; with no entry open the detail shows a hint, and **Back** is hidden. The

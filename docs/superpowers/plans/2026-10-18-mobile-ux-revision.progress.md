@@ -37,7 +37,7 @@ the 🎯 indicators (terminal status bar, tab ring, overlord tile) draw from thi
 | 7 | action-bar, settings rows, empty state with an action, STATE-1 | ☑ |  | 2026-10-18 |  |
 | 8 | Labelled swipe actions and the row trailing slot, release 0.4.0 | ☑ |  | 2026-10-18 |  |
 | 9 | The dock, the collapsing add button and the header | ☑ |  | 2026-10-18 |  |
-| 10 | Nav pill and LAY-2 at the side of the hand | ☐ |  |  |  |
+| 10 | Nav pill and LAY-2 at the side of the hand | ☑ |  | 2026-10-18 |  |
 | 11 | Side sheets, compact density, release 0.5.0 | ☐ |  |  |  |
 | 12 | Measure the siblings and check the catalogue | ☐ |  |  |  |
 

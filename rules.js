@@ -233,6 +233,12 @@ export const RULES = [
     ];
   }),
 
+  define('LAY-2', 'a rail at the start side has a rail at the end side for the right hand (LAY-2)', ['css'], ({ rules }) => {
+    const rail = rules.some((rule) => rule.selector === '.nav-bar' && rule.declarations.some((d) => d.property === 'inset-inline-start'));
+    const end = rules.some((rule) => rule.selector === ':root[data-hand="right"] .nav-bar');
+    return rail && !end ? ['no [data-hand="right"] .nav-bar'] : [];
+  }),
+
   define('LAY-3', 'the pane layout is documented with its parts (LAY-3)', ['css'], ({ catalog }) => {
     const pane = catalog.components.find((component) => component.name === 'pane');
     if (!pane) return ['pane is not documented'];

@@ -287,6 +287,31 @@ test('a dock lifts the add button and the main padding below 600px', () => {
   assert.match(allValues('body:has(.dock:not([hidden])) main', 'padding-bottom')[0], /var\(--dock-height\)/);
 });
 
+test('the current nav item is a pill behind its icon with a plain label', () => {
+  const current = '.nav-item[aria-current="page"]';
+  assert.equal(declaration(`${current} .icon`, 'background'), 'var(--accent-soft)');
+  assert.equal(declaration(`${current} .icon`, 'border-radius'), 'var(--radius-pill)');
+  assert.equal(declaration(`${current} .icon`, 'color'), 'var(--accent)');
+  assert.match(declaration(`${current} .icon`, 'padding'), /var\(--space-1\) var\(--space-5\)/);
+  assert.equal(declaration(current, 'color'), 'var(--text)');
+  assert.equal(declaration(current, 'font-weight'), 'var(--weight-medium)');
+});
+
+test('the rail stands at the start side by default and at the end side for the right hand', () => {
+  assert.equal(declaration('.nav-bar', 'inset-inline-start'), '0');
+  assert.equal(declaration(':root[data-hand="right"] .nav-bar', 'right'), '0');
+  assert.equal(declaration(':root[data-hand="right"] .nav-bar', 'inset-inline-start'), 'auto');
+  assert.match(declaration(':root[data-hand="right"] .nav-bar', 'width'), /safe-area-inset-right/);
+  assert.match(declaration(':root[data-hand="right"] .toast', 'right'), /var\(--rail-width\) \+ env\(safe-area-inset-right\)/);
+  assert.match(declaration(':root[data-hand="right"] .toast', 'left'), /safe-area-inset-left/);
+  assert.match(declaration(':root[data-hand="right"] .fab', 'right'), /var\(--rail-width\) \+ env\(safe-area-inset-right\)/);
+});
+
+test('the dock field shows its focus with an accent border', () => {
+  assert.equal(declaration('.dock-field', 'border'), '2px solid var(--line)');
+  assert.equal(declaration('.dock-field:focus-within', 'border-color'), 'var(--accent)');
+});
+
 test('the add button collapses to a square tap target', () => {
   assert.equal(declaration('.fab.collapsed', 'width'), 'var(--tap)');
   assert.equal(declaration('.fab.collapsed', 'height'), 'var(--tap)');
