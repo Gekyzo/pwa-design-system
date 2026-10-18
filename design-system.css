@@ -1007,7 +1007,10 @@
      @part item-row-check         The round checkbox of an entry that can be done.
      @part item-row-name          The name button, with its quantity and its meta line.
      @part item-row-qty           The quantity after the name.
+     @part item-row-label         The text of the name. It keeps two lines, then ends with an ellipsis.
      @part item-row-meta          A muted line below the name, such as its tags.
+     @part item-row-end           The fixed slot at the end, two buttons wide. It holds up to two button icon and
+                                  mirrors as a whole for the left hand.
      @part item-row-actions       The swipe actions behind the right end. Hidden while the row is closed, so a
                                   fractional pixel ratio shows no edge of them. The drag code adds open on settle.
      @part item-row-backdrop      The action under a slide to the right.
@@ -1019,8 +1022,10 @@
      @state open      On item-row-swipe: the actions show.
      @state armed     On item-row-swipe: a slide far enough to run its action.
      @state dragging  On item-row-body: the body follows the finger, with no transition.
-     @example <ul class="item-list" style="width: 100%"><li class="item-row"><div class="item-row-swipe"><div class="item-row-body"><input class="item-row-check" type="checkbox" aria-label="Call Ana"><button class="item-row-name" type="button"><span>Ideas <span class="item-row-qty">1 h</span></span><small class="item-row-meta">Work</small></button><button class="button icon toggle" type="button" aria-pressed="false" aria-label="Repeat"><svg class="icon" aria-hidden="true"><use href="icons.svg#refresh"/></svg></button></div></div></li><li class="item-row done"><div class="item-row-body"><input class="item-row-check" type="checkbox" checked aria-label="Read book"><button class="item-row-name" type="button"><span>Read book</span></button><button class="pill ghost" type="button">+ Later</button></div></li></ul>
-     @example <ul class="item-list" style="width: 100%"><li class="item-row"><div class="item-row-swipe open"><div class="item-row-actions"><button class="swipe-action" type="button" aria-label="Move"><svg class="icon" aria-hidden="true"><use href="icons.svg#settings"/></svg></button><button class="swipe-action danger" type="button" aria-label="Delete"><svg class="icon" aria-hidden="true"><use href="icons.svg#trash"/></svg></button></div><div class="item-row-body" style="transform: translateX(-128px)"><button class="item-row-name" type="button"><span>Call Ana</span></button></div></div></li></ul> */
+     @state tick      On item-row-body: the whole body is the tick target. The check is a mark only.
+     @example <ul class="item-list" style="width: 100%"><li class="item-row"><div class="item-row-swipe"><div class="item-row-body"><input class="item-row-check" type="checkbox" aria-label="Call Ana"><button class="item-row-name" type="button"><span class="item-row-label">Ideas <span class="item-row-qty">1 h</span></span><small class="item-row-meta">Work</small></button><button class="button icon toggle" type="button" aria-pressed="false" aria-label="Repeat"><svg class="icon" aria-hidden="true"><use href="icons.svg#refresh"/></svg></button></div></div></li><li class="item-row done"><div class="item-row-body"><input class="item-row-check" type="checkbox" checked aria-label="Read book"><button class="item-row-name" type="button"><span>Read book</span></button><button class="pill ghost" type="button">+ Later</button></div></li></ul>
+     @example <ul class="item-list" style="width: 100%"><li class="item-row"><div class="item-row-body tick"><input class="item-row-check" type="checkbox" aria-label="Call Ana"><button class="item-row-name" type="button"><span class="item-row-label">Call Ana about the long list of notes for the next meeting at the office</span></button><div class="item-row-end"><button class="button icon" type="button" aria-label="Edit"><svg class="icon" aria-hidden="true"><use href="icons.svg#settings"/></svg></button><button class="button icon" type="button" aria-label="Delete"><svg class="icon" aria-hidden="true"><use href="icons.svg#trash"/></svg></button></div></div></li></ul>
+     @example <ul class="item-list" style="width: 100%"><li class="item-row"><div class="item-row-swipe open"><div class="item-row-actions"><button class="swipe-action" type="button"><svg class="icon" aria-hidden="true"><use href="icons.svg#settings"/></svg><span class="swipe-action-label">Move</span></button><button class="swipe-action danger" type="button"><svg class="icon" aria-hidden="true"><use href="icons.svg#trash"/></svg><span class="swipe-action-label">Delete</span></button></div><div class="item-row-body" style="transform: translateX(-144px)"><button class="item-row-name" type="button"><span>Call Ana</span></button></div></div></li></ul> */
   .item-row {
     border-bottom: 1px solid var(--line);
     background: var(--surface);
@@ -1134,6 +1139,24 @@
     transform: rotate(-45deg);
   }
 
+  /* The slot at the end: as wide as two buttons, so the text ends at the same place on every row. */
+  .item-row-end {
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: calc(var(--tap) * 2);
+  }
+
+  /* With tick, the body takes the tap and the check only shows the state. */
+  .item-row-body.tick {
+    cursor: pointer;
+  }
+
+  .item-row-body.tick .item-row-check {
+    pointer-events: none;
+  }
+
   .item-row-name {
     flex: 1;
     display: flex;
@@ -1158,6 +1181,14 @@
     text-decoration: line-through;
   }
 
+  /* The text of a name keeps two lines. The meta line below it is not clamped. */
+  .item-row-label {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+
   .item-row-meta {
     color: var(--muted);
     font-size: var(--text-xs);
@@ -1170,20 +1201,31 @@
 
   /* @component swipe-action
      @summary An action behind the right end of a row, shown by a slide to the left.
-     @variant danger  Removes the item.
-     @example <div style="display: flex; height: 56px"><button class="swipe-action" type="button" aria-label="Move"><svg class="icon" aria-hidden="true"><use href="icons.svg#settings"/></svg></button><button class="swipe-action danger" type="button" aria-label="Delete"><svg class="icon" aria-hidden="true"><use href="icons.svg#trash"/></svg></button></div> */
+     @variant neutral  A plain action, such as edit, in the surface colour.
+     @variant danger   Removes the item.
+     @part swipe-action-label  The word below the icon.
+     @example <div style="display: flex; height: 64px"><button class="swipe-action neutral" type="button"><svg class="icon" aria-hidden="true"><use href="icons.svg#settings"/></svg><span class="swipe-action-label">Edit</span></button><button class="swipe-action" type="button"><svg class="icon" aria-hidden="true"><use href="icons.svg#refresh"/></svg><span class="swipe-action-label">Repeat</span></button><button class="swipe-action danger" type="button"><svg class="icon" aria-hidden="true"><use href="icons.svg#trash"/></svg><span class="swipe-action-label">Delete</span></button></div> */
   .swipe-action {
-    display: grid;
-    place-items: center;
-    width: calc(var(--tap) + var(--space-5));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-half);
+    width: calc(var(--tap) + var(--space-6));
     height: 100%;
     border-radius: 0;
+    font-size: var(--text-xs);
     background: var(--accent-soft);
     color: var(--accent);
   }
 
   .swipe-action + .swipe-action {
     border-left: 1px solid var(--surface);
+  }
+
+  .swipe-action.neutral {
+    background: var(--surface-2);
+    color: var(--text);
   }
 
   .swipe-action.danger {
@@ -1417,18 +1459,23 @@
     margin-left: 0;
   }
 
+  /* The text of a row starts at --space-4 with either hand. Only the check and the trailing slot change side. */
   [data-hand="left"] .item-row-body {
-    flex-direction: row-reverse;
-    padding: 0 var(--space-2) 0 var(--space-1);
+    padding-left: calc(var(--space-4) - var(--space-1));
   }
 
-  [data-hand="left"] .item-row-swipe .item-row-body {
-    padding-right: var(--space-2);
-    padding-left: var(--space-3);
+  [data-hand="left"] .item-row-body > .item-row-name:first-child {
+    padding-left: var(--space-1);
   }
 
   [data-hand="left"] .item-row-check {
+    order: 1;
     margin: var(--space-3) var(--space-2) var(--space-3) var(--space-1);
+  }
+
+  [data-hand="left"] .item-row-end {
+    order: -1;
+    flex-direction: row-reverse;
   }
 
   [data-hand="left"] .fab {

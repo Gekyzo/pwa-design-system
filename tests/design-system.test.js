@@ -224,3 +224,38 @@ test('a low empty state sits at the bottom of its area with a large button', () 
   assert.ok(empty.variants.some((variant) => variant.name === 'low'));
   assert.ok(empty.parts.some((part) => part.name === 'empty-state-title'));
 });
+
+test('a swipe action stacks its icon and label in a column 72px wide', () => {
+  assert.equal(declaration('.swipe-action', 'flex-direction'), 'column');
+  assert.equal(declaration('.swipe-action', 'width'), 'calc(var(--tap) + var(--space-6))');
+  assert.equal(declaration('.swipe-action', 'font-size'), 'var(--text-xs)');
+  assert.equal(declaration('.swipe-action.neutral', 'background'), 'var(--surface-2)');
+  assert.equal(declaration('.swipe-action.neutral', 'color'), 'var(--text)');
+  const action = catalog.components.find((part) => part.name === 'swipe-action');
+  assert.ok(action.variants.some((variant) => variant.name === 'neutral'));
+  assert.ok(action.parts.some((part) => part.name === 'swipe-action-label'));
+});
+
+test('the row trailing slot is fixed, and mirrors as a whole for the left hand', () => {
+  assert.equal(declaration('.item-row-end', 'flex'), 'none');
+  assert.equal(declaration('.item-row-end', 'width'), 'calc(var(--tap) * 2)');
+  assert.equal(declaration('[data-hand="left"] .item-row-end', 'flex-direction'), 'row-reverse');
+  const row = catalog.components.find((part) => part.name === 'item-row');
+  assert.ok(row.parts.some((part) => part.name === 'item-row-end'));
+  assert.ok(row.parts.some((part) => part.name === 'item-row-label'));
+});
+
+test('the left hand moves only the check and the trailing slot, not the text', () => {
+  assert.notEqual(declaration('[data-hand="left"] .item-row-body', 'flex-direction'), 'row-reverse');
+  assert.equal(declaration('[data-hand="left"] .item-row-check', 'order'), '1');
+  assert.equal(declaration('[data-hand="left"] .item-row-end', 'order'), '-1');
+});
+
+test('a row label holds two lines, and a tick row is the tick target', () => {
+  assert.equal(declaration('.item-row-label', '-webkit-line-clamp'), '2');
+  assert.equal(declaration('.item-row-label', 'display'), '-webkit-box');
+  assert.equal(declaration('.item-row-body.tick .item-row-check', 'pointer-events'), 'none');
+  assert.equal(declaration('.item-row-body.tick', 'cursor'), 'pointer');
+  const row = catalog.components.find((part) => part.name === 'item-row');
+  assert.ok(row.states.some((state) => state.name === 'tick'));
+});

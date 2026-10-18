@@ -4,6 +4,16 @@ User-visible changes, newest first.
 
 ## Unreleased
 
+## 0.4.0 - 2026-10-18
+
+- New `swipe-action-label` part and `neutral` variant. A swipe action stacks its icon over a label, is 72px
+  wide and uses `--text-xs`. Give each action a visible label; the label replaces `aria-label`.
+- New `item-row-end` part: a fixed slot two buttons wide for up to two `button icon`. New `item-row-label`
+  part: the text of a name, kept to two lines. New `item-row` state `tick` on `item-row-body`: the whole
+  body is the tick target and the check is a mark only.
+- Left hand: a row no longer reverses its body. Its text starts at `--space-4` as with the right hand; only
+  the check (now at the end) and `item-row-end` (now at the start) change side. A row with no `item-row-end`
+  keeps its buttons at the end, where they were at the start before.
 - New `action-bar`, the `list-group` parts `list-group-head` and `settings-row` (with `settings-row-label`, `settings-row-value`, a `danger` variant and the `chevron`) and a `card` variant, and the `empty-state` `low` variant and `empty-state-title` part. New rule STATE-1: an empty state holds a button, except inline.
 - The `input-row` is mirrored for the left hand, has a `pinned` variant that sticks to the bottom of a sheet,
   and its disabled button has no fill. New `input[aria-invalid="true"]` state and `input-help` part with
@@ -11,6 +21,7 @@ User-visible changes, newest first.
 - New sheet parts `sheet-head`, `sheet-body`, `sheet-foot` and `sheet-saved`, the `main` title and rule
   SHEET-1. A sheet without a head keeps its old padding, scroll and handle.
 - `sheet.js`: a pause after a flick no longer closes the sheet, and a mouse drag needs the main button.
+- Migration: a sheet with no `sheet-head` keeps the old padding in 0.4.x; SHEET-1 fails until the app adds one.
 
 ## 0.3.0 - 2026-10-18
 
