@@ -17,7 +17,7 @@ test('each rule has a unique title and an id of a known family', () => {
 
 test('each id of DS-1 to DS-8, LAY-3, LAY-4, TAP-1, TAP-2, TXT-1 and FOCUS-1 has a rule', () => {
   const ids = new Set(RULES.map((entry) => entry.id));
-  for (const id of ['DS-1', 'DS-2', 'DS-3', 'DS-4', 'DS-5', 'DS-6', 'DS-7', 'DS-8', 'LAY-3', 'LAY-4', 'TAP-1', 'TAP-2', 'TXT-1', 'FOCUS-1']) assert.ok(ids.has(id), id);
+  for (const id of ['DS-1', 'DS-2', 'DS-3', 'DS-4', 'DS-5', 'DS-6', 'DS-7', 'DS-8', 'LAY-3', 'LAY-4', 'TAP-1', 'TAP-2', 'TXT-1', 'FOCUS-1', 'SHEET-1']) assert.ok(ids.has(id), id);
 });
 
 test('each rule that reads only css passes over design-system.css', () => {
@@ -124,4 +124,14 @@ test('FOCUS-1 keeps one focus ring: the input drops the global outline and draws
   assert.equal(check({ css: [inScreens(`${global} .input:focus-visible { outline: none !important; }`)] }).length, 0);
   assert.equal(check({ css: [inScreens(`${global} .input:focus-visible { outline: none; } .field:focus-within .input { outline: 1px solid red; }`)] }).length, 0);
   assert.equal(check({ css: [inScreens('.field-input:focus { outline: 1px solid var(--accent); }')] }).length, 1);
+});
+
+test('SHEET-1 reports a sheet without a head and passes one with a head and a button', () => {
+  const check = rule('SHEET-1', 'sheet-head').check;
+  assert.equal(check({ html: '<div class="sheet"><h2>Note</h2></div>' }).length, 1);
+  assert.equal(check({ html: '<div class="sheet"><header class="sheet-head"><h2>Note</h2><button type="button">Done</button></header></div>' }).length, 0);
+  assert.equal(check({ html: '<div class="sheet"><header class="sheet-head"><h2>Note</h2></header></div>' }).length, 1);
+  assert.equal(check({ html: '<main class="pane"></main>' }).length, 0);
+  const two = '<div class="sheet"><header class="sheet-head"><button>x</button></header></div><div class="sheet"><p>no head</p></div>';
+  assert.equal(check({ html: two }).length, 1);
 });

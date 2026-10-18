@@ -654,12 +654,19 @@
      @summary A panel that comes up from the bottom over a veil. The layer is hidden to close it.
      @part sheet-layer  The fixed layer that holds the veil and the sheet.
      @part sheet-veil   The dark veil; a tap on it closes the sheet.
-     @part sheet-grab   The handle at the top.
+     @part sheet-grab   The handle at the top. A drag on it closes the sheet.
+     @part sheet-head   The bar under the handle: a title and a Done or close button.
+     @part sheet-body   The part that scrolls, between the head and the foot.
+     @part sheet-foot   The bar that stays at the bottom: the actions of the sheet.
+     @part sheet-saved  A short note in the foot, such as Saved.
+     @state on          On sheet-saved: the note shows.
      @part sheet-title  A title of the sheet or of one of its parts.
+     @variant main      On sheet-title: the title of the head, one line.
      @variant part      On sheet-title: a title below a line that separates it from the part above.
      @part entry        A choice of the sheet: a name, with its effect below it.
      @part entry-note   The effect of an entry.
-     @example <div class="sheet" style="border-radius: var(--radius-xl)"><div class="sheet-grab"></div><h2 class="sheet-title">Group by</h2><button class="entry" type="button"><span>Finish</span><small class="entry-note">Done notes leave the list</small></button><h2 class="sheet-title part">Tags</h2></div> */
+     @example <div class="sheet" style="border-radius: var(--radius-xl)"><div class="sheet-grab"></div><h2 class="sheet-title">Group by</h2><button class="entry" type="button"><span>Finish</span><small class="entry-note">Done notes leave the list</small></button><h2 class="sheet-title part">Tags</h2></div>
+     @example <div class="sheet" style="border-radius: var(--radius-xl); position: static"><div class="sheet-grab"></div><header class="sheet-head"><h2 class="sheet-title main">Note</h2><button class="button" type="button">Done</button></header><div class="sheet-body">Text of the note.</div><footer class="sheet-foot"><button class="button outline danger" type="button">Delete</button><span class="sheet-saved on">Saved</span></footer></div> */
   .sheet-layer {
     position: fixed;
     inset: 0;
@@ -703,19 +710,84 @@
   .sheet {
     position: relative;
     max-height: 85%;
-    overflow-y: auto;
-    padding: var(--space-3) var(--space-4) calc(var(--space-4) + env(safe-area-inset-bottom));
     border-radius: var(--radius-xl) var(--radius-xl) 0 0;
     background: var(--surface);
     transition: transform var(--motion) var(--ease);
   }
 
+  /* A sheet without a head scrolls as a whole, as before. */
+  .sheet:not(:has(.sheet-head)) {
+    overflow-y: auto;
+    padding: var(--space-3) var(--space-4) calc(var(--space-4) + env(safe-area-inset-bottom));
+  }
+
+  /* A sheet with a head keeps its padding in the parts, and only the body scrolls. */
+  .sheet:has(.sheet-head) {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+  }
+
   .sheet-grab {
+    position: relative;
+    flex: none;
+    height: var(--tap);
+    touch-action: none;
+  }
+
+  .sheet-grab::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
     width: 40px;
     height: 4px;
-    margin: 0 auto var(--space-3);
     border-radius: var(--radius-s);
-    background: var(--line);
+    background: var(--muted);
+    transform: translate(-50%, -50%);
+  }
+
+  .sheet-head {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: var(--space-3);
+    padding: 0 var(--space-4) var(--space-2);
+    touch-action: none;
+  }
+
+  .sheet-body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 0 var(--space-4);
+  }
+
+  .sheet-foot {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4) calc(var(--space-3) + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--line);
+  }
+
+  .sheet-saved {
+    color: var(--muted);
+    font-size: var(--text-s);
+    opacity: 0;
+    transition: opacity var(--motion);
+  }
+
+  .sheet-saved.on {
+    opacity: 1;
+  }
+
+  [data-hand="left"] .sheet-head,
+  [data-hand="left"] .sheet-foot {
+    flex-direction: row-reverse;
   }
 
   .sheet-title {
@@ -723,6 +795,19 @@
     color: var(--muted);
     font-size: var(--text-s);
     font-weight: var(--weight-strong);
+  }
+
+  /* The title of the head: it takes the free width and keeps to one line. */
+  .sheet-title.main {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    color: var(--text);
+    font-size: var(--text-l);
+    font-weight: var(--weight-strong);
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   /* A title below a line that separates its part from the part above. */

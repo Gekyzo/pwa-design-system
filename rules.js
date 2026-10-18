@@ -303,4 +303,13 @@ export const RULES = [
       ...outlines.filter((o) => onInput(o) && visible(o)).map(({ rule, d }) => where(rule, d)),
     ];
   }),
+
+  // A sheet of the app has a head with its close or Done button. A sheet runs to the next sheet.
+  define('SHEET-1', 'each sheet has a sheet-head with a close or Done button (SHEET-1)', ['html'], ({ html }) => {
+    const opens = [...html.matchAll(/class="([^"]*)"/g)].filter(([, value]) => value.split(/\s+/).includes('sheet'));
+    return opens
+      .map((open, i) => html.slice(open.index, opens[i + 1]?.index ?? html.length))
+      .filter((part) => !/class="[^"]*\bsheet-head\b[^"]*"[\s\S]*?<button\b/.test(part))
+      .map((part) => part.slice(0, 60));
+  }),
 ];

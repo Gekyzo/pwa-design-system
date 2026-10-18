@@ -65,6 +65,8 @@ app holds its screens and its own overrides. `rules.js` checks the rules; each a
 - **TXT-1** Text is never `text-align: justify`. Use `start`.
 - **FOCUS-1** One focus ring. The global `:focus-visible` outline is the ring of every control. An
   input (`.input`, `.field-input`) sets `outline: none` on focus and draws the focus as a border.
+- **SHEET-1** Each sheet has a `sheet-head` with a close or Done button. The head, the body and the foot
+  are parts of `sheet`; only the body scrolls.
 
 ## Parts
 

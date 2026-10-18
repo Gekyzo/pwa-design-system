@@ -8,6 +8,15 @@ const WINDOW = 100; // ms of moves that give the release velocity
 // True when a downward drag of `dy` px, released at `velocity` px/ms, closes a sheet `height` px tall.
 export const dismissed = (dy, velocity, height) => dy > 0 && (dy > height * FAR || velocity > FAST);
 
+// Release velocity in px/ms from the moves [{ dy, t }] of a drag. A pause of more than WINDOW ms before `now` is 0.
+export const velocityOf = (moves, now) => {
+  const last = moves[moves.length - 1];
+  if (!last || now - last.t > WINDOW) return 0;
+  const from = moves.find((move) => last.t - move.t <= WINDOW);
+  const span = last.t - from.t;
+  return span > 0 ? (last.dy - from.dy) / span : 0;
+};
+
 const GRIP = '.sheet-grab, .sheet-head';
 const CONTROL = 'button, input, a, select';
 
@@ -28,7 +37,7 @@ export const bindSheetDrag = (layer, { close }) => {
   };
 
   const onDown = (event) => {
-    if (drag || !event.target.closest(GRIP) || event.target.closest(CONTROL)) return;
+    if (drag || (event.pointerType === 'mouse' && event.button !== 0) || !event.target.closest(GRIP) || event.target.closest(CONTROL)) return;
     drag = { id: event.pointerId, y: event.clientY, height: sheet.offsetHeight || 1, moves: [] };
     sheet.setPointerCapture?.(event.pointerId);
     sheet.style.transition = 'none';
@@ -49,9 +58,7 @@ export const bindSheetDrag = (layer, { close }) => {
     drag = null;
     const last = moves[moves.length - 1];
     const dy = last ? last.dy : 0;
-    const from = moves.find((move) => last.t - move.t <= WINDOW);
-    const span = last && from ? last.t - from.t : 0;
-    const velocity = span > 0 ? (last.dy - from.dy) / span : 0;
+    const velocity = velocityOf(moves, event.timeStamp);
     const cancelled = event.type === 'pointercancel';
     reset();
     if (!cancelled && dismissed(dy, velocity, height)) close();

@@ -111,3 +111,46 @@ test('a scrolling cluster fades its end', () => {
   assert.match(valueIn('layouts', '.cluster.scroll', 'mask-image'), /^linear-gradient\(to right, black calc\(100% - var\(--space-7\)\), transparent\)$/);
   assert.equal(valueIn('layouts', '.cluster.scroll', 'padding-inline-end'), 'var(--space-6)');
 });
+
+const declaration = (selector, property) => valueIn('components', selector, property);
+
+test('the sheet has a head, a body, a foot and a saved note', () => {
+  const sheet = catalog.components.find((part) => part.name === 'sheet');
+  for (const name of ['sheet-head', 'sheet-body', 'sheet-foot', 'sheet-saved']) assert.ok(sheet.parts.some((part) => part.name === name), name);
+  assert.ok(sheet.variants.some((variant) => variant.name === 'main'));
+  assert.ok(sheet.states.some((state) => state.name === 'on'));
+});
+
+test('a sheet with a head is a column that scrolls in its body', () => {
+  const selector = '.sheet:has(.sheet-head)';
+  assert.equal(declaration(selector, 'padding'), '0');
+  assert.equal(declaration(selector, 'display'), 'flex');
+  assert.equal(declaration(selector, 'flex-direction'), 'column');
+  assert.equal(declaration(selector, 'overflow'), 'hidden');
+  assert.equal(declaration('.sheet-body', 'overflow-y'), 'auto');
+  assert.equal(declaration('.sheet-body', 'flex'), '1');
+  assert.equal(declaration('.sheet-foot', 'border-top'), '1px solid var(--line)');
+});
+
+test('a sheet without a head keeps the padding and the scroll of 0.2.1', () => {
+  const selector = '.sheet:not(:has(.sheet-head))';
+  assert.equal(declaration(selector, 'padding'), 'var(--space-3) var(--space-4) calc(var(--space-4) + env(safe-area-inset-bottom))');
+  assert.equal(declaration(selector, 'overflow-y'), 'auto');
+});
+
+test('the handle and the head take the vertical pan, and the handle is a tap tall', () => {
+  assert.equal(declaration('.sheet-grab', 'touch-action'), 'none');
+  assert.equal(declaration('.sheet-head', 'touch-action'), 'none');
+  assert.equal(declaration('.sheet-grab', 'height'), 'var(--tap)');
+});
+
+test('the head and the foot reverse for the left hand', () => {
+  const selector = '[data-hand="left"] .sheet-head, [data-hand="left"] .sheet-foot';
+  assert.equal(declaration(selector, 'flex-direction'), 'row-reverse');
+});
+
+test('the saved note shows with the state on, and the sheet moves with --ease', () => {
+  assert.equal(declaration('.sheet-saved', 'opacity'), '0');
+  assert.equal(declaration('.sheet-saved.on', 'opacity'), '1');
+  assert.equal(declaration('.sheet', 'transition'), 'transform var(--motion) var(--ease)');
+});

@@ -4,6 +4,10 @@ User-visible changes, newest first.
 
 ## Unreleased
 
+- New sheet parts `sheet-head`, `sheet-body`, `sheet-foot` and `sheet-saved`, the `main` title and rule
+  SHEET-1. A sheet without a head keeps its old padding and scroll.
+- `sheet.js`: a pause after a flick no longer closes the sheet, and a mouse drag needs the main button.
+
 ## 0.3.0 - 2026-10-18
 
 - Breaking for an app: `--tap` is 48px (was 44px), so a base button, input and chip are taller. An
