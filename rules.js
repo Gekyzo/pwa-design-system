@@ -304,12 +304,12 @@ export const RULES = [
     ];
   }),
 
-  // A sheet of the app has a head with its close or Done button. A sheet runs to the next sheet.
+  // A sheet of the app has a head with its close or Done button. The button is inside the head, which ends at </header> or </div>.
   define('SHEET-1', 'each sheet has a sheet-head with a close or Done button (SHEET-1)', ['html'], ({ html }) => {
     const opens = [...html.matchAll(/class="([^"]*)"/g)].filter(([, value]) => value.split(/\s+/).includes('sheet'));
     return opens
       .map((open, i) => html.slice(open.index, opens[i + 1]?.index ?? html.length))
-      .filter((part) => !/class="[^"]*\bsheet-head\b[^"]*"[\s\S]*?<button\b/.test(part))
+      .filter((part) => !/class="[^"]*\bsheet-head\b[^"]*"[^>]*>(?:(?!<\/header>|<\/div>)[\s\S])*?<button\b/.test(part))
       .map((part) => part.slice(0, 60));
   }),
 ];

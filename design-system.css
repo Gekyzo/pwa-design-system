@@ -729,14 +729,27 @@
     overflow: hidden;
   }
 
+  /* The handle. A sheet without a head keeps the small bar of 0.2.1. */
   .sheet-grab {
-    position: relative;
-    flex: none;
-    height: var(--tap);
+    width: 40px;
+    height: 4px;
+    margin: 0 auto var(--space-3);
+    border-radius: var(--radius-s);
+    background: var(--line);
     touch-action: none;
   }
 
-  .sheet-grab::before {
+  /* With a head, the handle is a tap tall and draws its bar inside. */
+  .sheet:has(.sheet-head) .sheet-grab {
+    position: relative;
+    flex: none;
+    width: auto;
+    height: var(--tap);
+    margin: 0;
+    background: none;
+  }
+
+  .sheet:has(.sheet-head) .sheet-grab::before {
     content: "";
     position: absolute;
     top: 50%;

@@ -132,6 +132,7 @@ test('SHEET-1 reports a sheet without a head and passes one with a head and a bu
   assert.equal(check({ html: '<div class="sheet"><header class="sheet-head"><h2>Note</h2><button type="button">Done</button></header></div>' }).length, 0);
   assert.equal(check({ html: '<div class="sheet"><header class="sheet-head"><h2>Note</h2></header></div>' }).length, 1);
   assert.equal(check({ html: '<main class="pane"></main>' }).length, 0);
+  assert.equal(check({ html: '<div class="sheet"><header class="sheet-head"><h2>Note</h2></header><button>Done</button></div>' }).length, 1);
   const two = '<div class="sheet"><header class="sheet-head"><button>x</button></header></div><div class="sheet"><p>no head</p></div>';
   assert.equal(check({ html: two }).length, 1);
 });

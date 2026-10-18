@@ -141,7 +141,13 @@ test('a sheet without a head keeps the padding and the scroll of 0.2.1', () => {
 test('the handle and the head take the vertical pan, and the handle is a tap tall', () => {
   assert.equal(declaration('.sheet-grab', 'touch-action'), 'none');
   assert.equal(declaration('.sheet-head', 'touch-action'), 'none');
-  assert.equal(declaration('.sheet-grab', 'height'), 'var(--tap)');
+  assert.equal(declaration('.sheet:has(.sheet-head) .sheet-grab', 'height'), 'var(--tap)');
+  assert.equal(declaration('.sheet:has(.sheet-head) .sheet-grab::before', 'background'), 'var(--muted)');
+});
+
+test('a sheet without a head keeps the handle of 0.2.1', () => {
+  const expected = { width: '40px', height: '4px', margin: '0 auto var(--space-3)', 'border-radius': 'var(--radius-s)', background: 'var(--line)' };
+  for (const [property, value] of Object.entries(expected)) assert.equal(declaration('.sheet-grab', property), value, property);
 });
 
 test('the head and the foot reverse for the left hand', () => {
