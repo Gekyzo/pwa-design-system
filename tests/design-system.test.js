@@ -408,3 +408,8 @@ test('an open sheet moves the toast to the top after every rule that sets its bo
   const sheetOpen = order.findIndex((rule) => rule.selector === 'body:has(.sheet-layer:not([hidden])) .toast');
   assert.equal(sheetOpen, order.length - 1);
 });
+
+test('an idle switch track is --muted for a 3:1 contrast and a checked one is --accent', () => {
+  assert.equal(declaration('.switch-input', 'background'), 'var(--muted)');
+  assert.equal(declaration('.switch-input:checked', 'background'), 'var(--accent)');
+});

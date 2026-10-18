@@ -6,6 +6,7 @@ User-visible changes, newest first.
 
 ## 0.5.0 - 2026-10-18
 
+- The idle track of a `switch-input` is `--muted`, not `--line`: it reaches 3:1 on `--surface` in both themes; the white knob stays visible.
 - An `input` with `aria-invalid="true"` keeps the `--danger` border on focus, also the `strong` variant and a `field-input`.
 - The current `nav-item` is a pill behind its icon (`--accent-soft`); its label is `--text` at `--weight-medium`.
 - From 600px `:root[data-hand="right"]` puts the `nav-bar` rail at the end side, and the `toast` and `fab` clear it. New rule LAY-2. The app pads its body on the rail side. The `dock-field` has a 2px border that turns accent on focus.
