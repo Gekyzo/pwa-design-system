@@ -80,7 +80,7 @@ The parts of the shared stylesheet, by layer. A request for a screen names them.
 | Layer | Parts |
 |---|---|
 | base | `main` |
-| components | `icon`, `button`, `fab`, `chip`, `pill`, `segmented`, `switch`, `input`, `field`, `select`, `app-header`, `ring`, `nav-bar`, `badge`, `sheet`, `toast`, `banner`, `empty-state`, `item-list`, `item-row`, `swipe-action`, `section-head`, `group-head`, `list-group` |
+| components | `icon`, `button`, `fab`, `chip`, `pill`, `segmented`, `switch`, `input`, `field`, `select`, `app-header`, `ring`, `nav-bar`, `badge`, `sheet`, `toast`, `banner`, `empty-state`, `item-list`, `item-row`, `swipe-action`, `section-head`, `group-head`, `list-group`, `action-bar`, `dock` |
 | layouts | `cluster`, `input-row`, `split`, `pane` |
 
 The screen parts belong to the apps.

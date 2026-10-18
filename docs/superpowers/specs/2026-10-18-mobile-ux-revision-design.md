@@ -60,7 +60,7 @@ easing curve. The accent green stays.
 | `list-group` | Part `settings-row` with `settings-row-value`, `chevron`, variant `danger`; part `list-group-head` | 0.4.0 |
 | `empty-state` | Variant `low`: centred in the lower half, `empty-state-title`, a `--tap-l` action | 0.4.0 |
 | `swipe-action` | A label under the icon (`swipe-action-label`), 72 px wide, variant `neutral` | 0.4.0 |
-| `item-row` | Part `item-row-end`: a fixed trailing slot that mirrors as a whole; `item-row-name` clamps to 2 lines | 0.4.0 |
+| `item-row` | Part `item-row-end`: a fixed trailing slot that mirrors as a whole; `item-row-label` clamps to 2 lines | 0.4.0 |
 | `dock` | Fixed above the bottom bar below 600 px, `--dock-height`; hidden from 600 px | 0.5.0 |
 | `fab` | State `collapsed` (48 px); stands above the dock when a dock shows | 0.5.0 |
 | `app-header`, `ring` | Title on one line with an ellipsis; ring text in tabular figures | 0.5.0 |

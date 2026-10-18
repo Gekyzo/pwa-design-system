@@ -14,6 +14,7 @@ User-visible changes, newest first.
 - From 840px a sheet with a `sheet-head` is a side sheet: full height, `--side-sheet` (400px) wide, at the start side next to the rail, or at the end side with `:root[data-hand="right"]`. It enters sideways and has no grab. A sheet without a head keeps the bottom sheet.
 - New token `--side-sheet`. New `:root[data-density="compact"]` sets `--tap-l` to 48px, `--nav-height` to 56px and `--dock-height` to 48px; `--tap` does not change.
 - An app with its own rail override drops it: LAY-2 now does it.
+- The `dock-input` has no outline and no native clear button; FOCUS-1 counts it as an input. A visible dock lifts the `toast` as well. The `dock-field` is `--dock-height` minus `--space-2` tall, so it fits the compact dock. A sheet with a head clears the bottom safe area in its body (and a last `input-row` `pinned`), and a side sheet clears the top safe area in its head. The `input` `strong` keeps its text still on focus. `sheet.js` ends a drag on `lostpointercapture` and starts none when the grab is hidden (side sheet).
 
 Migration per app (`node scripts/try-apps.mjs`, an app with DS 0.5.0 synced into a copy; failing rule ids):
 
@@ -23,7 +24,11 @@ Migration per app (`node scripts/try-apps.mjs`, an app with DS 0.5.0 synced into
 - pwa-nexus — SHEET-1, STATE-1
 - pwa-financial-calculator — none
 
+For every app: move the body rail padding to the side of the hand (LAY-2 puts the rail at the end with `data-hand="right"`).
+
 ## 0.4.0 - 2026-10-18
+
+Migration per app: the file list of each app's `tests/vendor.test.js` gains `sheet.js`.
 
 - New `swipe-action-label` part and `neutral` variant. A swipe action stacks its icon over a label, is 72px
   wide and uses `--text-xs`. Give each action a visible label; the label replaces `aria-label`.

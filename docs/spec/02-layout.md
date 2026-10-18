@@ -10,8 +10,8 @@ areas and the pane layout.
   | Class | Width | Navigation | Content |
   |---|---|---|---|
   | compact | below 600px | bottom bar | full width |
-  | medium | 600px to 839px | rail at the start side | one column, at most `--content-max`, centred |
-  | expanded | 840px and up | rail at the start side | the `pane` layout: list and detail side by side |
+  | medium | 600px to 839px | rail at the side of the hand | one column, at most `--content-max`, centred |
+  | expanded | 840px and up | rail at the side of the hand | the `pane` layout: list and detail side by side |
 
 - **LAY-2** The navigation is one element, `.nav-bar`. Below 600px it is the bar at the bottom;
   from 600px the same element is a rail of `--rail-width`. The rail stands at the start side, or at
