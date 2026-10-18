@@ -84,3 +84,30 @@ test('the reduced-motion block still sets --motion to 0ms', () => {
 test('a base button is as tall as --tap', () => {
   assert.equal(valueIn('base', 'button', 'min-height'), 'var(--tap)');
 });
+
+test('an idle toggle is muted and a pressed one has an accent shape behind its icon', () => {
+  assert.equal(valueIn('components', '.button.toggle', 'color'), 'var(--muted)');
+  const pressed = '.button.toggle[aria-pressed="true"]';
+  assert.equal(valueIn('components', pressed, 'color'), 'var(--accent)');
+  assert.equal(valueIn('components', pressed, 'background'), 'var(--accent-soft)');
+});
+
+test('an input has one focus indicator: the border, with no outline', () => {
+  assert.equal(valueIn('components', '.input:focus-visible', 'outline'), 'none');
+  assert.equal(valueIn('components', '.input:focus-visible', 'border-color'), 'var(--accent)');
+  assert.equal(valueIn('components', '.input.strong', 'border'), '1px solid var(--accent)');
+  assert.equal(valueIn('components', '.input.strong:focus-visible', 'border-width'), '2px');
+});
+
+test('the native search cancel button of an input is removed', () => {
+  assert.equal(valueIn('components', '.input::-webkit-search-cancel-button', 'appearance'), 'none');
+});
+
+test('the actions of a closed swipe row are hidden', () => {
+  assert.equal(valueIn('components', '.item-row-swipe:not(.open) .item-row-actions', 'visibility'), 'hidden');
+});
+
+test('a scrolling cluster fades its end', () => {
+  assert.match(valueIn('layouts', '.cluster.scroll', 'mask-image'), /^linear-gradient\(to right, black calc\(100% - var\(--space-7\)\), transparent\)$/);
+  assert.equal(valueIn('layouts', '.cluster.scroll', 'padding-inline-end'), 'var(--space-6)');
+});

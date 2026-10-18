@@ -188,7 +188,7 @@
      @variant danger   Removes data. Combine with outline.
      @variant strong   Strong text, for the action of a toast.
      @variant icon     Square, icon or one sign only. Needs an aria-label.
-     @variant toggle   An icon button that is on with aria-pressed="true".
+     @variant toggle   An icon button that is on with aria-pressed="true": the icon takes the accent over a soft accent shape.
      @variant wide     Takes the full width of its box.
      @example <button class="button primary" type="button">Add</button>
      @example <button class="button outline" type="button">Clear menu</button>
@@ -254,11 +254,12 @@
   }
 
   .button.toggle {
-    color: var(--line);
+    color: var(--muted);
   }
 
   .button.toggle[aria-pressed="true"] {
     color: var(--accent);
+    background: var(--accent-soft);
   }
 
   .button.wide {
@@ -422,8 +423,21 @@
     background: var(--surface);
   }
 
+  .input:focus-visible {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .input::-webkit-search-cancel-button {
+    appearance: none;
+  }
+
   .input.strong {
-    border: 2px solid var(--accent);
+    border: 1px solid var(--accent);
+  }
+
+  .input.strong:focus-visible {
+    border-width: 2px;
   }
 
   /* @component field
@@ -852,7 +866,8 @@
      @part item-row-name          The name button, with its quantity and its meta line.
      @part item-row-qty           The quantity after the name.
      @part item-row-meta          A muted line below the name, such as its tags.
-     @part item-row-actions       The swipe actions behind the right end.
+     @part item-row-actions       The swipe actions behind the right end. Hidden while the row is closed, so a
+                                  fractional pixel ratio shows no edge of them. The drag code adds open on settle.
      @part item-row-backdrop      The action under a slide to the right.
      @state done      A ticked entry: its name is struck out.
      @state flash     A row that has just come back: its body flashes.
@@ -903,6 +918,10 @@
     right: 0;
     bottom: 0;
     display: flex;
+  }
+
+  .item-row-swipe:not(.open) .item-row-actions {
+    visibility: hidden;
   }
 
   /* The slide to the right shows its action below the row. The actions cover it. */
@@ -1233,6 +1252,8 @@
     flex-wrap: nowrap;
     overflow-x: auto;
     scrollbar-width: none;
+    padding-inline-end: var(--space-6);
+    mask-image: linear-gradient(to right, black calc(100% - var(--space-7)), transparent);
   }
 
   /* @component input-row
