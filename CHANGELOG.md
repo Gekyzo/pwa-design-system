@@ -4,6 +4,8 @@ User-visible changes, newest first.
 
 ## Unreleased
 
+- An `outline` button inside an `empty-state` takes `--surface` and `--text`: the art and the muted text of the empty state no longer show through it.
+
 ## 0.5.0 - 2026-10-18
 
 - The idle track of a `switch-input` is `--muted`, not `--line`: it reaches 3:1 on `--surface` in both themes; the white knob stays visible.

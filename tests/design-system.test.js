@@ -234,6 +234,11 @@ test('a low empty state sits at the bottom of its area with a large button', () 
   assert.ok(empty.parts.some((part) => part.name === 'empty-state-title'));
 });
 
+test('an outline button of an empty state is opaque, with the text colour', () => {
+  assert.equal(declaration('.empty-state .button.outline', 'background'), 'var(--surface)');
+  assert.equal(declaration('.empty-state .button.outline', 'color'), 'var(--text)');
+});
+
 test('a swipe action stacks its icon and label in a column 72px wide', () => {
   assert.equal(declaration('.swipe-action', 'flex-direction'), 'column');
   assert.equal(declaration('.swipe-action', 'width'), 'calc(var(--tap) + var(--space-6))');
