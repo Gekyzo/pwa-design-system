@@ -17,7 +17,7 @@
       .ds-card > h3 { margin: 0 0 4px; font-family: ui-monospace, monospace; font-size: 1rem; }
       .ds-card > p { margin: 4px 0; }
       .ds-meta { color: var(--muted); font-size: 0.875rem; }
-      .ds-example { position: relative; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 12px 0 4px; padding: 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); transform: translateZ(0); overflow: hidden; }
+      .ds-example { position: relative; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 12px 0 4px; padding: 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); transform: translateZ(0); overflow: hidden; }
       .ds-code { display: flex; gap: 8px; align-items: flex-start; }
       .ds-code > pre { flex: 1; overflow-x: auto; margin: 0; padding: 8px 12px; border-radius: 10px; background: var(--bg); font-size: 0.75rem; white-space: pre-wrap; word-break: break-all; }
       .ds-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; }
@@ -57,7 +57,7 @@
         "in Menú, put a list-group above a split with a button primary and a button outline".</p>
       <div class="ds-bar">
         <button id="ds-menu-button" class="button outline ds-menu-button" type="button" aria-controls="ds-menu" aria-expanded="false">Menu</button>
-        <input id="filter" class="input raised" type="search" placeholder="Filter by name" aria-label="Filter by name">
+        <input id="filter" class="input" type="search" placeholder="Filter by name" aria-label="Filter by name">
         <select id="theme" class="select" aria-label="Theme">
           <option value="">System</option>
           <option value="light">Light</option>

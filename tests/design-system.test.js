@@ -99,6 +99,18 @@ test('an input has one focus indicator: the border, with no outline', () => {
   assert.equal(valueIn('components', '.input.strong:focus-visible', 'border-width'), '2px');
 });
 
+test('an input takes --surface on the page and --bg on a --surface container', () => {
+  const on = ':where(.sheet, .list-group:not(.plain), .input-row.pinned)';
+  assert.equal(valueIn('components', '.input', 'background'), 'var(--surface)');
+  assert.equal(valueIn('components', `${on} .input`, 'background'), 'var(--bg)');
+  assert.equal(valueIn('components', '.field-label', 'background'), 'var(--surface)');
+  assert.equal(valueIn('components', `${on} .field-label`, 'background'), 'var(--bg)');
+  const floated = '.field-input:focus + .field-label, .field-input:not(:placeholder-shown) + .field-label';
+  const sunk = `${on} .field-input:focus + .field-label, ${on} .field-input:not(:placeholder-shown) + .field-label`;
+  assert.equal(valueIn('components', floated, 'background'), 'linear-gradient(var(--bg) 50%, var(--surface) 50%)');
+  assert.equal(valueIn('components', sunk, 'background'), 'linear-gradient(var(--surface) 50%, var(--bg) 50%)');
+});
+
 test('the native search cancel button of an input is removed', () => {
   assert.equal(valueIn('components', '.input::-webkit-search-cancel-button', 'appearance'), 'none');
 });

@@ -2,6 +2,10 @@
 
 User-visible changes, newest first.
 
+## Unreleased
+
+- An `input` takes `--surface` on the page, so it stands out from `--bg`. Inside a `sheet`, a `list-group` (not `plain`) or an `input-row` `pinned` it keeps `--bg`. The `field-label` follows the fill of its box. The `raised` variant is now the default and is deprecated. The examples of the catalogue page stand on `--bg`.
+
 ## 0.6.0 - 2026-10-21
 
 - A row of a `list-group` draws its focus ring inside itself (`outline-offset: -2px`); a first or last row takes the corners of the group (`--radius-l` less the border), also in `pair`, so any ring of the row bends with them, also one an app draws for a control inside the row. Before, the group clipped the ring: round at the top, square at the bottom and over the next row.
