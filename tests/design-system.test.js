@@ -239,6 +239,16 @@ test('an outline button of an empty state is opaque, with the text colour', () =
   assert.equal(declaration('.empty-state .button.outline', 'color'), 'var(--text)');
 });
 
+test('a segmented is a switch track whose knob slides to the chosen segment', () => {
+  assert.equal(declaration('.segmented', 'background'), 'var(--surface-2)');
+  assert.equal(declaration('.segmented::before', 'background'), 'var(--accent)');
+  assert.equal(declaration('.segmented::before', 'transform'), 'translateX(calc(var(--segment-index) * 100%))');
+  assert.equal(declaration('.segmented:has(> .segment:nth-child(3))', '--segment-count'), '3');
+  assert.equal(declaration('.segmented:has(> .segment:nth-child(2)[aria-pressed="true"])', '--segment-index'), '1');
+  assert.equal(declaration('.segmented:has(> .segment:nth-child(3)[aria-pressed="true"])', '--segment-index'), '2');
+  assert.equal(declaration('.segmented .segment[aria-pressed="true"]', 'color'), 'var(--accent-text)');
+});
+
 test('a swipe action stacks its icon and label in a column 72px wide', () => {
   assert.equal(declaration('.swipe-action', 'flex-direction'), 'column');
   assert.equal(declaration('.swipe-action', 'width'), 'calc(var(--tap) + var(--space-6))');
