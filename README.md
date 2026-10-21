@@ -23,6 +23,8 @@ npm run serve    # http://localhost:8090
   `vendor/design-system/sheet.js`.
 - `index.html` and `page.js`: the catalogue page. Run `npm run serve`, open
   http://localhost:8090/. Add the CSS of an app with `?css=styles.css,more.css`.
+- `scripts/serve.mjs`: the server of `npm run serve`. It sends `Cache-Control: no-cache`, so a
+  normal reload shows a CSS edit.
 - `sync.mjs`: copies the shared files into an app. It refuses a target with no `package.json` or
   one that holds `design-system.css`, and a source with uncommitted changes to a copied file or to
   `version.json`.
