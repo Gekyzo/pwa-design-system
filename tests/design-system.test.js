@@ -239,6 +239,15 @@ test('an outline button of an empty state is opaque, with the text colour', () =
   assert.equal(declaration('.empty-state .button.outline', 'color'), 'var(--text)');
 });
 
+test('a row of a list group draws its focus ring inside itself, and an end row takes the corners of the group', () => {
+  const inner = 'calc(var(--radius-l) - 1px)';
+  assert.equal(declaration('.list-group > :focus-visible', 'outline-offset'), '-2px');
+  assert.equal(declaration('.list-group:not(.plain, .pair) > :is(.list-row, .settings-row):first-child', 'border-start-start-radius'), inner);
+  assert.equal(declaration('.list-group:not(.plain, .pair) > :is(.list-row, .settings-row):last-child', 'border-end-end-radius'), inner);
+  assert.equal(declaration('.list-group.pair > :is(.list-row, .settings-row):first-child', 'border-end-start-radius'), inner);
+  assert.equal(declaration('.list-group.pair > :is(.list-row, .settings-row):last-child', 'border-start-end-radius'), inner);
+});
+
 test('a segmented is a switch track whose knob slides to the chosen segment', () => {
   assert.equal(declaration('.segmented', 'background'), 'var(--surface-2)');
   assert.equal(declaration('.segmented::before', 'background'), 'var(--accent)');

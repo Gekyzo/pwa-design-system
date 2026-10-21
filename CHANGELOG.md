@@ -4,6 +4,7 @@ User-visible changes, newest first.
 
 ## Unreleased
 
+- A row of a `list-group` draws its focus ring inside itself (`outline-offset: -2px`); a first or last row takes the corners of the group (`--radius-l` less the border), also in `pair`, so any ring of the row bends with them, also one an app draws for a control inside the row. Before, the group clipped the ring: round at the top, square at the bottom and over the next row.
 - A `segmented` is drawn as a switch: a `--surface-2` pill track, and an `--accent` knob with `--shadow-s` that slides to the segment with `aria-pressed="true"` (two or three segments, by `:has()`). The chosen label is `--accent-text`; the idle segments have no fill of their own. No markup changes.
 - An `outline` button inside an `empty-state` takes `--surface` and `--text`: the art and the muted text of the empty state no longer show through it.
 
