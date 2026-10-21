@@ -1,0 +1,60 @@
+/* Direction "Mercado" (visual): a warm editorial look with a display face for titles and a
+   terracotta accent. Loads after design-system.css.
+   Tokens change values; one new token (--font-display) and one component block give the titles
+   their face. That block is the cost of this direction: the design system would take it as
+   "titles use --font-display, which defaults to --font".
+   Try: http://localhost:8090/?css=docs/design-alternatives/themes/theme-editorial.css */
+@layer tokens, base, components, layouts, screens;
+
+@layer tokens {
+  :root {
+    --bg: light-dark(#f3ede3, #1a1613);
+    --surface: light-dark(#fbf7f0, #26201b);
+    --surface-2: light-dark(#ebe3d6, #332b25);
+    --text: light-dark(#2a211b, #efe6da);
+    --muted: light-dark(#78695c, #b2a496);
+    --line: light-dark(#e1d7c8, #3d342d);
+    --accent: light-dark(#a8472f, #f0987c);
+    --accent-text: light-dark(#fff8f2, #2a120a);
+    --accent-soft: light-dark(#f5e1d8, #4a251b);
+    --danger: light-dark(#9c2f2f, #f4b1ac);
+    --warning: light-dark(#8a5a12, #f2c46a);
+    --toast-bg: light-dark(#2a211b, #efe6da);
+    --toast-text: light-dark(#fbf7f0, #2a211b);
+
+    --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    --text-l: 1.5rem;
+    --text-xl: 2.125rem;
+    --weight-medium: 500;
+    --weight-strong: 600;
+
+    --radius-m: 14px;
+    --radius-l: 24px;
+    --radius-xl: 32px;
+
+    --tap-l: 60px;
+    --nav-height: 68px;
+    --dock-height: 60px;
+
+    --shadow-s: 0 1px 2px rgb(60 40 20 / 0.12);
+    --shadow-l: 0 12px 32px rgb(60 40 20 / 0.16);
+
+    --motion: 300ms;
+  }
+}
+
+@layer components {
+  /* The titles take the display face. In the design system this is one rule per component. */
+  .app-header-title,
+  .sheet-title.main,
+  .empty-state-title,
+  .onboarding-title,
+  .list-group-head {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+
+  .app-header-title {
+    font-weight: var(--weight-medium);
+  }
+}

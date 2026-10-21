@@ -1,0 +1,23 @@
+/* Helpers of the mockups only: nothing here is a proposal. */
+@layer screens {
+  /* The app icon of the walkthrough, drawn from the sprite instead of icons/logo.png. */
+  .logo-box {
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-l);
+    background: var(--accent);
+    color: var(--accent-text);
+  }
+
+  .logo-box > .icon {
+    width: 60%;
+    height: 60%;
+  }
+
+  /* A frame is static: no transition plays on load. */
+  .sheet-layer,
+  .sheet,
+  .sheet-veil {
+    transition: none;
+  }
+}

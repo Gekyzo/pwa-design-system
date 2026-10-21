@@ -1,0 +1,16 @@
+<header class="app-header">
+  {{#ring}}<div class="ring" style="--pct: {{pct}}"><span class="ring-text">{{ring}}</span></div>{{/ring}}
+  <div class="app-header-text">
+    <h1 class="app-header-title">{{title}}</h1>
+    <p class="app-header-subtitle">{{subtitle}}</p>
+  </div>
+</header>
+{{#corner}}<svg class="icon corner" aria-hidden="true"><use href="#basket"/></svg>{{/corner}}
+<main>{{content}}</main>
+<div class="command-bar">
+  <button class="chip command-section" type="button" aria-haspopup="dialog" aria-label="Sección: {{sectionName}}"><svg class="icon small" aria-hidden="true"><use href="#{{sectionIcon}}"/></svg><span>{{sectionName}}</span><span class="chevron" aria-hidden="true">▾</span></button>
+  {{#search}}<label class="dock-field"><svg class="icon small" aria-hidden="true"><use href="#search"/></svg><input class="dock-input" type="search" placeholder="{{searchPlaceholder}}" aria-label="{{searchPlaceholder}}"></label>{{/search}}
+  {{^search}}<span class="command-space"></span>{{/search}}
+  {{#fab}}<button class="button primary icon" type="button" aria-label="Añadir">+</button>{{/fab}}
+</div>
+{{extra}}

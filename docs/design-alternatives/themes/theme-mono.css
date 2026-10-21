@@ -1,0 +1,86 @@
+/* Direction "Pizarra" (visual): dense and monochrome; colour marks a state only.
+   Loads after design-system.css.
+   Tokens change values. The component block below splits "the main action" from "a selected
+   state": the main action is ink on paper, the state keeps --accent. The design system has one
+   token for both, so this direction needs two new tokens, --primary and --primary-text, which
+   default to --accent and --accent-text. That is the cost of this direction.
+   Try: http://localhost:8090/?css=docs/design-alternatives/themes/theme-mono.css */
+@layer tokens, base, components, layouts, screens;
+
+@layer tokens {
+  :root {
+    --bg: light-dark(#f4f4f4, #0e0e0e);
+    --surface: light-dark(#ffffff, #171717);
+    --surface-2: light-dark(#e9e9e9, #242424);
+    --text: light-dark(#121212, #f1f1f1);
+    --muted: light-dark(#5c5c5c, #a3a3a3);
+    --line: light-dark(#d4d4d4, #333333);
+    --accent: light-dark(#1d4ed8, #7aa2ff);
+    --accent-text: light-dark(#ffffff, #0a1430);
+    --accent-soft: light-dark(#dde6ff, #1b2a52);
+    --danger: light-dark(#c01f1f, #ff8a80);
+    --warning: light-dark(#8a5a00, #f0c050);
+    --toast-bg: light-dark(#121212, #f1f1f1);
+    --toast-text: light-dark(#ffffff, #121212);
+
+    --primary: var(--text);
+    --primary-text: var(--bg);
+
+    --text-s: 0.8125rem;
+    --text-m: 0.9375rem;
+    --text-l: 1.125rem;
+    --text-xl: 1.75rem;
+
+    --radius-s: 2px;
+    --radius-m: 4px;
+    --radius-l: 6px;
+    --radius-xl: 10px;
+    --radius-pill: 4px;
+
+    --tap-l: 48px;
+    --nav-height: 56px;
+    --dock-height: 48px;
+
+    --shadow-s: 0 0 0 1px rgb(0 0 0 / 0.1);
+    --shadow-l: 0 0 0 1px rgb(0 0 0 / 0.1), 0 4px 12px rgb(0 0 0 / 0.14);
+
+    --motion-fast: 80ms;
+    --motion: 120ms;
+  }
+}
+
+@layer components {
+  /* The main action is ink. */
+  .button.primary,
+  .fab {
+    background: var(--primary);
+    color: var(--primary-text);
+  }
+
+  .segmented::before {
+    background: var(--primary);
+  }
+
+  .segmented .segment[aria-pressed="true"] {
+    color: var(--primary-text);
+  }
+
+  .ring {
+    background: conic-gradient(var(--primary) var(--pct), var(--line) 0);
+  }
+
+  /* The current section is a bar, not a pill. */
+  .nav-item[aria-current="page"] {
+    box-shadow: inset 0 2px 0 var(--primary);
+  }
+
+  .nav-item[aria-current="page"] .icon {
+    padding: 0;
+    background: none;
+    color: var(--primary);
+  }
+
+  .group-head {
+    color: var(--text);
+  }
+}

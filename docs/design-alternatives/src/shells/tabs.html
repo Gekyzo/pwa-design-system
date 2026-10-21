@@ -1,0 +1,23 @@
+<header class="app-header">
+  {{#back}}<button class="button icon" type="button" aria-label="Atrás"><svg class="icon" aria-hidden="true"><use href="#chevron-left"/></svg></button>{{/back}}
+  {{#ring}}<div class="ring" style="--pct: {{pct}}"><span class="ring-text">{{ring}}</span></div>{{/ring}}
+  <div class="app-header-text">
+    <h1 class="app-header-title">{{title}}</h1>
+    <p class="app-header-subtitle">{{subtitle}}</p>
+  </div>
+  {{#arrange}}<button class="button icon" type="button" aria-label="Agrupar y ordenar"><svg class="icon" aria-hidden="true"><use href="#filter"/></svg></button>{{/arrange}}
+  {{#more}}<button class="button icon" type="button" aria-label="Opciones"><svg class="icon" aria-hidden="true"><use href="#more"/></svg></button>{{/more}}
+</header>
+{{^page}}<nav class="tab-bar" aria-label="Secciones">
+  <button class="tab" type="button" {{selected:active}}>Compra</button>
+  <button class="tab" type="button" {{selected:recipes}}>Recetas</button>
+  <button class="tab" type="button" {{selected:menu}}>Menú</button>
+  <button class="tab" type="button" {{selected:settings}}>Ajustes</button>
+</nav>{{/page}}
+{{#corner}}<svg class="icon corner" aria-hidden="true"><use href="#basket"/></svg>{{/corner}}
+<main>{{content}}</main>
+{{#fab}}<form class="add-bar" autocomplete="off">
+  <input class="input strong" type="text" placeholder="{{addPlaceholder}}" aria-label="{{addPlaceholder}}">
+  <button class="button primary icon" type="submit" aria-label="Añadir">+</button>
+</form>{{/fab}}
+{{extra}}

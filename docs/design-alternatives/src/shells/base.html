@@ -1,0 +1,27 @@
+<header class="app-header">
+  {{#back}}<button class="button icon" type="button" aria-label="Atrás"><svg class="icon" aria-hidden="true"><use href="#chevron-left"/></svg></button>{{/back}}
+  {{#ring}}<div class="ring" style="--pct: {{pct}}"><span class="ring-text">{{ring}}</span></div>{{/ring}}
+  <div class="app-header-text">
+    <h1 class="app-header-title">{{title}}</h1>
+    <p class="app-header-subtitle">{{subtitle}}</p>
+  </div>
+  {{#search}}<button class="button icon" type="button" aria-label="Buscar en la lista" aria-controls="search"><svg class="icon" aria-hidden="true"><use href="#search"/></svg></button>{{/search}}
+  {{#arrange}}<button class="button icon" type="button" aria-label="Agrupar y ordenar"><svg class="icon" aria-hidden="true"><use href="#filter"/></svg></button>{{/arrange}}
+  {{#more}}<button class="button icon" type="button" aria-label="Opciones"><svg class="icon" aria-hidden="true"><use href="#more"/></svg></button>{{/more}}
+</header>
+{{#corner}}<svg class="icon corner" aria-hidden="true"><use href="#basket"/></svg>{{/corner}}
+<main>{{content}}</main>
+{{#dock}}<div class="dock">
+  {{#dockShop}}<button class="button icon" type="button" aria-label="Tienda anterior"><svg class="icon" aria-hidden="true"><use href="#chevron-left"/></svg></button>
+  <button class="chip" type="button" aria-haspopup="dialog"><span>{{dockShop}}</span><span class="count">{{dockCount}}</span><span class="chevron" aria-hidden="true">▾</span></button>
+  <button class="button icon" type="button" aria-label="Tienda siguiente"><svg class="icon" aria-hidden="true"><use href="#chevron-right"/></svg></button>{{/dockShop}}
+  <button class="button icon" type="button" aria-label="Buscar en la lista" aria-controls="dock-field"><svg class="icon" aria-hidden="true"><use href="#search"/></svg></button>
+</div>{{/dock}}
+{{#fab}}<button class="fab" type="button" aria-label="Añadir">+</button>{{/fab}}
+<nav class="nav-bar" aria-label="Secciones">
+  <button class="nav-item" type="button" {{current:active}} aria-label="Compra"><svg class="icon" aria-hidden="true"><use href="#cart"/></svg></button>
+  <button class="nav-item" type="button" {{current:recipes}} aria-label="Recetas"><svg class="icon" aria-hidden="true"><use href="#book"/></svg></button>
+  <button class="nav-item" type="button" {{current:menu}} aria-label="Menú"><svg class="icon" aria-hidden="true"><use href="#menu"/></svg></button>
+  <button class="nav-item" type="button" {{current:settings}} aria-label="Ajustes"><svg class="icon" aria-hidden="true"><use href="#settings"/></svg></button>
+</nav>
+{{extra}}

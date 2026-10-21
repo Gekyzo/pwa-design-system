@@ -1,0 +1,136 @@
+/* Direction "Mosaico" (component): a short list (under twelve entries) is a grid of tiles; a
+   longer one falls back to rows. A tile is a new component of the design system. */
+@layer tokens, base, components, layouts, screens;
+
+@layer components {
+  /* @component tile-grid
+     @summary A grid of tiles: two columns, three from 600px, four from 840px. A group head spans the row.
+     @component tile
+     @summary One entry as a tile: its name, its meta line and a mark in the corner.
+     @part tile-body  The box.
+     @part tile-open  The button that fills the tile: the name and the meta line.
+     @part tile-name  The name. It keeps two lines.
+     @part tile-meta  The muted line below the name.
+     @part tile-mark  The round mark in the corner: the tick of an entry, or the send button of a recipe.
+     @state done      A ticked entry. */
+  .tile-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .tile-grid > .group-head,
+  .tile-grid > .section-head {
+    grid-column: 1 / -1;
+    border-bottom: 0;
+    padding-inline: var(--space-1);
+  }
+
+  .tile-grid > .group-head:has(> .group-head-button) .group-head-button {
+    padding-inline: var(--space-1);
+  }
+
+  .tile-grid > .section-head .section-head-button {
+    border-bottom: 0;
+    padding-inline: var(--space-1);
+  }
+
+  .tile-body {
+    position: relative;
+    height: 100%;
+    border-radius: var(--radius-l);
+    background: var(--surface);
+    box-shadow: var(--shadow-s);
+  }
+
+  .tile-open {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    gap: var(--space-half);
+    width: 100%;
+    min-height: calc(var(--tap-l) * 2 - var(--space-2));
+    padding: var(--space-3);
+    padding-inline-end: calc(var(--space-3) + var(--tap));
+    border-radius: inherit;
+    text-align: left;
+  }
+
+  .tile-name {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+    font-weight: var(--weight-medium);
+  }
+
+  .tile-meta {
+    color: var(--muted);
+    font-size: var(--text-xs);
+  }
+
+  .tile-mark {
+    position: absolute;
+    top: var(--space-1);
+    right: var(--space-1);
+    display: grid;
+    place-items: center;
+    width: var(--tap);
+    height: var(--tap);
+    padding: 0;
+    border-radius: var(--radius-round);
+    color: var(--muted);
+  }
+
+  /* The tick of an entry: a circle, filled when done. */
+  .tile-mark.tick::before {
+    content: "";
+    width: var(--icon);
+    height: var(--icon);
+    border: 2px solid var(--muted);
+    border-radius: var(--radius-round);
+  }
+
+  .tile.done .tile-body {
+    background: var(--surface-2);
+    box-shadow: none;
+  }
+
+  .tile.done .tile-name {
+    color: var(--muted);
+    text-decoration: line-through;
+  }
+
+  .tile.done .tile-mark.tick::before {
+    border-color: var(--accent);
+    background: var(--accent);
+  }
+
+  .tile[data-repeat] .tile-meta {
+    color: var(--accent);
+  }
+
+  [data-hand="left"] .tile-mark {
+    right: auto;
+    left: var(--space-1);
+  }
+
+  [data-hand="left"] .tile-open {
+    padding-inline: calc(var(--space-3) + var(--tap)) var(--space-3);
+  }
+
+  @media (min-width: 600px) {
+    .tile-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 840px) {
+    .tile-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+}

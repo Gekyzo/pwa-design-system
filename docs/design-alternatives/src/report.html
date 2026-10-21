@@ -1,0 +1,342 @@
+<style>
+/* The frames of the mockups: a scaled iframe per screen, a toolbar per direction. */
+.frames { margin: 1rem 0 1.6rem; }
+.frame-bar { display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; margin: 0 0 0.6rem; }
+.frame-toggle { display: inline-flex; border: 1px solid var(--rule-strong); border-radius: 6px; overflow: hidden; }
+.frame-toggle button { font: 600 0.72rem var(--sans); color: var(--muted); background: var(--surface); border: 0; padding: 0.25rem 0.6rem; cursor: pointer; }
+.frame-toggle button + button { border-left: 1px solid var(--rule-strong); }
+.frame-toggle button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); }
+.frame-row { display: flex; gap: 0.8rem; overflow-x: auto; padding: 0.2rem 0 0.6rem; scroll-snap-type: x proximity; }
+.phone { --s: 0.72; flex: none; margin: 0; width: calc(var(--w, 360) * 1px * var(--s)); scroll-snap-align: start; }
+.phone iframe { display: block; width: calc(var(--w, 360) * 1px); height: calc(var(--h, 740) * 1px); border: 1px solid var(--rule-strong); border-radius: 14px; background: #fff; transform: scale(var(--s)); transform-origin: 0 0; margin-bottom: calc(var(--h, 740) * 1px * (var(--s) - 1)); }
+.phone figcaption { margin-top: 0.4rem; font-size: 0.78rem; color: var(--muted); text-align: center; }
+.phone figcaption a { color: inherit; }
+.screens dt { font-weight: 600; margin-top: 0.5rem; }
+.screens dd { margin: 0.1rem 0 0; color: var(--muted); }
+</style>
+
+<p class="kicker">pwa-design-system 0.6.0 · pwa-shopping-list 1.2.5 · design alternatives</p>
+<h1>Seven design directions for the PWA suite</h1>
+<p class="meta">
+  <span><b>Date</b> 2026-10-21</span>
+  <span><b>Design system</b> <code>0d799c0</code> (main, 0.6.0)</span>
+  <span><b>Bodega</b> <code>93ab8af</code> (main, 1.2.5)</span>
+  <span><b>Scope</b> <code>design-system.css</code>, DS-1..8, LAY-1..4, the 2026-10-18 UX revision, the screens and <code>styles.css</code> of Bodega</span>
+</p>
+
+<section class="tldr">
+  <p class="label">Recommendation</p>
+  <ul>
+    <li><strong>Visual: Taller.</strong> A flat, high-contrast token set. Tokens only, so every app takes it with <code>npm run ds</code>. It reads best in a bright shop and with one hand.</li>
+    <li><strong>Structural: Barra única</strong>, as an opt-in layout for the list apps. One bottom bar holds the section, the search and the add action. The bottom bar and the rail stay the suite default.</li>
+    <li><strong>Component: Tarjetas.</strong> A row is a card and its start edge shows its status. CSS only, and it reaches all six apps through <code>item-row</code>, <code>list-group</code> and the menu days.</li>
+    <li><strong>Combination: Taller + Tarjetas in DS 0.7.0</strong> (tokens and one component change), Barra única in a later minor as a layout option. Pestañas, Mercado, Pizarra and Mosaico are documented here as rejected with their reasons.</li>
+    <li>Every frame on this page is the real <code>design-system.css</code> 0.6.0 plus the <code>styles.css</code> of Bodega plus one overlay. The toolbars switch theme, hand, density and width. Click a caption to open the mockup alone.</li>
+  </ul>
+</section>
+
+<h2 id="baseline"><span class="n">1</span>Baseline: the suite today</h2>
+<p>Six apps share <code>design-system.css</code>: pwa-template, pwa-shopping-list (Bodega), pwa-wardrobe, pwa-shifts, pwa-nexus and pwa-financial-calculator. A seventh directory, <code>pwa-lists</code> (Stash), also holds a copy; the README does not name it. Nexus and Stash are on 0.5.0, the rest on 0.6.0.</p>
+<p>The current direction comes from the 2026-10-18 UX revision: thumb first, soft and calm, green accent. The rules that every direction below keeps: five layers (DS-1), raw values only in tokens (DS-2), breakpoints 600 and 840 only (DS-8), <code>--tap</code> 48px (TAP-1), one focus ring (FOCUS-1), the left-hand mirror (HAND-1), the safe areas (LAY-4), reduced motion, light and dark.</p>
+<div class="frames" data-direction="current"></div>
+<aside class="note"><p>Each direction is applied to the same seven screens of Bodega: <code>Compra</code> full and empty, the add sheet, <code>Recetas</code>, <code>Menú</code>, <code>Ajustes</code> and the walkthrough. The data is sample data. The 720 width shows the rail (LAY-2); 1024 shows the side sheet and, where a direction uses it, the <code>pane</code> layout (LAY-3).</p></aside>
+
+<h2 id="visual"><span class="n">2</span>Visual directions</h2>
+<p>A visual direction changes the values of the tokens and keeps their names. It is a CSS file that loads after <code>design-system.css</code>. Two of the three need one component block as well; that block is their cost, and it names a token the design system lacks.</p>
+
+<h3 id="taller">2.1 Taller — flat, high-contrast utility</h3>
+<p><strong>Intent.</strong> A tool for a shop aisle: darker text, firmer lines, small radii, no shadow. A hairline ring stands in for every shadow. The accent is a deeper green with more contrast on white. Rows are 52px, the bar 60px.</p>
+<p><strong>Problem it answers.</strong> Sunlight and a moving hand. The soft look of 0.6.0 loses its surface steps on a dim or reflective screen; this direction draws every edge.</p>
+<div class="frames" data-direction="utility"></div>
+<dl class="screens">
+  <dt>Compra</dt><dd>The group heads and the lines carry the structure; the check circle is darker. The + button is a square of 8px radius.</dd>
+  <dt>Compra, empty</dt><dd>Unchanged in shape; the outline button has a visible border.</dd>
+  <dt>Add sheet</dt><dd>12px top corners. The strong input has a clear 1px accent border.</dd>
+  <dt>Recetas, Menú</dt><dd>The meal boxes gain a firm border; the Llenar cesta bar reads as a tool bar.</dd>
+  <dt>Ajustes</dt><dd>The card groups turn into outlined boxes (the hairline shadow).</dd>
+  <dt>Walkthrough</dt><dd>Unchanged in layout; the art keeps the muted stroke.</dd>
+  <dt>600 / 840</dt><dd>No change: the rail, the side sheet and the pane take the same tokens.</dd>
+</dl>
+<figure class="code" data-lang="text" data-src="docs/design-alternatives/themes/theme-utility.css" data-start="22">
+<pre><code>    --text-l: 1.25rem;
+    --text-xl: 1.75rem;
+    --weight-medium: 500;
+
+    --radius-s: 2px;
+    --radius-m: 6px;
+    --radius-l: 8px;
+    --radius-xl: 12px;
+
+    --tap-l: 52px;
+    --nav-height: 60px;
+    --dock-height: 52px;
+
+    /* A hairline ring stands in for every shadow: the look is flat. */
+    --shadow-s: 0 0 0 1px rgb(16 20 17 / 0.14);
+    --shadow-l: 0 0 0 1px rgb(16 20 17 / 0.14), 0 2px 6px rgb(16 20 17 / 0.16);
+
+    --motion-fast: 100ms;
+    --motion: 160ms;
+    --ease: cubic-bezier(0.2, 0, 0, 1);</code></pre>
+<figcaption>The shape tokens of Taller. The colour tokens are above them in the same block.</figcaption>
+</figure>
+<div class="tablewrap"><table data-plain>
+  <thead><tr><th>Cost</th><th>Detail</th></tr></thead>
+  <tbody>
+    <tr><td>Tokens</td><td>13 colours, 3 type, 4 radii, 3 heights, 2 shadows, 3 motion. No new token.</td></tr>
+    <tr><td>Components</td><td>None.</td></tr>
+    <tr><td><code>@extends</code> of Bodega</td><td>None break. <code>icon.corner</code> keeps its opacity token.</td></tr>
+    <tr><td><code>rules.js</code></td><td>All pass: the values are in <code>@layer tokens</code>.</td></tr>
+    <tr><td>Risk</td><td>Low. The one visible loss is the soft surface step of a card group, which becomes a line.</td></tr>
+  </tbody>
+</table></div>
+<p><strong>Transfer.</strong> pwa-template: the default look of a new app. Stash: as Bodega. Wardrobe: photos sit well on a flat surface. Shifts: the firm lines suit a calendar. Nexus: a roadmap list reads as a task list. Calculator: the forms and tables gain contrast.</p>
+
+<h3 id="mercado">2.2 Mercado — warm editorial</h3>
+<p><strong>Intent.</strong> Paper and ink: a warm background, a terracotta accent, large radii, and a serif display face for the titles. Rows are 60px, the bar 68px. The app feels like a market notebook, not a tool.</p>
+<p><strong>Problem it answers.</strong> Identity. The suite looks like every Material app; this gives it a voice. It does not answer a usability problem.</p>
+<div class="frames" data-direction="editorial"></div>
+<dl class="screens">
+  <dt>Compra</dt><dd>The title is a serif at 1.5rem; the group heads are terracotta. The + button is a 24px-radius square.</dd>
+  <dt>Compra, empty</dt><dd>The outline button sits on cream; the text is warm grey.</dd>
+  <dt>Add sheet</dt><dd>32px top corners, the serif title in the head.</dd>
+  <dt>Recetas, Menú</dt><dd>The recipe names are sans; only the screen titles take the serif. The meal boxes get 14px corners.</dd>
+  <dt>Ajustes</dt><dd>The group heads are serif; the groups are soft cards.</dd>
+  <dt>Walkthrough</dt><dd>The title is the display face. The art takes the terracotta stroke.</dd>
+  <dt>600 / 840</dt><dd>No change in layout.</dd>
+</dl>
+<figure class="code" data-lang="text" data-src="docs/design-alternatives/themes/theme-editorial.css" data-start="46">
+<pre><code>@layer components {
+  /* The titles take the display face. In the design system this is one rule per component. */
+  .app-header-title,
+  .sheet-title.main,
+  .empty-state-title,
+  .onboarding-title,
+  .list-group-head {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+
+  .app-header-title {
+    font-weight: var(--weight-medium);
+  }
+}</code></pre>
+<figcaption>The component cost of Mercado: five title parts take <code>--font-display</code>. In the design system each would be one line in its own component, with <code>--font-display: var(--font)</code> as the default.</figcaption>
+</figure>
+<div class="tablewrap"><table data-plain>
+  <thead><tr><th>Cost</th><th>Detail</th></tr></thead>
+  <tbody>
+    <tr><td>Tokens</td><td>13 colours, 4 type, 3 radii, 3 heights, 2 shadows, 1 motion. One new token: <code>--font-display</code>.</td></tr>
+    <tr><td>Components</td><td>Five: <code>app-header</code>, <code>sheet</code>, <code>empty-state</code>, <code>list-group</code> and the app's <code>onboarding</code> each take <code>--font-display</code> on their title part.</td></tr>
+    <tr><td><code>@extends</code> of Bodega</td><td><code>onboarding-title</code> is an app part: the app adds the line in its screens layer.</td></tr>
+    <tr><td><code>rules.js</code></td><td>DS-2 passes: the family is a token. DS-6: the five blocks document no new part.</td></tr>
+    <tr><td>Risk</td><td>Medium. No web font offline: the serif is the system stack, which differs on Android (Noto Serif) and desktop. The terracotta on cream has a contrast of 4.6:1; the danger red must stay apart from it, so the danger token moved to a cooler red.</td></tr>
+  </tbody>
+</table></div>
+<p><strong>Transfer.</strong> pwa-template: possible, but a serif title on a tool app is a choice to make per app. Stash: as Bodega. Wardrobe: the best fit of the six, a lookbook. Shifts: a serif does not help a time grid. Nexus: a roadmap page reads well in it. Calculator: the numbers want the sans; weak fit.</p>
+
+<h3 id="pizarra">2.3 Pizarra — dense monochrome</h3>
+<p><strong>Intent.</strong> Ink on paper, and one signal colour for a state. The main action (primary button, +, the knob of a segmented, the ring) is ink. The selected state (a ticked row, a pressed chip, the current section) is a cobalt blue. Smaller type, 4px radii, square chips, 48px rows, 56px bar.</p>
+<p><strong>Problem it answers.</strong> Density and scan speed. A list of 20 items fits where 15 fit today, and colour appears only where something changed.</p>
+<div class="frames" data-direction="mono"></div>
+<dl class="screens">
+  <dt>Compra</dt><dd>The group heads are ink, not accent. A ticked item is the one blue mark on the screen. The + is a black square.</dd>
+  <dt>Compra, empty</dt><dd>The primary button is black; the outline button white.</dd>
+  <dt>Add sheet</dt><dd>10px corners; the Listo button is black.</dd>
+  <dt>Recetas, Menú</dt><dd>The meal boxes with a recipe keep the blue border: that is their state. Llenar cesta is black.</dd>
+  <dt>Ajustes</dt><dd>The segmented knob is black; the danger rows stay red.</dd>
+  <dt>Walkthrough</dt><dd>The art takes the blue stroke; the Siguiente button is black.</dd>
+  <dt>600 / 840</dt><dd>The current rail item is a bar on its top edge instead of a pill.</dd>
+</dl>
+<figure class="code" data-lang="text" data-src="docs/design-alternatives/themes/theme-mono.css" data-start="52">
+<pre><code>@layer components {
+  /* The main action is ink. */
+  .button.primary,
+  .fab {
+    background: var(--primary);
+    color: var(--primary-text);
+  }</code></pre>
+<figcaption>Pizarra needs two tokens the system lacks, <code>--primary</code> and <code>--primary-text</code>, which default to <code>--accent</code> and <code>--accent-text</code>. With them, six component rules change their colour source.</figcaption>
+</figure>
+<div class="tablewrap"><table data-plain>
+  <thead><tr><th>Cost</th><th>Detail</th></tr></thead>
+  <tbody>
+    <tr><td>Tokens</td><td>13 colours, 4 type, 5 radii, 3 heights, 2 shadows, 2 motion. Two new tokens: <code>--primary</code>, <code>--primary-text</code>.</td></tr>
+    <tr><td>Components</td><td>Six rules in <code>button</code>, <code>fab</code>, <code>segmented</code>, <code>ring</code>, <code>nav-bar</code> and <code>group-head</code> read <code>--primary</code> instead of <code>--accent</code>. That split is useful on its own, with or without this direction.</td></tr>
+    <tr><td><code>@extends</code> of Bodega</td><td><code>meal</code> keeps the accent border for a planned meal: correct, it is a state. <code>onboarding-key</code> and <code>onboarding-art</code> stay accent.</td></tr>
+    <tr><td><code>rules.js</code></td><td>Pass. <code>--radius-pill: 4px</code> is a token value; no rule reads the number.</td></tr>
+    <tr><td>Risk</td><td>Medium. Smaller type at <code>--text-m: 0.9375rem</code> is a legibility cost in the shop. The blue state colour and the danger red must never meet on one control.</td></tr>
+  </tbody>
+</table></div>
+<p><strong>Transfer.</strong> pwa-template: a strong default for data apps. Stash: as Bodega. Wardrobe: photos on monochrome look good, but the look is cold for it. Shifts: the best fit, a time sheet. Nexus: good, a roadmap is a document. Calculator: good, the results stand out in blue.</p>
+
+<h2 id="structural"><span class="n">3</span>Structural directions</h2>
+<p>A structural direction changes where the navigation and the main action live. Both below remove the bottom bar and the rail, so both touch LAY-2 and the body padding of every app. They are shown with the current tokens.</p>
+
+<h3 id="pestanas">3.1 Pestañas — tabs and pages</h3>
+<p><strong>Intent.</strong> The sections are four tabs under the header. A secondary task is a page, not a sheet: the add screen pushes in with a back button. The add action is a field in a bar at the bottom, where the + button was. The shop lists stay under the tabs at every width; the dock goes.</p>
+<p><strong>Problem it answers.</strong> Two taps to add: today + then the field. Here the field is always there, and the keyboard pushes it up. It also frees the header of the search button.</p>
+<div class="frames" data-direction="tabs"></div>
+<dl class="screens">
+  <dt>Compra</dt><dd>Header, tabs, shop chips, search, list, add bar. The list is 48px shorter than today at the top, and the same at the bottom.</dd>
+  <dt>Compra, empty</dt><dd>The empty state ends above the add bar; the + button of the empty state goes, the bar is the action.</dd>
+  <dt>Add page</dt><dd>A page with a back button, the help line, the suggestions and the input row at the bottom. The sheet grab goes.</dd>
+  <dt>Recetas</dt><dd>A <code>pane</code>: below 840 the list, with the recipe as a page; from 840 the recipe opens beside the list, and the add bar keeps to the list column.</dd>
+  <dt>Menú</dt><dd>No add bar. Llenar cesta stays a sticky action bar.</dd>
+  <dt>Ajustes</dt><dd>Unchanged, under the tabs.</dd>
+  <dt>Walkthrough</dt><dd>Unchanged: it covers the shell.</dd>
+  <dt>600 / 840</dt><dd>No rail. The tabs and the content form one column of <code>--content-max</code>. At 840 <code>pane</code> takes the width.</dd>
+</dl>
+<div class="tablewrap"><table data-plain>
+  <thead><tr><th>Cost</th><th>Detail</th></tr></thead>
+  <tbody>
+    <tr><td>Tokens</td><td>None.</td></tr>
+    <tr><td>Components</td><td>Two new: <code>tab-bar</code> and <code>add-bar</code>. <code>nav-bar</code>, <code>fab</code> and <code>dock</code> retire for this layout. <code>sheet</code> stays for the arrange and trip tasks, or they become pages too.</td></tr>
+    <tr><td><code>@extends</code> of Bodega</td><td><code>app-header</code> (the dock rules), <code>dock</code> and <code>sheet</code> (the 600px width) lose their reason. The <code>body</code> rule drops the rail padding. The slide between sections (NAV-3) stays.</td></tr>
+    <tr><td><code>rules.js</code></td><td>LAY-2 fails: the navigation is no longer <code>.nav-bar</code>. LAY-4 reads the body rule for the rail padding. Both rules need a layout mode or a skip.</td></tr>
+    <tr><td>Risk</td><td>High. Tabs at the top are out of thumb reach: the direction trades section switching for the add field. The walkthrough text about the bottom bar changes in seven languages.</td></tr>
+  </tbody>
+</table></div>
+<p><strong>Transfer.</strong> pwa-template: a second shell template. Stash: as Bodega. Wardrobe: tabs fit its categories. Shifts: tabs fit month, list and settings. Nexus: the pane of repository and roadmap is the natural shape. Calculator: the best fit of all, four calculators are four tabs, and it has no add action.</p>
+
+<h3 id="barra-unica">3.2 Barra única — one screen, one bar</h3>
+<p><strong>Intent.</strong> The bottom bar, the + button and the dock merge into one command bar: a section chip at the start, the search field in the middle, the + at the end. The chip opens a sheet with the four sections and the tools of the current one (group and sort, finish the trip). Every secondary task stays a sheet. The header keeps the ring and the title only.</p>
+<p><strong>Problem it answers.</strong> Three bottom layers today (bar, dock, + button) take 176px of a 740px screen. One bar takes 64px and keeps every frequent action in the thumb zone.</p>
+<div class="frames" data-direction="bar"></div>
+<dl class="screens">
+  <dt>Compra</dt><dd>Shop chips under the header at every width; the list has 112px more height than today below 600.</dd>
+  <dt>Compra, empty</dt><dd>The command bar stays; the + of the empty state and of the bar are the same action.</dd>
+  <dt>Add sheet</dt><dd>Unchanged.</dd>
+  <dt>Recetas</dt><dd>The search field of the bar searches recipes; the + creates one.</dd>
+  <dt>Menú, Ajustes</dt><dd>No search and no +: the bar keeps the chip and an empty slot, so the chip does not move between sections.</dd>
+  <dt>Sections sheet</dt><dd>The one new screen: the four sections with their counts, then the tools of the current section.</dd>
+  <dt>Walkthrough</dt><dd>Unchanged in layout; the page about the bottom bar becomes a page about the chip.</dd>
+  <dt>600 / 840</dt><dd>No rail. The bar is one column of <code>--content-max</code>. At 840 the bar keeps to the list pane when a section uses <code>pane</code>.</dd>
+</dl>
+<div class="tablewrap"><table data-plain>
+  <thead><tr><th>Cost</th><th>Detail</th></tr></thead>
+  <tbody>
+    <tr><td>Tokens</td><td>None.</td></tr>
+    <tr><td>Components</td><td>One new: <code>command-bar</code>, which reuses <code>chip</code>, <code>dock-field</code> and <code>button primary icon</code>. <code>nav-bar</code>, <code>fab</code> and <code>dock</code> retire for this layout. <code>toast</code> moves above the bar.</td></tr>
+    <tr><td><code>@extends</code> of Bodega</td><td><code>dock</code> and the search parts of <code>app-header</code> go. <code>shop-lists</code> shows at every width. <code>body</code> drops the rail padding.</td></tr>
+    <tr><td><code>rules.js</code></td><td>LAY-2 and LAY-4 as in Pestañas. HAND-1 needs a mirror rule for <code>command-bar</code>.</td></tr>
+    <tr><td>Risk</td><td>Medium. The sections are one tap further away and less visible: a chip, not four icons. The swipe between sections (NAV-3) softens that. A section with no search shows an empty slot.</td></tr>
+  </tbody>
+</table></div>
+<p><strong>Transfer.</strong> pwa-template: a layout option of the shell. Stash: the best fit, the same in-store use. Wardrobe: the search and the + fit; the sections are few. Shifts: weak, it has no search and its main action is a date. Nexus: fits a repository switcher in the chip. Calculator: no fit, it has no list.</p>
+
+<h2 id="component"><span class="n">4</span>Component directions</h2>
+<p>A component direction changes one family that every app renders. Both below are shown with the current tokens and the current shell.</p>
+
+<h3 id="tarjetas">4.1 Tarjetas — cards with a status edge</h3>
+<p><strong>Intent.</strong> A row is a card with an 8px gap and a 4px start edge. The edge is the status: accent for an entry that repeats, soft accent for a recipe, muted for a done one. The check circle goes; the body is the tick target, which Bodega already does (<code>item-row-body tick</code>). The same rule set turns the rows of a <code>list-group card</code> and the days of the menu into cards.</p>
+<p><strong>Problem it answers.</strong> The status of an item is a glyph in its meta line (<code>↻</code>). Here it is visible from a metre away, and a done item sinks visibly.</p>
+<div class="frames" data-direction="cards"></div>
+<dl class="screens">
+  <dt>Compra</dt><dd>Cards under each group head. The repeat items have the green edge; the done ones are sunk and muted.</dd>
+  <dt>Compra, empty</dt><dd>Unchanged.</dd>
+  <dt>Add sheet</dt><dd>Unchanged; the suggestions are a plain list group.</dd>
+  <dt>Recetas</dt><dd>Recipe cards with a soft green edge; the send button in the corner.</dd>
+  <dt>Menú</dt><dd>Each day is a card.</dd>
+  <dt>Ajustes</dt><dd>Each settings row is a card; the danger rows have a red edge.</dd>
+  <dt>Walkthrough</dt><dd>The art of the row page draws a check circle: it changes to a card with an edge.</dd>
+  <dt>600 / 840</dt><dd>The two-column recipes of Bodega become a card grid by themselves.</dd>
+</dl>
+<figure class="code" data-lang="text" data-src="docs/design-alternatives/src/variants/cards.css" data-start="26">
+<pre><code>  .item-row-body {
+    border-inline-start: 4px solid var(--line);
+    padding-inline-start: var(--space-3);
+  }
+
+  .item-row[data-repeat] .item-row-body {
+    border-inline-start-color: var(--accent);
+  }</code></pre>
+<figcaption>The status edge. <code>data-repeat</code> is the one markup addition; <code>done</code> and <code>recipe</code> exist today.</figcaption>
+</figure>
+<div class="tablewrap"><table data-plain>
+  <thead><tr><th>Cost</th><th>Detail</th></tr></thead>
+  <tbody>
+    <tr><td>Tokens</td><td>None.</td></tr>
+    <tr><td>Components</td><td><code>item-list</code>, <code>item-row</code>, <code>group-head</code>, <code>section-head</code>, <code>list-group</code> change their rules. No new component. A row state <code>repeat</code> joins <code>done</code>.</td></tr>
+    <tr><td><code>@extends</code> of Bodega</td><td><code>item-row</code> (the two-column recipes), <code>group-head</code> (the button head) and the <code>day</code> part take the card radius. The <code>.settings .list-group &gt; .segmented</code> inset goes.</td></tr>
+    <tr><td><code>rules.js</code></td><td>Pass. The swipe actions and the backdrop stay inside the card because <code>item-row-swipe</code> clips with the radius.</td></tr>
+    <tr><td>Risk</td><td>Low. A list of 30 items is 240px longer than today. The drag to reorder lifts a card; the gap needs the lifted row to keep its margin.</td></tr>
+  </tbody>
+</table></div>
+<p><strong>Transfer.</strong> pwa-template: the default row. Stash: as Bodega. Wardrobe: a garment card with a photo is one step from here. Shifts: a shift card with a type edge, the best fit. Nexus: a roadmap item card with a state edge. Calculator: the result tables stay tables; its settings rows become cards.</p>
+
+<h3 id="mosaico">4.2 Mosaico — tiles for short lists</h3>
+<p><strong>Intent.</strong> A list under twelve entries is a grid of tiles: two columns, three from 600px, four from 840px. A tile holds the name, the meta line and a round mark in the corner: the tick of an item, or the send button of a recipe. A longer list falls back to rows. A group head spans the grid.</p>
+<p><strong>Problem it answers.</strong> A short list per shop fits one screen with no scroll, and a tile is a bigger tap target than a row.</p>
+<div class="frames" data-direction="tiles"></div>
+<dl class="screens">
+  <dt>Compra</dt><dd>Eight items in three groups fit without a scroll. The done tiles sink. The name keeps two lines.</dd>
+  <dt>Compra, empty</dt><dd>Unchanged.</dd>
+  <dt>Add sheet</dt><dd>Unchanged.</dd>
+  <dt>Recetas</dt><dd>Recipe tiles with the send button in the corner; the dish tile with the book button.</dd>
+  <dt>Menú, Ajustes</dt><dd>Unchanged: the menu is already a grid, the settings stay rows.</dd>
+  <dt>Walkthrough</dt><dd>The row page and its gestures (swipe to edit, swipe to tick) no longer apply: a tile has no swipe. The page is rewritten.</dd>
+  <dt>600 / 840</dt><dd>Three, then four columns. The 840 recipe grid replaces the two-column rows of Bodega.</dd>
+</dl>
+<div class="tablewrap"><table data-plain>
+  <thead><tr><th>Cost</th><th>Detail</th></tr></thead>
+  <tbody>
+    <tr><td>Tokens</td><td>None.</td></tr>
+    <tr><td>Components</td><td>Two new: <code>tile-grid</code> and <code>tile</code> with five parts. <code>item-row</code> stays for the fallback. The app renders one of two markups by count.</td></tr>
+    <tr><td><code>@extends</code> of Bodega</td><td>New markup in <code>rows.js</code> and <code>recipes.js</code>. The swipe (<code>swipe.js</code>), the reorder drag and the <code>↻</code> toggle need a tile form or go to the edit sheet. The two-column recipes rule goes.</td></tr>
+    <tr><td><code>rules.js</code></td><td>Pass once the blocks are documented. TAP-1: the mark is a 48px button.</td></tr>
+    <tr><td>Risk</td><td>High. Two render paths per list; the gestures of the walkthrough change; a long name truncates sooner. The twelve-entry threshold is a rule the user cannot see.</td></tr>
+  </tbody>
+</table></div>
+<p><strong>Transfer.</strong> pwa-template: an optional component. Stash: as Bodega, per shop. Wardrobe: the best fit, garments and outfits are tiles. Shifts: weak. Nexus: repositories as tiles, items as rows. Calculator: the four calculators as four tiles on a start screen.</p>
+
+<h2 id="comparison"><span class="n">5</span>Comparison</h2>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Direction</th><th>Category</th><th>Intent</th><th>DS cost</th><th>App cost (Bodega)</th><th>Risk</th><th>Fit: Stash</th><th>Fit: Wardrobe</th><th>Fit: Shifts</th><th>Fit: Nexus</th><th>Fit: Calculator</th></tr></thead>
+  <tbody>
+    <tr><td>Taller</td><td>Visual</td><td>Contrast in the shop</td><td>Tokens</td><td><code>npm run ds</code></td><td><span class="tag green">Low</span></td><td>Good</td><td>Good</td><td>Good</td><td>Good</td><td>Good</td></tr>
+    <tr><td>Mercado</td><td>Visual</td><td>Identity</td><td>Tokens + 1 token + 5 rules</td><td>1 rule</td><td><span class="tag amber">Medium</span></td><td>Good</td><td>Best</td><td>Weak</td><td>Good</td><td>Weak</td></tr>
+    <tr><td>Pizarra</td><td>Visual</td><td>Density</td><td>Tokens + 2 tokens + 6 rules</td><td><code>npm run ds</code></td><td><span class="tag amber">Medium</span></td><td>Good</td><td>Fair</td><td>Best</td><td>Good</td><td>Good</td></tr>
+    <tr><td>Pestañas</td><td>Structural</td><td>Always-on add field</td><td>2 components, LAY-2 rewrite</td><td>Shell, 3 extends, walkthrough text</td><td><span class="tag red">High</span></td><td>Good</td><td>Good</td><td>Good</td><td>Good</td><td>Best</td></tr>
+    <tr><td>Barra única</td><td>Structural</td><td>One bar in thumb reach</td><td>1 component, LAY-2 rewrite</td><td>Shell, 2 extends, walkthrough text</td><td><span class="tag amber">Medium</span></td><td>Best</td><td>Good</td><td>Weak</td><td>Good</td><td>None</td></tr>
+    <tr><td>Tarjetas</td><td>Component</td><td>Status at a glance</td><td>5 components' rules, 1 state</td><td>1 attribute, art of 1 page</td><td><span class="tag green">Low</span></td><td>Good</td><td>Good</td><td>Best</td><td>Good</td><td>Fair</td></tr>
+    <tr><td>Mosaico</td><td>Component</td><td>No scroll on a short list</td><td>2 components</td><td>2 render paths, gestures, 1 page</td><td><span class="tag red">High</span></td><td>Good</td><td>Best</td><td>Weak</td><td>Fair</td><td>Fair</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="recommendation"><span class="n">6</span>Recommendation</h2>
+<p><strong>Visual: Taller.</strong> It is the only direction with no component cost and no new token, it raises contrast where the apps are used, and it keeps the green. Mercado is the most distinctive, and the right call for Wardrobe alone: an app may set its own <code>--accent</code> and <code>--font-display</code> in its tokens layer once the design system takes the display-font rule. Pizarra's one lasting idea is the split of <code>--primary</code> from <code>--accent</code>; take the tokens, not the look.</p>
+<p><strong>Structural: Barra única</strong>, for the list apps (Bodega, Stash) and as an opt-in layout of the template. It keeps the thumb-first direction of 0.5.0 and returns 112px of list to a phone. It is not the suite default: Calculator has no list, Shifts no search. Pestañas is the right shape for Calculator alone and is rejected for the suite: the tabs leave the thumb zone.</p>
+<p><strong>Component: Tarjetas.</strong> CSS only, one markup attribute, and the status edge works in every app that has a row with a state. Mosaico is rejected: two render paths and a loss of the swipe gestures for a gain that only a short list sees.</p>
+<aside class="ok"><p><strong>Sequence.</strong> DS 0.7.0: the Taller tokens, the Tarjetas rules, the <code>repeat</code> state, and the <code>--primary</code> and <code>--font-display</code> tokens with their defaults (no visible change until an app sets them). Then <code>npm run ds</code> in the six apps and in Stash; Bodega adds <code>data-repeat</code> in <code>rows.js</code> and redraws the row page of the walkthrough. DS 0.8.0: <code>command-bar</code> as a layout option, with LAY-2 rewritten as "the navigation is <code>.nav-bar</code> or <code>.command-bar</code>", and Bodega and Stash opt in. Each step is a spec change first (DS-1..8, LAY-1..4 and the app rules), as <code>docs/spec/</code> requires.</p></aside>
+
+<h2 id="try"><span class="n">7</span>How to try each direction</h2>
+<ol class="flow">
+  <li><span class="step-what">The frames on this page</span> <span class="step-why">— each toolbar switches light and dark, right and left hand, normal and compact density, and 360, 720 or 1024 px. A caption opens that mockup alone in a tab.</span></li>
+  <li><span class="step-what">The catalogue of the design system</span> <span class="step-why">— <code>npm run serve</code>, then <code>http://localhost:8090/?css=docs/design-alternatives/themes/theme-utility.css</code> (or <code>theme-editorial.css</code>, <code>theme-mono.css</code>). Every component of the catalogue takes the theme.</span></li>
+  <li><span class="step-what">The live app</span> <span class="step-why">— the catalogue of Bodega takes no <code>?css</code>. To see a theme over the real app, add one link after <code>styles.css</code> in <code>index.html</code>, uncommitted: <code>&lt;link rel="stylesheet" href="../pwa-design-system/docs/design-alternatives/themes/theme-utility.css"&gt;</code> served from a parent directory, or copy the file next to <code>styles.css</code>.</span></li>
+  <li><span class="step-what">Rebuild after an edit</span> <span class="step-why">— <code>node docs/design-alternatives/build.mjs</code> writes the 57 mockups and this page again from <code>src/</code> and <code>themes/</code>.</span></li>
+</ol>
+<aside class="note"><p>The folder <code>docs/design-alternatives/</code> is committed, so the page is also on the Pages site under <code>docs/design-alternatives/</code>. No file outside it changed in either repository; <code>version.json</code> is untouched.</p></aside>
+
+<h2 id="sources"><span class="n">8</span>Sources</h2>
+<div class="tablewrap">
+<table class="sources">
+  <thead><tr><th>File</th><th>Used for</th></tr></thead>
+  <tbody>
+    <tr><td><code>design-system.css</code> (1 955 lines, 30 components)</td><td>Tokens, components, layouts; the base of every frame</td></tr>
+    <tr><td><code>docs/spec/01-design-system.md</code>, <code>02-layout.md</code></td><td>DS-1..8, TAP, FOCUS, HAND, STATE, LAY-1..4</td></tr>
+    <tr><td><code>docs/superpowers/specs/2026-10-18-mobile-ux-revision-design.md</code></td><td>The current direction and its decisions D1–D7</td></tr>
+    <tr><td><code>rules.js</code></td><td>Which rules each direction passes or needs changed</td></tr>
+    <tr><td><code>../pwa-shopping-list/index.html</code>, <code>styles.css</code>, <code>icons.svg</code></td><td>The screens, the app parts and the <code>@extends</code> blocks; the sprite of the frames</td></tr>
+    <tr><td><code>../pwa-shopping-list/docs/spec/01-product.md</code>, <code>07-screen.md</code>, <code>15-design-system.md</code></td><td>Constraints, section rules, the app's design rules</td></tr>
+    <tr><td><code>../pwa-shopping-list/src/ui/rows.js</code>, <code>recipes.js</code>, <code>menu.js</code>, <code>list.js</code></td><td>The real markup of a row, a recipe, a day, the dock</td></tr>
+    <tr><td><code>../pwa-shopping-list/src/locales/es.js</code></td><td>The Spanish copy of the frames</td></tr>
+    <tr><td><code>docs/design-alternatives/themes/*.css</code>, <code>src/</code></td><td>The overlays, the shells and the screens behind the frames</td></tr>
+  </tbody>
+</table>
+</div>
+
+<footer>Generated on 2026-10-21 from pwa-design-system@0d799c0 and pwa-shopping-list@93ab8af.</footer>

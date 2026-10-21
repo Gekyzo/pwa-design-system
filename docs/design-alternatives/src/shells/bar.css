@@ -1,0 +1,97 @@
+/* Direction "Barra única" (structural): one screen, one bar. The bottom bar, the add button and
+   the dock merge into a command bar: the section chip, the search field and the + button.
+   Every secondary task is a sheet. No bottom bar, no rail. */
+@layer tokens, base, components, layouts, screens;
+
+@layer base {
+  @media (min-width: 600px) {
+    body,
+    [data-hand="left"] body {
+      padding-right: env(safe-area-inset-right);
+      padding-left: env(safe-area-inset-left);
+    }
+  }
+
+  /* The bar is taller than the old bottom bar: main clears it. */
+  main {
+    padding-bottom: calc(var(--tap-l) + var(--space-4) * 2);
+  }
+}
+
+@layer components {
+  /* @component command-bar
+     @summary The one bar of the app, at the bottom: the section, the search and the add action.
+     @part command-section  The chip that names the section; a tap opens the sections sheet.
+     @part command-space    Keeps the place of the search field on a section with no search. */
+  .command-bar {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3) calc(var(--space-2) + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--line);
+    background: var(--surface);
+  }
+
+  .command-section {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding-inline: var(--space-3) var(--space-2);
+    background: var(--surface-2);
+    font-weight: var(--weight-medium);
+  }
+
+  .command-bar .dock-field,
+  .command-space {
+    flex: 1;
+    height: var(--tap);
+  }
+
+  .command-bar .button.primary.icon {
+    font-size: var(--text-xl);
+  }
+
+  [data-hand="left"] .command-bar {
+    flex-direction: row-reverse;
+  }
+
+  /* The section sheet: the sections, then the tools of the current one. */
+  .sections-sheet .list-row[aria-current="page"] {
+    color: var(--accent);
+    font-weight: var(--weight-strong);
+  }
+
+  @media (min-width: 600px) {
+    .command-bar {
+      inset-inline: max(0px, (100% - var(--content-max)) / 2);
+    }
+
+    .app-header {
+      padding-inline: max(var(--space-4), (100% - var(--content-max)) / 2 + var(--space-4));
+    }
+
+    .toast {
+      left: calc(var(--space-3) + env(safe-area-inset-left));
+      right: calc(var(--space-3) + env(safe-area-inset-right));
+    }
+
+    /* The shop lists stand under the header again, as the dock is gone at every width. */
+  }
+
+  @media (min-width: 840px) {
+    /* The bar stays with the list pane; the detail pane has the room on the right. */
+    body:has(.pane) .command-bar {
+      inset-inline: 0 auto;
+      width: var(--pane-list);
+    }
+
+    main:has(> .pane) {
+      padding-inline: 0;
+    }
+  }
+}

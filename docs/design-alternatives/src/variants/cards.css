@@ -1,0 +1,98 @@
+/* Direction "Tarjetas" (component): a row is a card with a gap around it. The status of an entry
+   is the colour of its start edge: accent for an entry that repeats, muted for a done one. The
+   check circle goes; the body is the tick target (item-row-body tick). The same applies to the
+   rows of a list-group and to the days of the menu. CSS only: no markup changes. */
+@layer tokens, base, components, layouts, screens;
+
+@layer components {
+  .item-list {
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .item-row {
+    border-bottom: 0;
+    border-radius: var(--radius-m);
+    box-shadow: var(--shadow-s);
+    overflow: hidden;
+  }
+
+  .item-row-swipe,
+  .item-row-body {
+    border-radius: inherit;
+  }
+
+  .item-row-body {
+    border-inline-start: 4px solid var(--line);
+    padding-inline-start: var(--space-3);
+  }
+
+  .item-row[data-repeat] .item-row-body {
+    border-inline-start-color: var(--accent);
+  }
+
+  .item-row.recipe .item-row-body {
+    border-inline-start-color: var(--accent-soft);
+  }
+
+  .item-row.done .item-row-body {
+    border-inline-start-color: var(--muted);
+    background: var(--surface-2);
+  }
+
+  .item-row-check {
+    display: none;
+  }
+
+  .group-head,
+  .section-head-button {
+    border-bottom: 0;
+    padding-inline: var(--space-2);
+  }
+
+  .group-head:has(> .group-head-button) .group-head-button {
+    padding-inline: var(--space-2);
+  }
+
+  /* The groups of Ajustes: each row is a card. */
+  .list-group.card {
+    display: grid;
+    gap: var(--space-2);
+    border: 0;
+    background: none;
+    box-shadow: none;
+    overflow: visible;
+  }
+
+  .list-group.card > .settings-row,
+  .list-group.card > .list-row {
+    border-top: 0;
+    border-inline-start: 4px solid var(--line);
+    border-radius: var(--radius-m);
+    background: var(--surface);
+    box-shadow: var(--shadow-s);
+  }
+
+  .list-group.card > .settings-row.danger {
+    border-inline-start-color: var(--danger);
+  }
+
+  .list-group.card > .segmented {
+    margin: 0;
+  }
+
+  /* The days of the menu. */
+  .day {
+    border-bottom: 0;
+    border-radius: var(--radius-m);
+    box-shadow: var(--shadow-s);
+  }
+}
+
+@layer screens {
+  /* The app rule puts the segmented of Ajustes at --space-2 inside its box; a card grid needs no inset. */
+  .settings .list-group > .segmented {
+    margin: 0;
+  }
+}

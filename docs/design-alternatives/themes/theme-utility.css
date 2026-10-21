@@ -1,0 +1,43 @@
+/* Direction "Taller" (visual): a flat, high-contrast utility look.
+   Loads after design-system.css. Tokens only: the names of DS-2 keep, the values change.
+   Try: http://localhost:8090/?css=docs/design-alternatives/themes/theme-utility.css */
+@layer tokens, base, components, layouts, screens;
+
+@layer tokens {
+  :root {
+    --bg: light-dark(#fafbfa, #0f1210);
+    --surface: light-dark(#ffffff, #171b18);
+    --surface-2: light-dark(#eef1ee, #232825);
+    --text: light-dark(#101411, #f3f5f3);
+    --muted: light-dark(#4c5650, #a9b2ac);
+    --line: light-dark(#c6cec9, #3b423e);
+    --accent: light-dark(#0f6b3f, #6fd39c);
+    --accent-text: light-dark(#ffffff, #06150c);
+    --accent-soft: light-dark(#d8eee1, #173a27);
+    --danger: light-dark(#a3221a, #ffb4ab);
+    --warning: light-dark(#7a4a00, #f5c267);
+    --toast-bg: light-dark(#101411, #f3f5f3);
+    --toast-text: light-dark(#ffffff, #101411);
+
+    --text-l: 1.25rem;
+    --text-xl: 1.75rem;
+    --weight-medium: 500;
+
+    --radius-s: 2px;
+    --radius-m: 6px;
+    --radius-l: 8px;
+    --radius-xl: 12px;
+
+    --tap-l: 52px;
+    --nav-height: 60px;
+    --dock-height: 52px;
+
+    /* A hairline ring stands in for every shadow: the look is flat. */
+    --shadow-s: 0 0 0 1px rgb(16 20 17 / 0.14);
+    --shadow-l: 0 0 0 1px rgb(16 20 17 / 0.14), 0 2px 6px rgb(16 20 17 / 0.16);
+
+    --motion-fast: 100ms;
+    --motion: 160ms;
+    --ease: cubic-bezier(0.2, 0, 0, 1);
+  }
+}

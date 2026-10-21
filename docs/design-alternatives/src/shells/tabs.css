@@ -1,0 +1,117 @@
+/* Direction "Pestañas" (structural): the sections are tabs under the header, a secondary task
+   is a page, and the add action is a field in a bar at the bottom. No bottom bar, no rail. */
+@layer tokens, base, components, layouts, screens;
+
+@layer base {
+  /* No rail at any width: the body pads the safe area only (overrides the app's LAY-2 padding). */
+  @media (min-width: 600px) {
+    body,
+    [data-hand="left"] body {
+      padding-right: env(safe-area-inset-right);
+      padding-left: env(safe-area-inset-left);
+    }
+  }
+
+  /* The add bar is as tall as the add button was, so main keeps its bottom padding. */
+}
+
+@layer components {
+  /* @component tab-bar
+     @summary The sections, as tabs under the header. The current one has aria-selected="true".
+     @part tab  One section. */
+  .tab-bar {
+    display: flex;
+    flex: none;
+    width: 100%;
+    max-width: var(--content-max);
+    margin-inline: auto;
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+  }
+
+  .tab {
+    flex: 1;
+    min-height: var(--tap);
+    border-radius: 0;
+    color: var(--muted);
+    font-size: var(--text-s);
+    font-weight: var(--weight-medium);
+  }
+
+  .tab[aria-selected="true"] {
+    color: var(--accent);
+    box-shadow: inset 0 -2px 0 var(--accent);
+  }
+
+  /* @component add-bar
+     @summary The add field of a list, fixed at the bottom, where the add button was. */
+  .add-bar {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 5;
+    display: flex;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4) calc(var(--space-2) + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--line);
+    background: var(--surface);
+  }
+
+  .add-bar > .input {
+    flex: 1;
+  }
+
+  .add-bar > .button.icon {
+    font-size: var(--text-xl);
+  }
+
+  [data-hand="left"] .add-bar {
+    flex-direction: row-reverse;
+  }
+
+  /* The header of a page: the back button stands where the ring was. */
+  .app-header:has(> .button.icon:first-child) {
+    gap: var(--space-1);
+  }
+
+  /* The pane of Recetas: the recipe opens beside the list from 840px. */
+  .pane-detail .sheet-title.main {
+    margin-bottom: var(--space-3);
+  }
+
+  @media (min-width: 600px) {
+    .add-bar {
+      inset-inline: max(0px, (100% - var(--content-max)) / 2);
+    }
+
+    .app-header {
+      padding-inline: max(var(--space-4), (100% - var(--content-max)) / 2 + var(--space-4));
+    }
+
+    /* The toast and the corner art no longer clear a rail. */
+    .toast {
+      left: calc(var(--space-3) + env(safe-area-inset-left));
+      right: calc(var(--space-3) + env(safe-area-inset-right));
+    }
+  }
+
+  @media (min-width: 840px) {
+    main:has(> .pane) {
+      padding-inline: 0;
+    }
+
+    /* The list pane is one column: the two-column recipes of the app do not apply inside it. */
+    .pane-list .item-list:has(> .item-row.recipe) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    body:has(.pane) .app-header {
+      padding-inline: var(--space-4);
+    }
+
+    body:has(.pane) .add-bar {
+      inset-inline: 0 auto;
+      width: var(--pane-list);
+    }
+  }
+}
