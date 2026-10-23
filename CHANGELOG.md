@@ -12,6 +12,17 @@ User-visible changes, newest first.
 - A `sheet-title` is a head in `--text` at `--text-label` and `--weight-medium`, as a `field-label`, no longer a small `--muted` title. The `main` variant keeps its 20px.
 - A `switch` that is a direct child of a `sheet-body` has no inline padding, so its name lines up with the fields of the sheet.
 
+Migration per app (`node scripts/try-apps.mjs`, an app with DS 0.7.1 synced into a copy; failing tests):
+
+- pwa-template — SHEET-1, STATE-1, vendor.test
+- pwa-wardrobe — SHEET-1, STATE-1, vendor.test
+- pwa-shifts — SHEET-1, STATE-1, vendor.test
+- pwa-nexus — vendor.test
+- pwa-financial-calculator — vendor.test
+- pwa-shopping-list — none
+
+The failures are those of 0.7.0, in the apps that have not taken 0.7.0 yet. 0.7.1 adds none. In pwa-nexus the rule `.field-input.multiline:placeholder-shown:not(:focus) + .field-label` that sets `top` no longer has an effect and can go.
+
 ## 0.7.0 - 2026-10-23
 
 - Colour roles replace the single accent: `--primary` and `--on-primary` (the one main action; neutral ink by default), `--done`, `--on-done` and `--done-soft` (progress and the checked state), `--ink` and `--on-ink` (a selected fill), `--secondary` (a tonal fill) and `--control` (the border of an input or an outline button). `--accent`, `--accent-text` and `--accent-soft` stay for one release as aliases of `--primary`, `--on-primary` and `--done-soft`; no shared component reads them. Focus outlines and focus borders take `--text`.
