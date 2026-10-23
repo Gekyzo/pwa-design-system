@@ -634,3 +634,9 @@ test('the title of a sheet head and of an empty state is 20px at the medium weig
     assert.equal(valueIn('components', selector, 'font-weight'), 'var(--weight-medium)', selector);
   }
 });
+
+test('a button label is at the medium weight, as in Ledger', () => {
+  for (const selector of ['.button.primary', '.button.accent', '.button.strong']) {
+    assert.equal(valueIn('components', selector, 'font-weight'), 'var(--weight-medium)', selector);
+  }
+});

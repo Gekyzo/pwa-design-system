@@ -257,7 +257,7 @@
   .button.primary {
     background: var(--primary);
     color: var(--on-primary);
-    font-weight: var(--weight-strong);
+    font-weight: var(--weight-medium);
   }
 
   .button.tonal {
@@ -276,7 +276,7 @@
 
   .button.accent {
     color: var(--primary);
-    font-weight: var(--weight-strong);
+    font-weight: var(--weight-medium);
   }
 
   .button.danger {
@@ -284,7 +284,7 @@
   }
 
   .button.strong {
-    font-weight: var(--weight-strong);
+    font-weight: var(--weight-medium);
   }
 
   .button.icon {
