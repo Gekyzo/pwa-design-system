@@ -69,12 +69,17 @@ const valueIn = (layer, selector, property) =>
 
 test('the tokens take the values of the revision', () => {
   const expected = {
-    '--tap': '48px', '--nav-height': '64px', '--dock-height': '56px', '--radius-m': '12px', '--radius-l': '20px',
-    '--radius-xl': '28px', '--surface': 'light-dark(#ffffff, #191918)', '--surface-2': 'light-dark(#eeedea, #232321)',
-    '--weight-medium': '600', '--text-l': '1.375rem', '--space-7': '32px', '--shadow-l': '0 8px 24px rgb(0 0 0 / 0.14)',
+    '--tap': '48px', '--nav-height': '64px', '--dock-height': '56px', '--radius-m': '8px', '--radius-l': '8px',
+    '--radius-xl': '14px', '--surface': 'light-dark(#ffffff, #191918)', '--surface-2': 'light-dark(#eeedea, #232321)',
+    '--weight-medium': '600', '--text-l': '1.5rem', '--space-7': '32px', '--shadow-l': '0 8px 24px rgb(0 0 0 / 0.14)',
     '--ease': 'cubic-bezier(0.2, 0.8, 0.2, 1)', '--motion': '250ms',
   };
   for (const [name, value] of Object.entries(expected)) assert.equal(valueIn('tokens', ':root', name), value, name);
+});
+
+test('the font token starts with Geist and the title is strong', () => {
+  assert.match(valueIn('tokens', ':root', '--font'), /^"Geist", system-ui/);
+  assert.equal(valueIn('components', '.app-header-title', 'font-weight'), 'var(--weight-strong)');
 });
 
 test('role tokens hold the Ledger values', () => {

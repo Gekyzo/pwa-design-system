@@ -21,6 +21,8 @@ npm run serve    # http://localhost:8090
 - `rules.js`: the DS rules an app checks.
 - `sheet.js`: drag a sheet down to close it (`dismissed`, `bindSheetDrag`). An app imports it from
   `vendor/design-system/sheet.js`.
+- `geist.woff2`: the Geist variable font that `--font` names. `sync.mjs` copies it beside the CSS.
+  `OFL.txt` is its licence.
 - `index.html` and `page.js`: the catalogue page. Run `npm run serve`, open
   http://localhost:8090/. Add the CSS of an app with `?css=styles.css,more.css`.
 - `scripts/serve.mjs`: the server of `npm run serve`. It sends `Cache-Control: no-cache`, so a

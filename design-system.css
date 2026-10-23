@@ -1,6 +1,13 @@
 @layer tokens, base, components, layouts, screens;
 
 @layer tokens {
+  @font-face {
+    font-family: "Geist";
+    src: url("geist.woff2") format("woff2");
+    font-weight: 100 900;
+    font-display: swap;
+  }
+
   :root {
     /* `light-dark()` takes its value from `color-scheme`: the phone, or Theme in Settings. */
     color-scheme: light dark;
@@ -31,12 +38,12 @@
     --knob: #ffffff; /* the knob of a switch, in both themes */
     --scrim: rgb(0 0 0 / 0.45); /* veil behind a sheet */
 
-    --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font: "Geist", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     --font-mono: ui-monospace, "Cascadia Mono", Menlo, Consolas, monospace; /* keys of the walkthrough */
     --text-xs: 0.75rem; /* labels, badges, captions */
     --text-s: 0.875rem; /* second text, chips */
     --text-m: 1rem; /* body */
-    --text-l: 1.375rem; /* screen title */
+    --text-l: 1.5rem; /* screen title */
     --text-xl: 2rem; /* the + of the add button */
     --weight-normal: 400;
     --weight-medium: 600; /* titles, selected labels */
@@ -52,9 +59,9 @@
     --space-7: 32px;
 
     --radius-s: 4px;
-    --radius-m: 12px; /* buttons, inputs */
-    --radius-l: 20px; /* groups, banner, add button */
-    --radius-xl: 28px; /* top of a sheet */
+    --radius-m: 8px; /* buttons, inputs */
+    --radius-l: 8px; /* groups, banner, add button */
+    --radius-xl: 14px; /* top of a sheet */
     --radius-pill: 999px;
     --radius-round: 50%;
 
@@ -646,6 +653,7 @@
   .app-header-title {
     margin: 0;
     font-size: var(--text-l);
+    font-weight: var(--weight-strong);
     line-height: 1.2;
     overflow: hidden;
     text-overflow: ellipsis;
