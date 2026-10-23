@@ -376,7 +376,7 @@ test('the dock is fixed above the bottom bar and is hidden from 600px', () => {
   assert.equal(declaration('.dock', 'position'), 'fixed');
   assert.equal(declaration('.dock', 'bottom'), 'calc(var(--nav-height) + env(safe-area-inset-bottom))');
   assert.equal(declaration('.dock', 'height'), 'var(--dock-height)');
-  assert.equal(declaration('.dock', 'background'), 'var(--surface)');
+  assert.equal(declaration('.dock', 'background'), 'var(--bg)');
   assert.ok(allValues('.dock', 'display').includes('none'));
   const padding = declaration('.dock', 'padding-inline');
   assert.match(padding, /safe-area-inset-left/);
@@ -652,4 +652,8 @@ test('a chip and an input are outlined boxes with the corners of a control', () 
   assert.equal(valueIn('components', '.chip', 'background'), 'var(--surface)');
   assert.equal(valueIn('components', '.input', 'border-radius'), 'var(--radius-control)');
   assert.equal(valueIn('components', '.input', 'background'), 'var(--surface)');
+});
+
+test('the bottom bar stands on the ground, as the dock does', () => {
+  assert.equal(valueIn('components', '.nav-bar', 'background'), 'var(--bg)');
 });

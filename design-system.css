@@ -725,7 +725,7 @@
     flex: none;
     padding-bottom: env(safe-area-inset-bottom);
     border-top: 1px solid var(--line);
-    background: var(--surface);
+    background: var(--bg);
   }
 
   .nav-item {
@@ -1811,7 +1811,7 @@
     height: var(--dock-height);
     padding-inline: calc(var(--space-4) + env(safe-area-inset-left)) calc(var(--space-4) + env(safe-area-inset-right));
     border-top: 1px solid var(--line);
-    background: var(--surface);
+    background: var(--bg);
   }
 
   .dock .chip {
