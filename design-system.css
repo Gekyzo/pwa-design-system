@@ -1176,12 +1176,12 @@
   }
 
   /* @component empty-state
-     @summary The text of a list or a part with nothing in it. Holds a button, except inline (STATE-1). A second action is a button outline below the primary.
+     @summary The text of a list or a part with nothing in it. Holds a button, except inline (STATE-1). A second action is a button tonal below the primary.
      @variant inline  In a sheet: aligned with the content, with less space.
      @variant low     At the bottom of its area, in reach of the thumb. The app gives the list area a height, as the percent needs one.
      @part empty-state-title  The short title above the text.
      @example <div class="empty-state"><p>The list is empty.</p><button class="button primary" type="button">Bring from Later</button></div>
-     @example <div class="empty-state low" style="height: 240px"><h2 class="empty-state-title">Nothing here</h2><p>Add the first note.</p><button class="button primary" type="button">Add a note</button></div>
+     @example <div class="empty-state low" style="height: 240px"><h2 class="empty-state-title">Nothing here</h2><p>Add the first note.</p><button class="button primary" type="button">Add a note</button><button class="button tonal" type="button">Import notes</button></div>
      @example <p class="empty-state inline">No note matches.</p> */
   .empty-state {
     margin: calc(var(--space-6) * 2) var(--space-6);
@@ -1193,8 +1193,8 @@
     margin-top: var(--space-2);
   }
 
-  /* The empty state is on --bg, with art behind it, and its text is muted: a second action is a
-     --surface box with the text colour, like the content of the list. */
+  /* Kept for the markup of 0.6.0, where the second action was an outline button: on --bg, with art
+     behind it, it is a --surface box with the text colour. A new second action is tonal (STATE-1). */
   .empty-state .button.outline {
     background: var(--surface);
     color: var(--text);

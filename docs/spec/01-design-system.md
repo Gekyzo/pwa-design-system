@@ -71,8 +71,8 @@ app holds its screens and its own overrides. `rules.js` checks the rules; each a
   css defines has a `[data-hand="left"]` rule that mirrors it. A pinned `input-row` sits at the bottom of a
   sheet body; the app orders the list above it.
 - **STATE-1** Each `empty-state` holds a button, except `inline`. A `low` empty state sits at the bottom of
-  its area; the app gives that area a height. A second action is an `outline` button below the `primary`
-  one, on `--surface` with the `--text` colour.
+  its area; the app gives that area a height. A second action is a `tonal` button below the `primary`
+  one, as every action that is not the main one.
 
 ## Parts
 
