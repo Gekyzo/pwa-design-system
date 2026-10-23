@@ -640,3 +640,7 @@ test('a button label is at the medium weight, as in Ledger', () => {
     assert.equal(valueIn('components', selector, 'font-weight'), 'var(--weight-medium)', selector);
   }
 });
+
+test('the check of a row is a square box', () => {
+  assert.equal(valueIn('components', '.item-row-check', 'border-radius'), 'var(--radius-s)');
+});
