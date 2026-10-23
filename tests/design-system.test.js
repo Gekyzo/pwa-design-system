@@ -14,9 +14,10 @@ const CORE = [
   'swipe-action', 'switch', 'toast',
 ];
 
-// The 61 shared tokens: 58 custom properties of :root and the colour scheme of :root and of each theme.
+// The 70 shared tokens: 67 custom properties of :root and the colour scheme of :root and of each theme.
 const TOKENS = [
-  '--bg', '--surface', '--surface-2', '--text', '--muted', '--line', '--accent', '--accent-text', '--accent-soft', '--danger',
+  '--bg', '--surface', '--surface-2', '--text', '--muted', '--line', '--control', '--primary', '--on-primary', '--done', '--on-done',
+  '--done-soft', '--ink', '--on-ink', '--secondary', '--accent', '--accent-text', '--accent-soft', '--danger',
   '--warning', '--toast-bg', '--toast-text', '--knob', '--scrim', '--font', '--font-mono', '--text-xs', '--text-s',
   '--text-m', '--text-l', '--text-xl', '--weight-normal', '--weight-medium', '--weight-strong', '--space-half', '--space-1', '--space-2',
   '--space-3', '--space-4', '--space-5', '--space-6', '--space-7', '--radius-s', '--radius-m', '--radius-l', '--radius-xl',
@@ -45,8 +46,8 @@ test('the layer statement comes first', () => {
   assert.ok(css.startsWith('@layer tokens, base, components, layouts, screens;\n'));
 });
 
-test('the tokens layer holds the 61 shared tokens', () => {
-  assert.equal(TOKENS.length + SCHEMES.length, 61);
+test('the tokens layer holds the 70 shared tokens', () => {
+  assert.equal(TOKENS.length + SCHEMES.length, 70);
   const pairs = new Set(rules.filter((rule) => rule.layer === 'tokens').flatMap((rule) => rule.declarations.map((d) => `${rule.selector} ${d.property}`)));
   for (const name of TOKENS) assert.ok(pairs.has(`:root ${name}`), name);
   for (const pair of SCHEMES) assert.ok(pairs.has(pair), pair);
@@ -69,11 +70,46 @@ const valueIn = (layer, selector, property) =>
 test('the tokens take the values of the revision', () => {
   const expected = {
     '--tap': '48px', '--nav-height': '64px', '--dock-height': '56px', '--radius-m': '12px', '--radius-l': '20px',
-    '--radius-xl': '28px', '--surface': 'light-dark(#ffffff, #1d2621)', '--surface-2': 'light-dark(#eef2ef, #26302a)',
+    '--radius-xl': '28px', '--surface': 'light-dark(#ffffff, #191918)', '--surface-2': 'light-dark(#eeedea, #232321)',
     '--weight-medium': '600', '--text-l': '1.375rem', '--space-7': '32px', '--shadow-l': '0 8px 24px rgb(0 0 0 / 0.14)',
     '--ease': 'cubic-bezier(0.2, 0.8, 0.2, 1)', '--motion': '250ms',
   };
   for (const [name, value] of Object.entries(expected)) assert.equal(valueIn('tokens', ':root', name), value, name);
+});
+
+test('role tokens hold the Ledger values', () => {
+  const expected = {
+    '--bg': 'light-dark(#f4f3f1, #0f0f0e)',
+    '--surface': 'light-dark(#ffffff, #191918)',
+    '--surface-2': 'light-dark(#eeedea, #232321)',
+    '--line': 'light-dark(#e6e5e2, #232321)',
+    '--control': 'light-dark(#d4d3cf, #3d3d3a)',
+    '--text': 'light-dark(#0a0a0a, #ffffff)',
+    '--muted': 'light-dark(#5f5f5f, #b4b4b4)',
+    '--primary': 'light-dark(#141414, #ffffff)',
+    '--on-primary': 'light-dark(#ffffff, #0a0a0a)',
+    '--done': 'light-dark(#1f7a4d, #5fc491)',
+    '--on-done': 'light-dark(#ffffff, #0c1a12)',
+    '--done-soft': 'light-dark(#e2f2ea, #1d3327)',
+    '--ink': 'light-dark(#141414, #ffffff)',
+    '--on-ink': 'light-dark(#ffffff, #0a0a0a)',
+    '--secondary': 'light-dark(#e5e3de, #2a2a28)',
+    '--danger': 'light-dark(#b3261e, #f08a9b)',
+  };
+  for (const [name, value] of Object.entries(expected)) assert.equal(valueIn('tokens', ':root', name), value, name);
+});
+
+test('the accent tokens are aliases of the roles for one release', () => {
+  assert.equal(valueIn('tokens', ':root', '--accent'), 'var(--primary)');
+  assert.equal(valueIn('tokens', ':root', '--accent-text'), 'var(--on-primary)');
+  assert.equal(valueIn('tokens', ':root', '--accent-soft'), 'var(--done-soft)');
+});
+
+test('no shared component reads --accent', () => {
+  const readers = rules
+    .filter((rule) => rule.layer !== 'tokens' && rule.declarations.some((d) => d.value.includes('var(--accent')))
+    .map((rule) => rule.selector);
+  assert.deepEqual(readers, []);
 });
 
 test('the reduced-motion block still sets --motion to 0ms', () => {
@@ -85,17 +121,17 @@ test('a base button is as tall as --tap', () => {
   assert.equal(valueIn('base', 'button', 'min-height'), 'var(--tap)');
 });
 
-test('an idle toggle is muted and a pressed one has an accent shape behind its icon', () => {
+test('an idle toggle is muted and a pressed one is an --ink shape behind its icon', () => {
   assert.equal(valueIn('components', '.button.toggle', 'color'), 'var(--muted)');
   const pressed = '.button.toggle[aria-pressed="true"]';
-  assert.equal(valueIn('components', pressed, 'color'), 'var(--accent)');
-  assert.equal(valueIn('components', pressed, 'background'), 'var(--accent-soft)');
+  assert.equal(valueIn('components', pressed, 'color'), 'var(--on-ink)');
+  assert.equal(valueIn('components', pressed, 'background'), 'var(--ink)');
 });
 
 test('an input has one focus indicator: the border, with no outline', () => {
   assert.equal(valueIn('components', '.input:focus-visible', 'outline'), 'none');
-  assert.equal(valueIn('components', '.input:focus-visible', 'border-color'), 'var(--accent)');
-  assert.equal(valueIn('components', '.input.strong', 'border'), '1px solid var(--accent)');
+  assert.equal(valueIn('components', '.input:focus-visible', 'border-color'), 'var(--text)');
+  assert.equal(valueIn('components', '.input.strong', 'border'), '1px solid var(--text)');
   assert.equal(valueIn('components', '.input.strong:focus-visible', 'border-width'), '2px');
 });
 
@@ -248,14 +284,14 @@ test('a row of a list group draws its focus ring inside itself, and an end row t
   assert.equal(declaration('.list-group.pair > :is(.list-row, .settings-row):last-child', 'border-start-end-radius'), inner);
 });
 
-test('a segmented is a switch track whose knob slides to the chosen segment', () => {
+test('a segmented is a --surface-2 track whose --surface knob slides to the chosen segment', () => {
   assert.equal(declaration('.segmented', 'background'), 'var(--surface-2)');
-  assert.equal(declaration('.segmented::before', 'background'), 'var(--accent)');
+  assert.equal(declaration('.segmented::before', 'background'), 'var(--surface)');
   assert.equal(declaration('.segmented::before', 'transform'), 'translateX(calc(var(--segment-index) * 100%))');
   assert.equal(declaration('.segmented:has(> .segment:nth-child(3))', '--segment-count'), '3');
   assert.equal(declaration('.segmented:has(> .segment:nth-child(2)[aria-pressed="true"])', '--segment-index'), '1');
   assert.equal(declaration('.segmented:has(> .segment:nth-child(3)[aria-pressed="true"])', '--segment-index'), '2');
-  assert.equal(declaration('.segmented .segment[aria-pressed="true"]', 'color'), 'var(--accent-text)');
+  assert.equal(declaration('.segmented .segment[aria-pressed="true"]', 'color'), 'var(--text)');
 });
 
 test('a swipe action stacks its icon and label in a column 72px wide', () => {
@@ -320,11 +356,11 @@ test('a dock lifts the add button and the main padding below 600px', () => {
   assert.match(allValues('body:has(.dock:not([hidden])) main', 'padding-bottom')[0], /var\(--dock-height\)/);
 });
 
-test('the current nav item is a pill behind its icon with a plain label', () => {
+test('the current nav item is a --secondary pill behind its icon with a plain label', () => {
   const current = '.nav-item[aria-current="page"]';
-  assert.equal(declaration(`${current} .icon`, 'background'), 'var(--accent-soft)');
+  assert.equal(declaration(`${current} .icon`, 'background'), 'var(--secondary)');
   assert.equal(declaration(`${current} .icon`, 'border-radius'), 'var(--radius-pill)');
-  assert.equal(declaration(`${current} .icon`, 'color'), 'var(--accent)');
+  assert.equal(declaration(`${current} .icon`, 'color'), 'var(--text)');
   assert.match(declaration(`${current} .icon`, 'padding'), /var\(--space-1\) var\(--space-5\)/);
   assert.equal(declaration(current, 'color'), 'var(--text)');
   assert.equal(declaration(current, 'font-weight'), 'var(--weight-medium)');
@@ -340,9 +376,9 @@ test('the rail stands at the start side by default and at the end side for the r
   assert.match(declaration(':root[data-hand="right"] .fab', 'right'), /var\(--rail-width\) \+ env\(safe-area-inset-right\)/);
 });
 
-test('the dock field shows its focus with an accent border', () => {
-  assert.equal(declaration('.dock-field', 'border'), '2px solid var(--line)');
-  assert.equal(declaration('.dock-field:focus-within', 'border-color'), 'var(--accent)');
+test('the dock field has a --control border that takes --text on focus', () => {
+  assert.equal(declaration('.dock-field', 'border'), '2px solid var(--control)');
+  assert.equal(declaration('.dock-field:focus-within', 'border-color'), 'var(--text)');
 });
 
 test('the add button collapses to a square tap target', () => {
@@ -433,7 +469,47 @@ test('an open sheet moves the toast to the top after every rule that sets its bo
   assert.equal(sheetOpen, order.length - 1);
 });
 
-test('an idle switch track is --muted for a 3:1 contrast and a checked one is --accent', () => {
+test('an idle switch track is --muted for a 3:1 contrast and a checked one is --done', () => {
   assert.equal(declaration('.switch-input', 'background'), 'var(--muted)');
-  assert.equal(declaration('.switch-input:checked', 'background'), 'var(--accent)');
+  assert.equal(declaration('.switch-input:checked', 'background'), 'var(--done)');
+});
+
+test('each shared component reads the colour role of its meaning', () => {
+  const expected = [
+    [':focus-visible', 'outline', '2px solid var(--text)', 'base'],
+    ['.button.primary', 'background', 'var(--primary)'],
+    ['.button.primary', 'color', 'var(--on-primary)'],
+    ['.button.accent', 'color', 'var(--primary)'],
+    ['.button.outline', 'border-color', 'var(--control)'],
+    ['.chip[aria-pressed="true"]', 'background', 'var(--ink)'],
+    ['.chip[aria-pressed="true"]', 'color', 'var(--on-ink)'],
+    ['.pill', 'background', 'var(--done-soft)'],
+    ['.pill', 'color', 'var(--done)'],
+    ['.input', 'border', '1px solid var(--control)'],
+    ['.field-input', 'border', '2px solid var(--control)'],
+    ['.field-input:focus', 'border-color', 'var(--text)'],
+    ['.field-input:focus + .field-label', 'color', 'var(--text)'],
+    ['.app-header .button.icon[aria-expanded="true"]', 'color', 'var(--text)'],
+    ['.ring', 'background', 'conic-gradient(var(--done) var(--pct), var(--line) 0)'],
+    ['.badge', 'background', 'var(--primary)'],
+    ['.badge', 'color', 'var(--on-primary)'],
+    ['.banner', 'background', 'var(--done-soft)'],
+    ['from', 'background', 'var(--done-soft)'],
+    ['.item-row-backdrop', 'background', 'var(--done-soft)'],
+    ['.item-row-backdrop', 'color', 'var(--done)'],
+    ['.item-row-swipe.armed .item-row-backdrop', 'background', 'var(--done)'],
+    ['.item-row-swipe.armed .item-row-backdrop', 'color', 'var(--on-done)'],
+    ['.item-row-check:checked', 'background', 'var(--done)'],
+    ['.item-row-check:checked', 'border-color', 'var(--done)'],
+    ['.item-row-check:checked::after', 'border', 'solid var(--on-done)'],
+    ['.swipe-action', 'background', 'var(--done-soft)'],
+    ['.swipe-action', 'color', 'var(--done)'],
+    ['.group-head', 'color', 'var(--text)'],
+    ['.list-row.accent', 'color', 'var(--primary)'],
+    ['.fab', 'background', 'var(--primary)'],
+    ['.fab', 'color', 'var(--on-primary)'],
+  ];
+  for (const [selector, property, value, layer = 'components'] of expected) {
+    assert.equal(valueIn(layer, selector, property), value, `${selector} ${property}`);
+  }
 });
