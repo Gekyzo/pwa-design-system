@@ -168,8 +168,19 @@
     padding-bottom: calc(var(--tap-l) + var(--space-4) * 2 + var(--dock-height));
   }
 
+  /* Below 600px the add button of a visible dock replaces the floating one, so the content clears
+     the dock only. */
+  body:has(.dock:not([hidden]) > .dock-add:not([hidden])) main {
+    padding-bottom: calc(var(--dock-height) + var(--space-4));
+  }
+
+  /* No dock from 600px: the floating button is back, and the content clears it. */
   @media (min-width: 600px) {
     body:has(.dock:not([hidden])) main {
+      padding-bottom: calc(var(--tap-l) + var(--space-4) * 2);
+    }
+
+    body:has(.dock:not([hidden]) > .dock-add:not([hidden])) main {
       padding-bottom: calc(var(--tap-l) + var(--space-4) * 2);
     }
   }

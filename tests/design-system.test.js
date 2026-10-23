@@ -396,6 +396,24 @@ test('a dock lifts the add button and the main padding below 600px', () => {
   assert.match(allValues('body:has(.dock:not([hidden])) main', 'padding-bottom')[0], /var\(--dock-height\)/);
 });
 
+const MAIN_BESIDE_DOCK_ADD = 'body:has(.dock:not([hidden]) > .dock-add:not([hidden])) main';
+
+test('below 600px main pads only for the dock while a dock-add replaces the fab', () => {
+  const outside = rules.filter((rule) => rule.selector === MAIN_BESIDE_DOCK_ADD && mediaOf(rule) === null);
+  assert.equal(outside.length, 1);
+  assert.equal(outside[0].layer, 'base');
+  const padding = outside[0].declarations.find((d) => d.property === 'padding-bottom')?.value;
+  assert.equal(padding, 'calc(var(--dock-height) + var(--space-4))');
+});
+
+test('from 600px main beside a dock-add pads for the fab again', () => {
+  const inside = rules.filter((rule) => rule.selector === MAIN_BESIDE_DOCK_ADD && mediaOf(rule) === '@media (min-width: 600px)');
+  assert.equal(inside.length, 1);
+  const padding = inside[0].declarations.find((d) => d.property === 'padding-bottom')?.value;
+  assert.equal(padding, valueIn('base', 'main', 'padding-bottom'));
+  assert.equal(rules.filter((rule) => rule.selector === MAIN_BESIDE_DOCK_ADD).at(-1), inside[0]);
+});
+
 // The @media prelude around a rule, or null. Comments are blanked so their braces do not count.
 const mediaBlocks = (() => {
   const code = css.replace(/\/\*[\s\S]*?\*\//g, (comment) => comment.replace(/[^\n]/g, ' '));

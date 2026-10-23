@@ -89,7 +89,8 @@ Variants and parts that the table does not list by name:
 - `button tonal`: the fill of `--secondary` with `--text`, no border. It is for each action that is
   not the one main action of a view. `outline` with `danger` is only for a destructive action.
 - `dock-add`: a part of `dock`. It is the last direct child of the dock, a `button primary icon`.
-  Below 600px, while a visible dock holds a visible `dock-add`, the `fab` does not show.
+  Below 600px, while a visible dock holds a visible `dock-add`, the `fab` does not show, and `main`
+  pads only for the dock.
 - `progress`: a bar of 4px, the full width of its box, filled with `--done` to `--pct`.
 
 The screen parts belong to the apps.
