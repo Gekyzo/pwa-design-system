@@ -7,7 +7,7 @@ import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const FILES = ['design-system.css', 'catalog.js', 'rules.js', 'sheet.js'];
+const FILES = ['design-system.css', 'catalog.js', 'rules.js', 'sheet.js', 'geist.woff2'];
 
 const git = (cwd, ...args) => execFileSync('git', args, { cwd, encoding: 'utf8' }).trim();
 

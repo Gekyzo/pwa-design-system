@@ -8,7 +8,8 @@ import { join } from 'node:path';
 import { sync } from '../sync.mjs';
 
 const FILES = { 'design-system.css': '@layer tokens;\n', 'catalog.js': 'export {};\n', 'rules.js': 'export const RULES = [];\n', 'sheet.js': 'export const dismissed = () => false;\n' };
-const sha = (text) => createHash('sha256').update(text).digest('hex');
+const FONT = Buffer.from([0x77, 0x4f, 0x46, 0x32, 0x00, 0xff, 0x80]);
+const sha =(text) => createHash('sha256').update(text).digest('hex');
 const git = (cwd, ...args) => execFileSync('git', ['-c', 'user.name=t', '-c', 'user.email=t@t', ...args], { cwd, encoding: 'utf8' }).trim();
 
 // A committed source repository and an app directory.
@@ -16,6 +17,7 @@ const fixture = () => {
   const from = mkdtempSync(join(tmpdir(), 'ds-from-'));
   const to = mkdtempSync(join(tmpdir(), 'ds-to-'));
   for (const [name, text] of Object.entries(FILES)) writeFileSync(join(from, name), text);
+  writeFileSync(join(from, 'geist.woff2'), FONT);
   writeFileSync(join(from, 'version.json'), '{ "version": "1.2.3" }\n');
   writeFileSync(join(to, 'package.json'), '{}\n');
   git(from, 'init', '-q');
@@ -32,9 +34,18 @@ test('sync writes the shared files and SOURCE.json with the hashes of their cont
   assert.deepEqual(source, {
     version: '1.2.3',
     commit: git(from, 'rev-parse', 'HEAD'),
-    files: Object.fromEntries(Object.entries(FILES).map(([name, text]) => [name, sha(text)])),
+    files: { ...Object.fromEntries(Object.entries(FILES).map(([name, text]) => [name, sha(text)])), 'geist.woff2': sha(FONT) },
   });
   assert.deepEqual(JSON.parse(readFileSync(join(dir, 'SOURCE.json'), 'utf8')), source);
+});
+
+test('sync copies geist.woff2 and hashes it in SOURCE.json', () => {
+  const { from, to } = fixture();
+  const source = sync({ from, to });
+  const dir = join(to, 'vendor/design-system');
+  assert.deepEqual(readFileSync(join(dir, 'geist.woff2')), FONT);
+  assert.equal(source.files['geist.woff2'], sha(FONT));
+  assert.equal(JSON.parse(readFileSync(join(dir, 'SOURCE.json'), 'utf8')).files['geist.woff2'], sha(FONT));
 });
 
 test('sync replaces an older vendored copy', () => {

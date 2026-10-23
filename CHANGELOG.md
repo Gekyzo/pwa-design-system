@@ -2,9 +2,31 @@
 
 User-visible changes, newest first.
 
-## Unreleased
+## 0.7.0 - 2026-10-23
 
-- An `input` takes `--surface` on the page, so it stands out from `--bg`. Inside a `sheet`, a `list-group` (not `plain`) or an `input-row` `pinned` it keeps `--bg`. The `field-label` follows the fill of its box. The `raised` variant is now the default and is deprecated. The examples of the catalogue page stand on `--bg`.
+- Colour roles replace the single accent: `--primary` and `--on-primary` (the one main action; neutral ink by default), `--done`, `--on-done` and `--done-soft` (progress and the checked state), `--ink` and `--on-ink` (a selected fill), `--secondary` (a tonal fill) and `--control` (the border of an input or an outline button). `--accent`, `--accent-text` and `--accent-soft` stay for one release as aliases of `--primary`, `--on-primary` and `--done-soft`; no shared component reads them. Focus outlines and focus borders take `--text`.
+- The grounds take the Ledger values: a stone `--bg`, `--surface` white (near-black in dark), a raised `--surface-2`, ink `--text`, a softer dark `--danger`. `--toast-bg` and `--toast-text` are `--ink` and `--on-ink`: the `toast` is an ink box, no longer green-black.
+- Geist is the font: `geist.woff2` (SIL OFL, `OFL.txt`) with an `@font-face` in the tokens layer, first in `--font`; `sync.mjs` copies it beside the CSS. `--radius-m` and `--radius-l` are 8px, `--radius-xl` is 14px. The screen title is 1.5rem and strong; the body is 0.9375rem (15px) and the second text 0.8125rem (13px); a new `--text-label` (0.875rem) keeps group and section heads, chips and segments at 14px. New token `--text-h` (1.25rem): the title of a `sheet-head` and of an `empty-state` is 20px at `--weight-medium`, so a sheet title keeps to one line beside its button. A `primary`, `accent` or `strong` button label takes `--weight-medium`, so a label in half a bar keeps its words.
+- A `group-head` is a sticky band on `--bg`, in sentence case at `--weight-medium`; the `section-head` loses its capitals and tracking.
+- The check of an `item-row` is a square with `--radius-s` corners, as in Ledger. The divider of an `item-row` with a check starts where its text starts, after the check, and runs to the end (with the left hand, at `--space-4`); a row without a check keeps the full divider. New token `--radius-control` (6px): a `chip` is an outlined box on `--surface` with a `--control` border and those corners, `--ink` when pressed (the dock no longer fills its chip, and the `surface` variant now equals the base); an `input` takes those corners and a `--surface` fill, and the `raised` variant now equals the base. The `nav-bar` and the `dock` stand on `--bg` above a `--line` border, as in Ledger. A `list-group` runs the full width with square corners. Only the `card` variant keeps the inset box, `--radius-l` and the corners of its end rows, now without a shadow.
+- New `button` variant `tonal`: the `--secondary` fill with `--text`, no border. It is the role of each action that is not the one main action of a view, the button of a `sheet-head` included. `outline` with `danger` is only for a destructive action. STATE-1 says so for an `empty-state`: its second action is a `tonal` button below the `primary` one. The `outline` rule of 0.6.0 inside an `empty-state` stays for the markup of older apps.
+- A `banner` is neutral: `--surface-2` with `--text`. The new `done` variant keeps the `--done-soft` ground for a message about work that is done.
+- New `progress` component: a 4px bar the full width of its box, filled with `--done` to `--pct`. The `ring` stays.
+- New `dock` part `dock-add`: a square `button primary icon` of the tap size, the last direct child of the dock, at the far left with the left hand. A `dock` `chip` that is `aria-pressed="true"` keeps its `--ink` fill.
+- Below 600px the `fab` does not show while a visible dock holds a visible `dock-add`, and `main` then pads only for the dock (`--dock-height` and `--space-4`), so no empty room for the `fab` stays at the end of the list. From 600px the dock does not show, so the `fab` is the add button again. LAY-2 and LAY-4 say so.
+- The catalogue page marks a link under the pointer with `--surface-2` and the current link with `--ink` and `--on-ink`, no longer with `--done-soft`.
+- Breaking for an app: the colours change. Each app sets `--primary` and `--done` (with their `on-` roles) in its tokens layer and replaces its `--accent*` uses. A group head loses its capitals. A `banner` that tells of work that is done adds the `done` variant to keep its `--done-soft` ground. Body text is now 15px, so an app that runs on iOS Safari should keep its inputs at 16px or accept the zoom on focus.
+
+Migration per app (`node scripts/try-apps.mjs`, an app with DS 0.7.0 synced into a copy; failing tests):
+
+- pwa-template — SHEET-1, STATE-1, vendor.test
+- pwa-wardrobe — SHEET-1, STATE-1, vendor.test
+- pwa-shifts — SHEET-1, STATE-1, vendor.test
+- pwa-nexus — vendor.test
+- pwa-financial-calculator — vendor.test
+- pwa-shopping-list — vendor.test
+
+For every app: the file list of its `tests/vendor.test.js` gains `geist.woff2`. Set `--primary` and `--done` in the tokens layer of `styles.css`, and replace each `--accent*` use with a role token. SHEET-1 and STATE-1 still fail in pwa-template, pwa-wardrobe and pwa-shifts, as with 0.5.0; pwa-nexus no longer fails them.
 
 ## 0.6.0 - 2026-10-21
 

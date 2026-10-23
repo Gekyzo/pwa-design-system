@@ -16,12 +16,14 @@ areas and the pane layout.
 - **LAY-2** The navigation is one element, `.nav-bar`. Below 600px it is the bar at the bottom;
   from 600px the same element is a rail of `--rail-width`. The rail stands at the start side, or at
   the end side with `data-hand="right"` on the root. The toast and the add button clear it. The app
-  pads its body on the rail side, so the page moves beside it.
+  pads its body on the rail side, so the page moves beside it. Below 600px the add button is the
+  `dock-add` of the dock when the view has a visible one; the `fab` does not show then. From 600px
+  the dock does not show, and the `fab` is the add button.
 - **LAY-3** A section with a list and a detail uses the `pane` layout. Below 840px it shows the
   list, or the detail alone while an entry is open, with a **Back** button (`pane-back`). From
   840px it shows both; with no entry open the detail shows a hint, and **Back** is hidden. The
   `pane` block documents the parts `pane-list`, `pane-detail` and `pane-back`.
 - **LAY-4** The safe-area insets of the phone pad the header (top), the bar (bottom), the rail
   (start side), the sheets and the walkthrough. The page keeps out of a cutout on either side,
-  and so do the toast and the add button, which are fixed. The `body` rule of the app sets the
+  and so do the toast and the add button (the `fab`, or the `dock-add` of the dock), which are fixed. The `body` rule of the app sets the
   side padding; `rules.js` checks it when the app sheet follows the shared one.
