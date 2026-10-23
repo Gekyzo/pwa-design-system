@@ -1492,9 +1492,9 @@
     padding: 0 var(--space-4);
     border-radius: 0;
     border-bottom: 1px solid var(--line);
-    color: var(--muted);
+    color: var(--text);
     font-size: var(--text-label);
-    font-weight: var(--weight-strong);
+    font-weight: var(--weight-medium);
     letter-spacing: normal;
     text-transform: none;
   }
@@ -1534,7 +1534,7 @@
      @part list-row-meta  A muted text at the end of a row.
      @variant accent      On list-row: the row that makes a new thing, in --primary text.
      @variant card        An inset box with a border and rounded corners, without a shadow.
-     @part list-group-head      The quiet title above a group.
+     @part list-group-head      The title above a group, in --text.
      @part settings-row         A tall row of a group: a label, a value and a chevron.
      @part settings-row-label   The text of a settings row.
      @part settings-row-value   The muted value at the end of a settings row.
@@ -1650,7 +1650,7 @@
 
   .list-group-head {
     margin: var(--space-5) var(--space-4) var(--space-2);
-    color: var(--muted);
+    color: var(--text);
     font-size: var(--text-label);
     font-weight: var(--weight-medium);
   }

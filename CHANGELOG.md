@@ -8,6 +8,7 @@ User-visible changes, newest first.
 - A `button tonal` inside a `banner` takes the `--surface` fill. On `--surface-2` and on `--done-soft` the `--secondary` fill was so close to the ground that the button looked disabled.
 - A `field-label` stands above its box, as in Ledger: `--text-label` at `--weight-medium` in `--text`, `--space-2` above the input. It no longer sits inside the empty box and floats onto its top border. The markup stays: the label follows the input, and the `field` reverses its column. The placeholder stays transparent.
 - Breaking for an app: a rule that moves a `field-label` with `top` or `transform` no longer has an effect, and a field is taller by the label line.
+- A `list-group-head` and a `section-head-button` are heads in `--text`, as in Ledger, no longer `--muted`. The `section-head-button` takes `--weight-medium`, as a `group-head`.
 
 ## 0.7.0 - 2026-10-23
 

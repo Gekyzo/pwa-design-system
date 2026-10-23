@@ -282,10 +282,10 @@ test('the action bar sticks to the bottom and its buttons keep the large tap siz
   assert.ok(catalog.components.some((part) => part.name === 'action-bar' && part.examples.length));
 });
 
-test('a settings row is a tall row, danger is red, and the group head is a quiet title', () => {
+test('a settings row is a tall row, danger is red, and the group head is a title in --text', () => {
   assert.equal(declaration('.settings-row', 'min-height'), 'var(--tap-l)');
   assert.equal(declaration('.settings-row.danger', 'color'), 'var(--danger)');
-  assert.equal(declaration('.list-group-head', 'color'), 'var(--muted)');
+  assert.equal(declaration('.list-group-head', 'color'), 'var(--text)');
   assert.equal(declaration('.list-group-head', 'font-weight'), 'var(--weight-medium)');
   assert.equal(declaration('.list-group-head', 'text-transform'), undefined);
   assert.equal(declaration('.settings-row .chevron', 'color'), 'var(--muted)');
@@ -330,10 +330,11 @@ test('group heads are sentence case and sticky', () => {
   for (const [property, value] of Object.entries(expected)) assert.equal(valueIn('components', '.group-head', property), value, property);
 });
 
-test('section head is sentence case', () => {
+test('section head is a sentence-case head in --text', () => {
   assert.equal(valueIn('components', '.section-head-button', 'text-transform'), 'none');
   assert.equal(valueIn('components', '.section-head-button', 'letter-spacing'), 'normal');
-  assert.equal(valueIn('components', '.section-head-button', 'color'), 'var(--muted)');
+  assert.equal(valueIn('components', '.section-head-button', 'color'), 'var(--text)');
+  assert.equal(valueIn('components', '.section-head-button', 'font-weight'), 'var(--weight-medium)');
 });
 
 test('a list group is full width', () => {
