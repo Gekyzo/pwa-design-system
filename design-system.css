@@ -1788,6 +1788,12 @@
     border-image: linear-gradient(to right, transparent var(--space-4), var(--line) 0) 0 0 1 0 / 0 0 1px 0;
   }
 
+  /* A trailing slot comes first: the text starts after the body padding, the slot, the gap and the
+     name padding. */
+  [data-hand="left"] .item-row:has(.item-row-check):has(.item-row-end) {
+    border-image: linear-gradient(to right, transparent calc(var(--space-4) + var(--space-2) + var(--tap) * 2), var(--line) 0) 0 0 1 0 / 0 0 1px 0;
+  }
+
   [data-hand="left"] .item-row-end {
     order: -1;
     flex-direction: row-reverse;

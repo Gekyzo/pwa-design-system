@@ -393,6 +393,13 @@ test('the divider of a left-hand row with a check starts at the text, at --space
     'linear-gradient(to right, transparent var(--space-4), var(--line) 0) 0 0 1 0 / 0 0 1px 0');
 });
 
+test('the divider of a left-hand row with a check and a trailing slot starts after the slot, at the text', () => {
+  // The text starts after the body padding, the slot of two buttons, the gap and the name padding.
+  const start = 'calc(var(--space-4) + var(--space-2) + var(--tap) * 2)';
+  assert.equal(declaration('[data-hand="left"] .item-row:has(.item-row-check):has(.item-row-end)', 'border-image'),
+    `linear-gradient(to right, transparent ${start}, var(--line) 0) 0 0 1 0 / 0 0 1px 0`);
+});
+
 test('a row label holds two lines, and a tick row is the tick target', () => {
   assert.equal(declaration('.item-row-label', '-webkit-line-clamp'), '2');
   assert.equal(declaration('.item-row-label', 'display'), '-webkit-box');

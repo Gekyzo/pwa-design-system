@@ -2,6 +2,10 @@
 
 User-visible changes, newest first.
 
+## 0.7.1 - 2026-10-23
+
+- With the left hand, the divider of an `item-row` with a check and an `item-row-end` starts after the slot, where the text starts. 0.7.0 started it at `--space-4`, under the buttons of the slot.
+
 ## 0.7.0 - 2026-10-23
 
 - Colour roles replace the single accent: `--primary` and `--on-primary` (the one main action; neutral ink by default), `--done`, `--on-done` and `--done-soft` (progress and the checked state), `--ink` and `--on-ink` (a selected fill), `--secondary` (a tonal fill) and `--control` (the border of an input or an outline button). `--accent`, `--accent-text` and `--accent-soft` stay for one release as aliases of `--primary`, `--on-primary` and `--done-soft`; no shared component reads them. Focus outlines and focus borders take `--text`.
