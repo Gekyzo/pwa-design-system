@@ -41,8 +41,8 @@
     --font: "Geist", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     --font-mono: ui-monospace, "Cascadia Mono", Menlo, Consolas, monospace; /* keys of the walkthrough */
     --text-xs: 0.75rem; /* labels, badges, captions */
-    --text-s: 0.875rem; /* second text, chips */
-    --text-m: 1rem; /* body */
+    --text-s: 0.8125rem; /* second text, chips: 13px */
+    --text-m: 0.9375rem; /* body: 15px */
     --text-l: 1.5rem; /* screen title */
     --text-xl: 2rem; /* the + of the add button */
     --weight-normal: 400;

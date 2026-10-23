@@ -71,7 +71,7 @@ test('the tokens take the values of the revision', () => {
   const expected = {
     '--tap': '48px', '--nav-height': '64px', '--dock-height': '56px', '--radius-m': '8px', '--radius-l': '8px',
     '--radius-xl': '14px', '--surface': 'light-dark(#ffffff, #191918)', '--surface-2': 'light-dark(#eeedea, #232321)',
-    '--weight-medium': '600', '--text-l': '1.5rem', '--space-7': '32px', '--shadow-l': '0 8px 24px rgb(0 0 0 / 0.14)',
+    '--weight-medium': '600', '--text-l': '1.5rem', '--text-m': '0.9375rem', '--text-s': '0.8125rem', '--space-7': '32px', '--shadow-l': '0 8px 24px rgb(0 0 0 / 0.14)',
     '--ease': 'cubic-bezier(0.2, 0.8, 0.2, 1)', '--motion': '250ms',
   };
   for (const [name, value] of Object.entries(expected)) assert.equal(valueIn('tokens', ':root', name), value, name);
