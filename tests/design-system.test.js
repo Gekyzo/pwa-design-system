@@ -133,6 +133,12 @@ test('an idle toggle is muted and a pressed one is an --ink shape behind its ico
   assert.equal(valueIn('components', pressed, 'background'), 'var(--ink)');
 });
 
+test('a tonal button is the secondary fill', () => {
+  assert.equal(valueIn('components', '.button.tonal', 'background'), 'var(--secondary)');
+  assert.equal(valueIn('components', '.button.tonal', 'color'), 'var(--text)');
+  assert.equal(valueIn('components', '.button.tonal', 'border'), '0');
+});
+
 test('an input has one focus indicator: the border, with no outline', () => {
   assert.equal(valueIn('components', '.input:focus-visible', 'outline'), 'none');
   assert.equal(valueIn('components', '.input:focus-visible', 'border-color'), 'var(--text)');

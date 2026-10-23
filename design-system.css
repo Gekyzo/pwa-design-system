@@ -218,17 +218,19 @@
 
   /* @component button
      @summary Tap target for one action. Min height --tap. The base look has no fill.
-     @variant primary  Main action of a view or a sheet, in --primary. One for each view.
-     @variant outline  Second action beside a primary, or an action of a row. A --control border.
+     @variant primary  The one main action of a view or a sheet, in --primary. One for each view.
+     @variant tonal    Every other action, in the --secondary fill. The button of a sheet head is tonal.
+     @variant outline  An action of a row, or a destructive action when combined with danger. A --control border.
      @variant quiet    Muted text, for an action that steps back, such as Saltar.
      @variant accent   --primary text and no fill, for an action that is not the main one.
-     @variant danger   Removes data. Combine with outline.
+     @variant danger   Removes data. Only combined with outline.
      @variant strong   Strong text, for the action of a toast.
      @variant icon     Square, icon or one sign only. Needs an aria-label.
      @variant toggle   An icon button that is on with aria-pressed="true": the icon takes --on-ink over an --ink shape.
      @variant wide     Takes the full width of its box.
      @example <button class="button primary" type="button">Add</button>
-     @example <button class="button outline" type="button">Clear menu</button>
+     @example <button class="button tonal" type="button">Clear menu</button>
+     @example <button class="button outline" type="button">Edit</button>
      @example <button class="button outline danger" type="button">Delete</button>
      @example <button class="button outline quiet" type="button">Skip</button>
      @example <button class="button accent" type="button">Update</button>
@@ -255,6 +257,12 @@
     background: var(--primary);
     color: var(--on-primary);
     font-weight: var(--weight-strong);
+  }
+
+  .button.tonal {
+    background: var(--secondary);
+    color: var(--text);
+    border: 0;
   }
 
   .button.outline {
