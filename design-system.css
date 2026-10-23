@@ -33,8 +33,8 @@
     --accent-soft: var(--done-soft); /* deprecated: use --done-soft */
     --danger: light-dark(#b3261e, #f08a9b);
     --warning: light-dark(#9a5b00, #f2b65c);
-    --toast-bg: light-dark(#17201b, #e8ede9);
-    --toast-text: light-dark(#ffffff, #17201b);
+    --toast-bg: var(--ink); /* the toast is an --ink box */
+    --toast-text: var(--on-ink);
     --knob: #ffffff; /* the knob of a switch, in both themes */
     --scrim: rgb(0 0 0 / 0.45); /* veil behind a sheet */
 

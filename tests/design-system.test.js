@@ -104,6 +104,11 @@ test('role tokens hold the Ledger values', () => {
   for (const [name, value] of Object.entries(expected)) assert.equal(valueIn('tokens', ':root', name), value, name);
 });
 
+test('the toast tokens are the ink roles', () => {
+  assert.equal(valueIn('tokens', ':root', '--toast-bg'), 'var(--ink)');
+  assert.equal(valueIn('tokens', ':root', '--toast-text'), 'var(--on-ink)');
+});
+
 test('the accent tokens are aliases of the roles for one release', () => {
   assert.equal(valueIn('tokens', ':root', '--accent'), 'var(--primary)');
   assert.equal(valueIn('tokens', ':root', '--accent-text'), 'var(--on-primary)');
