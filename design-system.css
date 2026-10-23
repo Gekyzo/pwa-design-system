@@ -1793,8 +1793,9 @@
      @part dock-field  A search box in the dock: an input and a clear button. A --control border that takes --text on focus.
      @part dock-input  The input in the field. The field draws the border.
      @part dock-clear  The button that empties the field.
-     @part dock-add  The add button of the view, a "button primary icon" at the end of the dock. While it shows, the fab does not show below 600px.
-     @example <div class="dock" style="position: static"><button class="chip" type="button" aria-pressed="true">All 4</button><button class="chip" type="button">Filter</button><label class="dock-field"><input class="dock-input" type="search" aria-label="Filter"><button class="dock-clear" type="button" aria-label="Clear">x</button></label></div> */
+     @part dock-add  The add button of the view, a "button primary icon", the last direct child of the dock. While it shows, the fab does not show below 600px.
+     @example <div class="dock" style="position: static"><button class="chip" type="button" aria-pressed="true">All 4</button><button class="chip" type="button">Filter</button><label class="dock-field"><input class="dock-input" type="search" aria-label="Filter"><button class="dock-clear" type="button" aria-label="Clear">x</button></label></div>
+     @example <div class="dock" style="position: static"><label class="dock-field"><input class="dock-input" type="search" aria-label="Filter"></label><button class="button primary icon dock-add" type="button" aria-label="Add">+</button></div> */
   .dock {
     position: fixed;
     right: 0;
@@ -1813,6 +1814,9 @@
   .dock .chip {
     flex: 1;
     justify-content: center;
+  }
+
+  .dock .chip:not([aria-pressed="true"]) {
     background: var(--surface-2);
   }
 
