@@ -360,6 +360,20 @@ test('the left hand moves only the check and the trailing slot, not the text', (
   assert.equal(declaration('[data-hand="left"] .item-row-end', 'order'), '-1');
 });
 
+test('the divider of a row with a check starts at the text and runs to the end', () => {
+  // The text starts after the body padding, the check with its margins, the gap and the name padding.
+  const start = 'calc(var(--space-2) * 3 + var(--space-1) * 2 + var(--icon))';
+  assert.equal(declaration('.item-row', 'border-bottom'), '1px solid var(--line)');
+  assert.equal(declaration('.item-row:has(.item-row-check)', 'border-image'),
+    `linear-gradient(to right, transparent ${start}, var(--line) 0) 0 0 1 0 / 0 0 1px 0`);
+  assert.equal(valueIn('components', '.item-row:not(:has(.item-row-check))', 'border-image'), undefined);
+});
+
+test('the divider of a left-hand row with a check starts at the text, at --space-4', () => {
+  assert.equal(declaration('[data-hand="left"] .item-row:has(.item-row-check)', 'border-image'),
+    'linear-gradient(to right, transparent var(--space-4), var(--line) 0) 0 0 1 0 / 0 0 1px 0');
+});
+
 test('a row label holds two lines, and a tick row is the tick target', () => {
   assert.equal(declaration('.item-row-label', '-webkit-line-clamp'), '2');
   assert.equal(declaration('.item-row-label', 'display'), '-webkit-box');

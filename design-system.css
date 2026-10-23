@@ -1246,7 +1246,7 @@
   }
 
   /* @component item-row
-     @summary One entry of a list, as a row. Its body slides over its actions.
+     @summary One entry of a list, as a row. Its body slides over its actions. With a check, its divider starts at the text.
      @part item-row-swipe         The box that clips the sliding body.
      @part item-row-body          The row itself: check, name, then buttons.
      @part item-row-check         The round checkbox of an entry that can be done. --done when checked.
@@ -1276,6 +1276,12 @@
     background: var(--surface);
     /* The rows of a scope open a gap for a lifted row. `placeLifted` in drag.js sets the transform. */
     transition: transform var(--motion-fast) var(--ease);
+  }
+
+  /* With a check, the divider starts where the text starts: after the body padding, the check and
+     its margins, the gap and the name padding. It runs to the end of the row. */
+  .item-row:has(.item-row-check) {
+    border-image: linear-gradient(to right, transparent calc(var(--space-2) * 3 + var(--space-1) * 2 + var(--icon)), var(--line) 0) 0 0 1 0 / 0 0 1px 0;
   }
 
   .item-row.lifted {
@@ -1768,6 +1774,11 @@
   [data-hand="left"] .item-row-check {
     order: 1;
     margin: var(--space-3) var(--space-2) var(--space-3) var(--space-1);
+  }
+
+  /* The check is at the end, so the divider starts at the text, at --space-4. */
+  [data-hand="left"] .item-row:has(.item-row-check) {
+    border-image: linear-gradient(to right, transparent var(--space-4), var(--line) 0) 0 0 1 0 / 0 0 1px 0;
   }
 
   [data-hand="left"] .item-row-end {
