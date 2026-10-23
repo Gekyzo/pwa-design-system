@@ -668,6 +668,7 @@ test('each shared component reads the colour role of its meaning', () => {
     ['.banner', 'background', 'var(--surface-2)'],
     ['.banner', 'color', 'var(--text)'],
     ['.banner.done', 'background', 'var(--done-soft)'],
+    ['.banner .button.tonal', 'background', 'var(--surface)'],
     ['from', 'background', 'var(--done-soft)'],
     ['.item-row-backdrop', 'background', 'var(--done-soft)'],
     ['.item-row-backdrop', 'color', 'var(--done)'],

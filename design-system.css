@@ -1160,7 +1160,7 @@
   }
 
   /* @component banner
-     @summary A message in the flow of a list, on --surface-2 with the --text colour, with its action below it.
+     @summary A message in the flow of a list, on --surface-2 with the --text colour, with its action below it. A button tonal in it stands on --surface.
      @variant done  A message about work that is done, on --done-soft.
      @part banner-text  The text below the title.
      @example <section class="banner"><strong>Version 2 is ready</strong><p class="banner-text">Open it again to use it.</p><button class="button tonal wide" type="button">Update</button></section>
@@ -1175,6 +1175,11 @@
 
   .banner.done {
     background: var(--done-soft);
+  }
+
+  /* The --secondary fill is close to the ground of a banner, so its tonal button stands on --surface. */
+  .banner .button.tonal {
+    background: var(--surface);
   }
 
   .banner-text {

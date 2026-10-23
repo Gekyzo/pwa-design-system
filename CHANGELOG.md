@@ -5,6 +5,7 @@ User-visible changes, newest first.
 ## 0.7.1 - 2026-10-23
 
 - With the left hand, the divider of an `item-row` with a check and an `item-row-end` starts after the slot, where the text starts. 0.7.0 started it at `--space-4`, under the buttons of the slot.
+- A `button tonal` inside a `banner` takes the `--surface` fill. On `--surface-2` and on `--done-soft` the `--secondary` fill was so close to the ground that the button looked disabled.
 
 ## 0.7.0 - 2026-10-23
 
