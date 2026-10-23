@@ -1256,7 +1256,7 @@
      @summary One entry of a list, as a row. Its body slides over its actions. With a check, its divider starts at the text.
      @part item-row-swipe         The box that clips the sliding body.
      @part item-row-body          The row itself: check, name, then buttons.
-     @part item-row-check         The round checkbox of an entry that can be done. --done when checked.
+     @part item-row-check         The square checkbox of an entry that can be done. --done when checked.
      @part item-row-name          The name button, with its quantity and its meta line.
      @part item-row-qty           The quantity after the name.
      @part item-row-label         The text of the name. It keeps two lines, then ends with an ellipsis.
