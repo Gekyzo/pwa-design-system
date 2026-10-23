@@ -162,6 +162,12 @@ test('an input takes --surface everywhere', () => {
   assert.equal(valueIn('components', `${on} .input`, 'background'), undefined);
 });
 
+test('a sheet title is a 14px medium head in --text, as a field label', () => {
+  assert.equal(declaration('.sheet-title', 'color'), 'var(--text)');
+  assert.equal(declaration('.sheet-title', 'font-size'), 'var(--text-label)');
+  assert.equal(declaration('.sheet-title', 'font-weight'), 'var(--weight-medium)');
+});
+
 test('a field label stands above its box, as a 14px medium head in --text', () => {
   // The label follows the input in the markup, so the field reverses its column.
   assert.equal(declaration('.field', 'display'), 'flex');
