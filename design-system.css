@@ -60,7 +60,8 @@
     --space-7: 32px;
 
     --radius-s: 4px;
-    --radius-m: 8px; /* buttons, inputs */
+    --radius-control: 6px; /* inputs, chips */
+    --radius-m: 8px; /* buttons */
     --radius-l: 8px; /* groups, banner, add button */
     --radius-xl: 14px; /* top of a sheet */
     --radius-pill: 999px;
@@ -322,8 +323,9 @@
   .chip {
     min-height: var(--tap);
     padding: 0 var(--space-4);
-    border-radius: var(--radius-pill);
-    background: var(--bg);
+    border: 1px solid var(--control);
+    border-radius: var(--radius-control);
+    background: var(--surface);
     font-size: var(--text-s);
   }
 
@@ -333,9 +335,10 @@
   }
 
   .chip[aria-pressed="true"] {
+    border-color: var(--ink);
     background: var(--ink);
     color: var(--on-ink);
-    font-weight: var(--weight-strong);
+    font-weight: var(--weight-medium);
   }
 
   .chip .count {
@@ -486,8 +489,8 @@
   }
 
   /* @component input
-     @summary A one-line text box. Height --tap, on --bg, with a --control border that takes --text on focus.
-     @variant raised  On a --bg page: the box takes --surface.
+     @summary A one-line text box. Height --tap, on --surface, with a --control border that takes --text on focus.
+     @variant raised  Kept for older markup: the box takes --surface, as the base does.
      @variant strong  The main box of a sheet, with a --text border.
      @example <input class="input" type="text" placeholder="New tag">
      @example <input class="input raised" type="search" placeholder="Search">
@@ -502,8 +505,8 @@
     height: var(--tap);
     padding: 0 var(--space-3);
     border: 1px solid var(--control);
-    border-radius: var(--radius-m);
-    background: var(--bg);
+    border-radius: var(--radius-control);
+    background: var(--surface);
   }
 
   .input.raised {
@@ -591,7 +594,7 @@
     left: var(--space-3);
     padding: 0 var(--space-1);
     border-radius: var(--radius-s);
-    background: var(--bg);
+    background: var(--surface);
     color: var(--muted);
     line-height: 1;
     pointer-events: none;
@@ -602,7 +605,7 @@
   .field-input:focus + .field-label,
   .field-input:not(:placeholder-shown) + .field-label {
     top: 0;
-    background: linear-gradient(var(--surface) 50%, var(--bg) 50%);
+    background: var(--surface);
     font-size: var(--text-xs);
   }
 
@@ -1814,10 +1817,6 @@
   .dock .chip {
     flex: 1;
     justify-content: center;
-  }
-
-  .dock .chip:not([aria-pressed="true"]) {
-    background: var(--surface-2);
   }
 
   .dock-field {

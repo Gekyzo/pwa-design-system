@@ -14,13 +14,13 @@ const CORE = [
   'swipe-action', 'switch', 'toast',
 ];
 
-// The 71 shared tokens: 68 custom properties of :root and the colour scheme of :root and of each theme.
+// The 72 shared tokens: 69 custom properties of :root and the colour scheme of :root and of each theme.
 const TOKENS = [
   '--bg', '--surface', '--surface-2', '--text', '--muted', '--line', '--control', '--primary', '--on-primary', '--done', '--on-done',
   '--done-soft', '--ink', '--on-ink', '--secondary', '--accent', '--accent-text', '--accent-soft', '--danger',
   '--warning', '--toast-bg', '--toast-text', '--knob', '--scrim', '--font', '--font-mono', '--text-xs', '--text-s',
   '--text-m', '--text-h', '--text-l', '--text-xl', '--weight-normal', '--weight-medium', '--weight-strong', '--space-half', '--space-1', '--space-2',
-  '--space-3', '--space-4', '--space-5', '--space-6', '--space-7', '--radius-s', '--radius-m', '--radius-l', '--radius-xl',
+  '--space-3', '--space-4', '--space-5', '--space-6', '--space-7', '--radius-s', '--radius-control', '--radius-m', '--radius-l', '--radius-xl',
   '--radius-pill', '--radius-round', '--tap', '--tap-l', '--dock-height', '--icon', '--icon-s', '--arrow', '--nav-height',
   '--rail-width', '--side-sheet', '--content-max', '--pane-list', '--art-width', '--logo', '--shadow-s', '--shadow-l', '--motion-fast',
   '--motion', '--motion-slow', '--ease',
@@ -46,8 +46,8 @@ test('the layer statement comes first', () => {
   assert.ok(css.startsWith('@layer tokens, base, components, layouts, screens;\n'));
 });
 
-test('the tokens layer holds the 71 shared tokens', () => {
-  assert.equal(TOKENS.length + SCHEMES.length, 71);
+test('the tokens layer holds the 72 shared tokens', () => {
+  assert.equal(TOKENS.length + SCHEMES.length, 72);
   const pairs = new Set(rules.filter((rule) => rule.layer === 'tokens').flatMap((rule) => rule.declarations.map((d) => `${rule.selector} ${d.property}`)));
   for (const name of TOKENS) assert.ok(pairs.has(`:root ${name}`), name);
   for (const pair of SCHEMES) assert.ok(pairs.has(pair), pair);
@@ -643,4 +643,13 @@ test('a button label is at the medium weight, as in Ledger', () => {
 
 test('the check of a row is a square box', () => {
   assert.equal(valueIn('components', '.item-row-check', 'border-radius'), 'var(--radius-s)');
+});
+
+test('a chip and an input are outlined boxes with the corners of a control', () => {
+  assert.equal(valueIn('tokens', ':root', '--radius-control'), '6px');
+  assert.equal(valueIn('components', '.chip', 'border'), '1px solid var(--control)');
+  assert.equal(valueIn('components', '.chip', 'border-radius'), 'var(--radius-control)');
+  assert.equal(valueIn('components', '.chip', 'background'), 'var(--surface)');
+  assert.equal(valueIn('components', '.input', 'border-radius'), 'var(--radius-control)');
+  assert.equal(valueIn('components', '.input', 'background'), 'var(--surface)');
 });
