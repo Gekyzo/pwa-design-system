@@ -104,6 +104,11 @@ test('role tokens hold the Ledger values', () => {
   for (const [name, value] of Object.entries(expected)) assert.equal(valueIn('tokens', ':root', name), value, name);
 });
 
+test('a banner is neutral, and its done variant is documented', () => {
+  const banner = catalog.components.find((part) => part.name === 'banner');
+  assert.ok(banner.variants.some((variant) => variant.name === 'done'));
+});
+
 test('the toast tokens are the ink roles', () => {
   assert.equal(valueIn('tokens', ':root', '--toast-bg'), 'var(--ink)');
   assert.equal(valueIn('tokens', ':root', '--toast-text'), 'var(--on-ink)');
@@ -644,7 +649,9 @@ test('each shared component reads the colour role of its meaning', () => {
     ['.ring', 'background', 'conic-gradient(var(--done) var(--pct), var(--line) 0)'],
     ['.badge', 'background', 'var(--primary)'],
     ['.badge', 'color', 'var(--on-primary)'],
-    ['.banner', 'background', 'var(--done-soft)'],
+    ['.banner', 'background', 'var(--surface-2)'],
+    ['.banner', 'color', 'var(--text)'],
+    ['.banner.done', 'background', 'var(--done-soft)'],
     ['from', 'background', 'var(--done-soft)'],
     ['.item-row-backdrop', 'background', 'var(--done-soft)'],
     ['.item-row-backdrop', 'color', 'var(--done)'],
