@@ -396,6 +396,80 @@ test('a dock lifts the add button and the main padding below 600px', () => {
   assert.match(allValues('body:has(.dock:not([hidden])) main', 'padding-bottom')[0], /var\(--dock-height\)/);
 });
 
+// The @media prelude around a rule, or null. Comments are blanked so their braces do not count.
+const mediaBlocks = (() => {
+  const code = css.replace(/\/\*[\s\S]*?\*\//g, (comment) => comment.replace(/[^\n]/g, ' '));
+  const blocks = [];
+  const stack = [];
+  let line = 1;
+  let start = 0;
+  for (let i = 0; i < code.length; i += 1) {
+    const char = code[i];
+    if (char === '\n') line += 1;
+    else if (char === ';' || char === '}') {
+      if (char === '}') {
+        const open = stack.pop();
+        if (open?.prelude.startsWith('@media')) blocks.push({ ...open, end: line });
+      }
+      start = i + 1;
+    } else if (char === '{') {
+      stack.push({ prelude: code.slice(start, i).trim().replace(/\s+/g, ' '), start: line });
+      start = i + 1;
+    }
+  }
+  return blocks;
+})();
+const mediaOf = (rule) => mediaBlocks.find((block) => block.start < rule.line && rule.line <= block.end)?.prelude ?? null;
+
+test('progress fills --done to --pct', () => {
+  assert.equal(declaration('.progress', 'background'), 'linear-gradient(to right, var(--done) var(--pct), var(--line) 0)');
+  assert.equal(declaration('.progress', '--pct'), '0%');
+  assert.equal(declaration('.progress', 'height'), '4px');
+  assert.equal(declaration('.progress', 'width'), '100%');
+  assert.equal(declaration('.progress', 'border-radius'), 'var(--radius-pill)');
+  const progress = catalog.components.find((part) => part.name === 'progress');
+  assert.equal(progress?.layer, 'components');
+  assert.ok(progress.examples.some((example) => /class="progress" style="--pct: 20%" role="progressbar"/.test(example)));
+});
+
+test('a dock-add is a square of the tap size at the end', () => {
+  assert.equal(declaration('.dock-add', 'width'), 'var(--tap)');
+  assert.equal(declaration('.dock-add', 'height'), 'var(--tap)');
+  assert.equal(declaration('.dock-add', 'border-radius'), 'var(--radius-m)');
+  assert.equal(declaration('.dock-add', 'margin-inline-start'), 'auto');
+  const dock = catalog.components.find((part) => part.name === 'dock');
+  assert.ok(dock.parts.some((part) => part.name === 'dock-add'));
+});
+
+test('a dock-add sits at the start of the reversed dock for the left hand', () => {
+  // The row is reversed, so the auto margin moves to the end side to push the button to the far left.
+  assert.equal(declaration('[data-hand="left"] .dock-add', 'margin-inline-start'), '0');
+  assert.equal(declaration('[data-hand="left"] .dock-add', 'margin-inline-end'), 'auto');
+});
+
+const FAB_BESIDE_DOCK_ADD = 'body:has(.dock:not([hidden]) > .dock-add:not([hidden])) .fab';
+
+test('fab hides below 600px beside a dock-add', () => {
+  const outside = rules.filter((rule) => rule.selector === FAB_BESIDE_DOCK_ADD && mediaOf(rule) === null);
+  assert.equal(outside.length, 1);
+  assert.deepEqual(outside[0].declarations.map((d) => [d.property, d.value]), [['display', 'none']]);
+});
+
+test('fab shows from 600px', () => {
+  const inside = rules.filter((rule) => rule.selector === FAB_BESIDE_DOCK_ADD && mediaOf(rule) === '@media (min-width: 600px)');
+  assert.equal(inside.length, 1);
+  const display = inside[0].declarations.find((d) => d.property === 'display')?.value;
+  assert.ok(display && display !== 'none', display);
+  const order = rules.filter((rule) => rule.selector === FAB_BESIDE_DOCK_ADD);
+  assert.equal(order.at(-1), inside[0]);
+});
+
+test('fab stays without a dock-add', () => {
+  const hiding = rules.filter((rule) => /\.fab$/.test(rule.selector) && !rule.selector.includes('.dock-add')
+    && rule.declarations.some((d) => d.property === 'display' && d.value === 'none'));
+  assert.deepEqual(hiding.map((rule) => rule.selector), []);
+});
+
 test('the current nav item is a --secondary pill behind its icon with a plain label', () => {
   const current = '.nav-item[aria-current="page"]';
   assert.equal(declaration(`${current} .icon`, 'background'), 'var(--secondary)');
