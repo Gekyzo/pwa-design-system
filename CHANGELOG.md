@@ -24,7 +24,7 @@ Migration per app (`node scripts/try-apps.mjs`, an app with DS 0.7.0 synced into
 - pwa-financial-calculator — vendor.test
 - pwa-shopping-list — vendor.test
 
-For every app: the file list of its `tests/vendor.test.js` gains `geist.woff2`. Set `--primary` and `--done` in the tokens layer of `styles.css`, and replace each `--accent*` use with a role token. SHEET-1 and STATE-1 fail in three apps as with 0.5.0.
+For every app: the file list of its `tests/vendor.test.js` gains `geist.woff2`. Set `--primary` and `--done` in the tokens layer of `styles.css`, and replace each `--accent*` use with a role token. SHEET-1 and STATE-1 still fail in pwa-template, pwa-wardrobe and pwa-shifts, as with 0.5.0; pwa-nexus no longer fails them.
 
 ## 0.6.0 - 2026-10-21
 
