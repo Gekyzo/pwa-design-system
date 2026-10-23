@@ -14,12 +14,12 @@ const CORE = [
   'swipe-action', 'switch', 'toast',
 ];
 
-// The 70 shared tokens: 67 custom properties of :root and the colour scheme of :root and of each theme.
+// The 71 shared tokens: 68 custom properties of :root and the colour scheme of :root and of each theme.
 const TOKENS = [
   '--bg', '--surface', '--surface-2', '--text', '--muted', '--line', '--control', '--primary', '--on-primary', '--done', '--on-done',
   '--done-soft', '--ink', '--on-ink', '--secondary', '--accent', '--accent-text', '--accent-soft', '--danger',
   '--warning', '--toast-bg', '--toast-text', '--knob', '--scrim', '--font', '--font-mono', '--text-xs', '--text-s',
-  '--text-m', '--text-l', '--text-xl', '--weight-normal', '--weight-medium', '--weight-strong', '--space-half', '--space-1', '--space-2',
+  '--text-m', '--text-h', '--text-l', '--text-xl', '--weight-normal', '--weight-medium', '--weight-strong', '--space-half', '--space-1', '--space-2',
   '--space-3', '--space-4', '--space-5', '--space-6', '--space-7', '--radius-s', '--radius-m', '--radius-l', '--radius-xl',
   '--radius-pill', '--radius-round', '--tap', '--tap-l', '--dock-height', '--icon', '--icon-s', '--arrow', '--nav-height',
   '--rail-width', '--side-sheet', '--content-max', '--pane-list', '--art-width', '--logo', '--shadow-s', '--shadow-l', '--motion-fast',
@@ -46,8 +46,8 @@ test('the layer statement comes first', () => {
   assert.ok(css.startsWith('@layer tokens, base, components, layouts, screens;\n'));
 });
 
-test('the tokens layer holds the 70 shared tokens', () => {
-  assert.equal(TOKENS.length + SCHEMES.length, 70);
+test('the tokens layer holds the 71 shared tokens', () => {
+  assert.equal(TOKENS.length + SCHEMES.length, 71);
   const pairs = new Set(rules.filter((rule) => rule.layer === 'tokens').flatMap((rule) => rule.declarations.map((d) => `${rule.selector} ${d.property}`)));
   for (const name of TOKENS) assert.ok(pairs.has(`:root ${name}`), name);
   for (const pair of SCHEMES) assert.ok(pairs.has(pair), pair);
@@ -71,7 +71,7 @@ test('the tokens take the values of the revision', () => {
   const expected = {
     '--tap': '48px', '--nav-height': '64px', '--dock-height': '56px', '--radius-m': '8px', '--radius-l': '8px',
     '--radius-xl': '14px', '--surface': 'light-dark(#ffffff, #191918)', '--surface-2': 'light-dark(#eeedea, #232321)',
-    '--weight-medium': '600', '--text-l': '1.5rem', '--text-m': '0.9375rem', '--text-s': '0.8125rem', '--space-7': '32px', '--shadow-l': '0 8px 24px rgb(0 0 0 / 0.14)',
+    '--weight-medium': '600', '--text-l': '1.5rem', '--text-m': '0.9375rem', '--text-h': '1.25rem', '--text-s': '0.8125rem', '--space-7': '32px', '--shadow-l': '0 8px 24px rgb(0 0 0 / 0.14)',
     '--ease': 'cubic-bezier(0.2, 0.8, 0.2, 1)', '--motion': '250ms',
   };
   for (const [name, value] of Object.entries(expected)) assert.equal(valueIn('tokens', ':root', name), value, name);
@@ -625,5 +625,12 @@ test('each shared component reads the colour role of its meaning', () => {
   ];
   for (const [selector, property, value, layer = 'components'] of expected) {
     assert.equal(valueIn(layer, selector, property), value, `${selector} ${property}`);
+  }
+});
+
+test('the title of a sheet head and of an empty state is 20px at the medium weight', () => {
+  for (const selector of ['.sheet-title.main', '.empty-state-title']) {
+    assert.equal(valueIn('components', selector, 'font-size'), 'var(--text-h)', selector);
+    assert.equal(valueIn('components', selector, 'font-weight'), 'var(--weight-medium)', selector);
   }
 });

@@ -43,6 +43,7 @@
     --text-xs: 0.75rem; /* labels, badges, captions */
     --text-s: 0.8125rem; /* second text, chips: 13px */
     --text-m: 0.9375rem; /* body: 15px */
+    --text-h: 1.25rem; /* the title of a sheet or of an empty state */
     --text-l: 1.5rem; /* screen title */
     --text-xl: 2rem; /* the + of the add button */
     --weight-normal: 400;
@@ -980,8 +981,8 @@
     margin: 0;
     overflow: hidden;
     color: var(--text);
-    font-size: var(--text-l);
-    font-weight: var(--weight-strong);
+    font-size: var(--text-h);
+    font-weight: var(--weight-medium);
     text-overflow: ellipsis;
     white-space: nowrap;
   }
@@ -1208,8 +1209,8 @@
   .empty-state-title {
     margin: 0;
     color: var(--text);
-    font-size: var(--text-l);
-    font-weight: var(--weight-strong);
+    font-size: var(--text-h);
+    font-weight: var(--weight-medium);
   }
 
   /* @component item-list
