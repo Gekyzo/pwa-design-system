@@ -576,15 +576,15 @@
   }
 
   /* @component field
-     @summary An input with its name as a label: inside the box while it is empty, on its top border
-       once it has a value or the focus. The placeholder only marks the empty box.
+     @summary An input with its name as a label above the box. The label follows the input in the
+       markup; the field reverses its column. The placeholder only marks the empty box.
      @part field-input  The input, with the classes input field-input and a placeholder.
      @part field-label  The name, after the input.
      @example <label class="field"><input class="input field-input" type="text" placeholder="Text" value="Call Ana"><span class="field-label">Name</span></label>
      @example <label class="field"><input class="input field-input" type="text" placeholder="Cantidad"><span class="field-label">Amount</span></label> */
   .field {
-    position: relative;
-    display: block;
+    display: flex;
+    flex-direction: column-reverse;
     margin-top: var(--space-4);
   }
 
@@ -601,28 +601,10 @@
   }
 
   .field-label {
-    position: absolute;
-    top: 50%;
-    left: var(--space-3);
-    padding: 0 var(--space-1);
-    border-radius: var(--radius-s);
-    background: var(--surface);
-    color: var(--muted);
-    line-height: 1;
-    pointer-events: none;
-    transform: translateY(-50%);
-    transition: top var(--motion-fast) var(--ease), font-size var(--motion-fast) var(--ease), color var(--motion-fast) var(--ease);
-  }
-
-  .field-input:focus + .field-label,
-  .field-input:not(:placeholder-shown) + .field-label {
-    top: 0;
-    background: var(--surface);
-    font-size: var(--text-xs);
-  }
-
-  .field-input:focus + .field-label {
+    margin-bottom: var(--space-2);
     color: var(--text);
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
   }
 
   /* @component select

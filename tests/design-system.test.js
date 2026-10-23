@@ -156,13 +156,22 @@ test('an input has one focus indicator: the border, with no outline', () => {
   assert.equal(valueIn('components', '.input.strong:focus-visible', 'border-width'), '2px');
 });
 
-test('an input and its field label take --surface everywhere', () => {
+test('an input takes --surface everywhere', () => {
   const on = ':where(.sheet, .list-group:not(.plain), .input-row.pinned)';
   assert.equal(valueIn('components', '.input', 'background'), 'var(--surface)');
   assert.equal(valueIn('components', `${on} .input`, 'background'), undefined);
-  assert.equal(valueIn('components', '.field-label', 'background'), 'var(--surface)');
-  const floated = '.field-input:focus + .field-label, .field-input:not(:placeholder-shown) + .field-label';
-  assert.equal(valueIn('components', floated, 'background'), 'var(--surface)');
+});
+
+test('a field label stands above its box, as a 14px medium head in --text', () => {
+  // The label follows the input in the markup, so the field reverses its column.
+  assert.equal(declaration('.field', 'display'), 'flex');
+  assert.equal(declaration('.field', 'flex-direction'), 'column-reverse');
+  assert.equal(valueIn('components', '.field-label', 'position'), undefined);
+  assert.equal(declaration('.field-label', 'margin-bottom'), 'var(--space-2)');
+  assert.equal(declaration('.field-label', 'color'), 'var(--text)');
+  assert.equal(declaration('.field-label', 'font-size'), 'var(--text-label)');
+  assert.equal(declaration('.field-label', 'font-weight'), 'var(--weight-medium)');
+  assert.equal(valueIn('components', '.field-input:not(:placeholder-shown) + .field-label', 'top'), undefined);
 });
 
 test('the native search cancel button of an input is removed', () => {
@@ -660,7 +669,6 @@ test('each shared component reads the colour role of its meaning', () => {
     ['.input', 'border', '1px solid var(--control)'],
     ['.field-input', 'border', '2px solid var(--control)'],
     ['.field-input:focus', 'border-color', 'var(--text)'],
-    ['.field-input:focus + .field-label', 'color', 'var(--text)'],
     ['.app-header .button.icon[aria-expanded="true"]', 'color', 'var(--text)'],
     ['.ring', 'background', 'conic-gradient(var(--done) var(--pct), var(--line) 0)'],
     ['.badge', 'background', 'var(--primary)'],
