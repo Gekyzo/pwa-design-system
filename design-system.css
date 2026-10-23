@@ -1460,8 +1460,8 @@
     color: var(--muted);
     font-size: var(--text-s);
     font-weight: var(--weight-strong);
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+    letter-spacing: normal;
+    text-transform: none;
   }
 
   .chevron {
@@ -1469,7 +1469,7 @@
   }
 
   /* @component group-head
-     @summary The title of a group of a list, such as a tag, with its count.
+     @summary The title of a group of a list, such as a tag, with its count: a sentence-case band that sticks to the top of the scroll area on a --bg ground.
      @example <ul class="item-list" style="width: 100%"><li class="group-head"><span>Work</span><span>2</span></li></ul> */
   .group-head {
     display: flex;
@@ -1477,24 +1477,28 @@
     justify-content: space-between;
     gap: var(--space-2);
     min-height: var(--tap);
+    position: sticky;
+    top: 0;
+    z-index: 1;
     padding: 0 var(--space-4);
     border-bottom: 1px solid var(--line);
+    background: var(--bg);
     color: var(--text);
     font-size: var(--text-s);
-    font-weight: var(--weight-strong);
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+    font-weight: var(--weight-medium);
+    letter-spacing: normal;
+    text-transform: none;
   }
 
   /* @component list-group
-     @summary A box of rows on a --bg page, as in Settings.
+     @summary A full-width block of rows on a --bg page, as in Settings.
      @variant pair   Two rows side by side.
      @variant plain  No box: rows split by lines, as the suggestions of a search.
      @part list-row       A row: an icon and a text, or a control.
      @part list-row-text  The main text of a row that has two.
      @part list-row-meta  A muted text at the end of a row.
      @variant accent      On list-row: the row that makes a new thing, in --primary text.
-     @variant card        No border: a soft shadow lifts the box.
+     @variant card        An inset box with a border and rounded corners, without a shadow.
      @part list-group-head      The quiet title above a group.
      @part settings-row         A tall row of a group: a label, a value and a chevron.
      @part settings-row-label   The text of a settings row.
@@ -1506,9 +1510,10 @@
      @example <ul class="list-group plain" style="width: 100%"><li><button class="list-row" type="button"><span class="list-row-text">Buy milk</span><span class="list-row-meta">In Notes</span></button></li><li><button class="list-row accent" type="button">Create «Buy»</button></li></ul>
      @example <h3 class="list-group-head">Data</h3><div class="list-group card" style="width: 100%"><button class="settings-row" type="button"><span class="settings-row-label">Language</span><span class="settings-row-value">English</span><span class="chevron">›</span></button><button class="settings-row danger" type="button"><span class="settings-row-label">Delete all</span></button></div> */
   .list-group {
-    margin: 0 var(--space-3);
+    margin: 0;
     border: 1px solid var(--line);
-    border-radius: var(--radius-l);
+    border-inline: 0;
+    border-radius: 0;
     background: var(--surface);
     overflow: hidden;
   }
@@ -1518,29 +1523,29 @@
     grid-template-columns: 1fr 1fr;
   }
 
-  /* The group clips its rows, so a row draws its focus ring inside itself. An end row takes the
-     corners of the group (the radius less the 1px border), so any ring of the row bends with them,
+  /* The group clips its rows, so a row draws its focus ring inside itself. In a card, an end row takes
+     the corners of the group (the radius less the 1px border), so any ring of the row bends with them,
      also one an app draws on the row for a control inside it. */
   .list-group > :focus-visible {
     outline-offset: -2px;
   }
 
-  .list-group:not(.plain, .pair) > :is(.list-row, .settings-row):first-child {
+  .list-group.card:not(.plain, .pair) > :is(.list-row, .settings-row):first-child {
     border-start-start-radius: calc(var(--radius-l) - 1px);
     border-start-end-radius: calc(var(--radius-l) - 1px);
   }
 
-  .list-group:not(.plain, .pair) > :is(.list-row, .settings-row):last-child {
+  .list-group.card:not(.plain, .pair) > :is(.list-row, .settings-row):last-child {
     border-end-start-radius: calc(var(--radius-l) - 1px);
     border-end-end-radius: calc(var(--radius-l) - 1px);
   }
 
-  .list-group.pair > :is(.list-row, .settings-row):first-child {
+  .list-group.card.pair > :is(.list-row, .settings-row):first-child {
     border-start-start-radius: calc(var(--radius-l) - 1px);
     border-end-start-radius: calc(var(--radius-l) - 1px);
   }
 
-  .list-group.pair > :is(.list-row, .settings-row):last-child {
+  .list-group.card.pair > :is(.list-row, .settings-row):last-child {
     border-start-end-radius: calc(var(--radius-l) - 1px);
     border-end-end-radius: calc(var(--radius-l) - 1px);
   }
@@ -1602,8 +1607,10 @@
   }
 
   .list-group.card {
-    border: 0;
-    box-shadow: var(--shadow-s);
+    margin: 0 var(--space-3);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-l);
+    box-shadow: none;
   }
 
   .list-group-head {

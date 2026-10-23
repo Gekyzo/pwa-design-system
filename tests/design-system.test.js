@@ -255,8 +255,6 @@ test('a settings row is a tall row, danger is red, and the group head is a quiet
   assert.equal(declaration('.list-group-head', 'font-weight'), 'var(--weight-medium)');
   assert.equal(declaration('.list-group-head', 'text-transform'), undefined);
   assert.equal(declaration('.settings-row .chevron', 'color'), 'var(--muted)');
-  assert.equal(declaration('.list-group.card', 'box-shadow'), 'var(--shadow-s)');
-  assert.equal(declaration('.list-group.card', 'border'), '0');
   const group = catalog.components.find((part) => part.name === 'list-group');
   for (const name of ['list-group-head', 'settings-row', 'settings-row-label', 'settings-row-value']) assert.ok(group.parts.some((part) => part.name === name), name);
   assert.ok(group.variants.some((variant) => variant.name === 'danger'));
@@ -280,13 +278,44 @@ test('an outline button of an empty state is opaque, with the text colour', () =
   assert.equal(declaration('.empty-state .button.outline', 'color'), 'var(--text)');
 });
 
-test('a row of a list group draws its focus ring inside itself, and an end row takes the corners of the group', () => {
+test('a row of a list group draws its focus ring inside itself, and an end row of a card takes the corners of the group', () => {
   const inner = 'calc(var(--radius-l) - 1px)';
   assert.equal(declaration('.list-group > :focus-visible', 'outline-offset'), '-2px');
-  assert.equal(declaration('.list-group:not(.plain, .pair) > :is(.list-row, .settings-row):first-child', 'border-start-start-radius'), inner);
-  assert.equal(declaration('.list-group:not(.plain, .pair) > :is(.list-row, .settings-row):last-child', 'border-end-end-radius'), inner);
-  assert.equal(declaration('.list-group.pair > :is(.list-row, .settings-row):first-child', 'border-end-start-radius'), inner);
-  assert.equal(declaration('.list-group.pair > :is(.list-row, .settings-row):last-child', 'border-start-end-radius'), inner);
+  assert.equal(declaration('.list-group.card:not(.plain, .pair) > :is(.list-row, .settings-row):first-child', 'border-start-start-radius'), inner);
+  assert.equal(declaration('.list-group.card:not(.plain, .pair) > :is(.list-row, .settings-row):last-child', 'border-end-end-radius'), inner);
+  assert.equal(declaration('.list-group.card.pair > :is(.list-row, .settings-row):first-child', 'border-end-start-radius'), inner);
+  assert.equal(declaration('.list-group.card.pair > :is(.list-row, .settings-row):last-child', 'border-start-end-radius'), inner);
+  assert.equal(declaration('.list-group:not(.plain, .pair) > :is(.list-row, .settings-row):first-child', 'border-start-start-radius'), undefined);
+});
+
+test('group heads are sentence case and sticky', () => {
+  const expected = {
+    position: 'sticky', top: '0', 'z-index': '1', background: 'var(--bg)', color: 'var(--text)',
+    'font-weight': 'var(--weight-medium)', 'text-transform': 'none', 'letter-spacing': 'normal',
+  };
+  for (const [property, value] of Object.entries(expected)) assert.equal(valueIn('components', '.group-head', property), value, property);
+});
+
+test('section head is sentence case', () => {
+  assert.equal(valueIn('components', '.section-head-button', 'text-transform'), 'none');
+  assert.equal(valueIn('components', '.section-head-button', 'letter-spacing'), 'normal');
+  assert.equal(valueIn('components', '.section-head-button', 'color'), 'var(--muted)');
+});
+
+test('a list group is full width', () => {
+  assert.equal(valueIn('components', '.list-group', 'margin'), '0');
+  assert.equal(valueIn('components', '.list-group', 'border-inline'), '0');
+  assert.equal(valueIn('components', '.list-group', 'border-radius'), '0');
+});
+
+test('a card list group keeps its inset box', () => {
+  assert.equal(valueIn('components', '.list-group.card', 'margin'), '0 var(--space-3)');
+  assert.equal(valueIn('components', '.list-group.card', 'border-radius'), 'var(--radius-l)');
+  assert.equal(valueIn('components', '.list-group.card', 'box-shadow'), 'none');
+});
+
+test('a sheet layer stands above a sticky group head', () => {
+  assert.ok(Number(valueIn('components', '.sheet-layer', 'z-index')) > Number(valueIn('components', '.group-head', 'z-index')));
 });
 
 test('a segmented is a --surface-2 track whose --surface knob slides to the chosen segment', () => {
