@@ -2,6 +2,30 @@
 
 User-visible changes, newest first.
 
+## 0.7.0 - 2026-10-23
+
+- Colour roles replace the single accent: `--primary` and `--on-primary` (the one main action; neutral ink by default), `--done`, `--on-done` and `--done-soft` (progress and the checked state), `--ink` and `--on-ink` (a selected fill), `--secondary` (a tonal fill) and `--control` (the border of an input or an outline button). `--accent`, `--accent-text` and `--accent-soft` stay for one release as aliases of `--primary`, `--on-primary` and `--done-soft`; no shared component reads them. Focus outlines and focus borders take `--text`.
+- The grounds take the Ledger values: a stone `--bg`, `--surface` white (near-black in dark), a raised `--surface-2`, ink `--text`, a softer dark `--danger`.
+- Geist is the font: `geist.woff2` (SIL OFL, `OFL.txt`) with an `@font-face` in the tokens layer, first in `--font`; `sync.mjs` copies it beside the CSS. `--radius-m` and `--radius-l` are 8px, `--radius-xl` is 14px. The screen title is 1.5rem and strong.
+- A `group-head` is a sticky band on `--bg`, in sentence case at `--weight-medium`; the `section-head` loses its capitals and tracking.
+- A `list-group` runs the full width with square corners. Only the `card` variant keeps the inset box, `--radius-l` and the corners of its end rows, now without a shadow.
+- New `button` variant `tonal`: the `--secondary` fill with `--text`, no border. It is the role of each action that is not the one main action of a view, the button of a `sheet-head` included. `outline` with `danger` is only for a destructive action.
+- New `progress` component: a 4px bar the full width of its box, filled with `--done` to `--pct`. The `ring` stays.
+- New `dock` part `dock-add`: a square `button primary icon` of the tap size, the last direct child of the dock, at the far left with the left hand. A `dock` `chip` that is `aria-pressed="true"` keeps its `--ink` fill.
+- Below 600px the `fab` does not show while a visible dock holds a visible `dock-add`. From 600px the dock does not show, so the `fab` is the add button again. LAY-2 and LAY-4 say so.
+- Breaking for an app: the colours change. Each app sets `--primary` and `--done` (with their `on-` roles) in its tokens layer and replaces its `--accent*` uses. A group head loses its capitals.
+
+Migration per app (`node scripts/try-apps.mjs`, an app with DS 0.7.0 synced into a copy; failing tests):
+
+- pwa-template — SHEET-1, STATE-1, vendor.test
+- pwa-wardrobe — SHEET-1, STATE-1, vendor.test
+- pwa-shifts — SHEET-1, STATE-1, vendor.test
+- pwa-nexus — vendor.test
+- pwa-financial-calculator — vendor.test
+- pwa-shopping-list — vendor.test
+
+For every app: the file list of its `tests/vendor.test.js` gains `geist.woff2`. Set `--primary` and `--done` in the tokens layer of `styles.css`, and replace each `--accent*` use with a role token. SHEET-1 and STATE-1 fail in three apps as with 0.5.0.
+
 ## 0.6.0 - 2026-10-21
 
 - A row of a `list-group` draws its focus ring inside itself (`outline-offset: -2px`); a first or last row takes the corners of the group (`--radius-l` less the border), also in `pair`, so any ring of the row bends with them, also one an app draws for a control inside the row. Before, the group clipped the ring: round at the top, square at the bottom and over the next row.
