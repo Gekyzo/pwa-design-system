@@ -14,6 +14,7 @@ User-visible changes, newest first.
 - New `progress` component: a 4px bar the full width of its box, filled with `--done` to `--pct`. The `ring` stays.
 - New `dock` part `dock-add`: a square `button primary icon` of the tap size, the last direct child of the dock, at the far left with the left hand. A `dock` `chip` that is `aria-pressed="true"` keeps its `--ink` fill.
 - Below 600px the `fab` does not show while a visible dock holds a visible `dock-add`, and `main` then pads only for the dock (`--dock-height` and `--space-4`), so no empty room for the `fab` stays at the end of the list. From 600px the dock does not show, so the `fab` is the add button again. LAY-2 and LAY-4 say so.
+- The catalogue page marks a link under the pointer with `--surface-2` and the current link with `--ink` and `--on-ink`, no longer with `--done-soft`.
 - Breaking for an app: the colours change. Each app sets `--primary` and `--done` (with their `on-` roles) in its tokens layer and replaces its `--accent*` uses. A group head loses its capitals. A `banner` that tells of work that is done adds the `done` variant to keep its `--done-soft` ground. Body text is now 15px, so an app that runs on iOS Safari should keep its inputs at 16px or accept the zoom on focus.
 
 Migration per app (`node scripts/try-apps.mjs`, an app with DS 0.7.0 synced into a copy; failing tests):
