@@ -10,6 +10,7 @@ User-visible changes, newest first.
 - Breaking for an app: a rule that moves a `field-label` with `top` or `transform` no longer has an effect, and a field is taller by the label line.
 - A `list-group-head` and a `section-head-button` are heads in `--text`, as in Ledger, no longer `--muted`. The `section-head-button` takes `--weight-medium`, as a `group-head`. Its `chevron` stays `--muted`.
 - A `sheet-title` is a head in `--text` at `--text-label` and `--weight-medium`, as a `field-label`, no longer a small `--muted` title. The `main` variant keeps its 20px.
+- A `switch` that is a direct child of a `sheet-body` has no inline padding, so its name lines up with the fields of the sheet.
 
 ## 0.7.0 - 2026-10-23
 

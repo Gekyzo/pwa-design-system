@@ -168,6 +168,11 @@ test('a sheet title is a 14px medium head in --text, as a field label', () => {
   assert.equal(declaration('.sheet-title', 'font-weight'), 'var(--weight-medium)');
 });
 
+test('a switch in the body of a sheet has no inset of its own', () => {
+  assert.equal(declaration('.switch', 'padding'), '0 var(--space-4)');
+  assert.equal(declaration('.sheet-body > .switch', 'padding-inline'), '0');
+});
+
 test('a field label stands above its box, as a 14px medium head in --text', () => {
   // The label follows the input in the markup, so the field reverses its column.
   assert.equal(declaration('.field', 'display'), 'flex');

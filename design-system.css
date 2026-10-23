@@ -464,6 +464,11 @@
     border-top: 1px solid var(--line);
   }
 
+  /* The body of a sheet pads its content, so a switch there lines up with the fields above it. */
+  .sheet-body > .switch {
+    padding-inline: 0;
+  }
+
   .switch-input {
     appearance: none;
     position: relative;
