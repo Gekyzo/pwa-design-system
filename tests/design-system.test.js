@@ -335,6 +335,7 @@ test('section head is a sentence-case head in --text', () => {
   assert.equal(valueIn('components', '.section-head-button', 'letter-spacing'), 'normal');
   assert.equal(valueIn('components', '.section-head-button', 'color'), 'var(--text)');
   assert.equal(valueIn('components', '.section-head-button', 'font-weight'), 'var(--weight-medium)');
+  assert.equal(valueIn('components', '.section-head-button .chevron', 'color'), 'var(--muted)');
 });
 
 test('a list group is full width', () => {
