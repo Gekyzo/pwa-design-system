@@ -65,6 +65,20 @@ const card = (part) =>
     ...part.examples.flatMap(example),
   ]);
 
+// One app of shots/index.json: each screen in each theme. The page shows the theme it is in.
+const appCard = ({ name, title, screens }, themes) =>
+  el('section', { className: 'ds-card', id: name, dataset: { name: [name, title, ...screens].join(' ') } }, [
+    el('h3', { textContent: name }),
+    el('p', { className: 'ds-meta', textContent: title }),
+    el('div', { className: 'ds-shots' }, screens.map((slug) =>
+      el('figure', { className: 'ds-shot' }, [
+        ...themes.map((theme) => el('img', {
+          className: `ds-shot-${theme}`, src: `shots/${name}/${theme}-${slug}.png`, alt: `${title}, ${slug}, ${theme}`, loading: 'lazy', width: 360, height: 760,
+        })),
+        el('figcaption', { textContent: slug }),
+      ]))),
+  ]);
+
 const section = (id, title, children) => el('section', { className: 'ds-section', id }, [el('h2', { textContent: title }), ...children]);
 
 const link = (id, text, kind) => {
@@ -74,9 +88,9 @@ const link = (id, text, kind) => {
 };
 
 // The menu: each section, then the parts of the section, each a link to its anchor.
-const renderMenu = (catalog) => {
+const renderMenu = (catalog, shots) => {
   $('ds-menu').replaceChildren(
-    el('ul', { className: 'ds-menu-list' }, menuOf(catalog).map((entry) =>
+    el('ul', { className: 'ds-menu-list' }, menuOf(catalog, shots.apps).map((entry) =>
       el('li', { dataset: { section: entry.id } }, [
         link(entry.id, entry.title, 'ds-section-link'),
         ...(entry.items.length
@@ -86,7 +100,7 @@ const renderMenu = (catalog) => {
   );
 };
 
-const render = (catalog) => {
+const render = (catalog, shots) => {
   const of = (layer) => catalog.components.filter((part) => part.layer === layer);
   const colours = catalog.tokens.filter((token) => token.scale === 'colour');
   const scales = catalog.tokens.filter((token) => token.scale !== 'colour');
@@ -106,6 +120,10 @@ const render = (catalog) => {
     section('layouts', 'Layouts', of('layouts').map(card)),
     section('base', 'Base', of('base').map(card)),
     ...scopes.map((scope) => section(`screens-${scope}`, `Screen parts · ${scope}`, of('screens').filter((part) => part.scope === scope).map(card))),
+    ...(shots.apps.length ? [section('apps', 'App screens', [
+      el('p', { className: 'ds-meta', textContent: 'Each app with this design system synced in, at 360×760 in the theme of the page. node scripts/shots.mjs takes them again.' }),
+      ...shots.apps.map((app) => appCard(app, shots.themes)),
+    ])] : []),
   );
 };
 
@@ -165,11 +183,12 @@ const optional = (url) => get(url).catch(() => '');
 const extra = (new URLSearchParams(location.search).get('css') ?? '').split(',').map((url) => url.trim()).filter(Boolean);
 
 try {
-  const [css, sprite] = await Promise.all([Promise.all(['design-system.css', ...extra].map(get)), optional('icons.svg')]);
+  const [css, sprite, manifest] = await Promise.all([Promise.all(['design-system.css', ...extra].map(get)), optional('icons.svg'), optional('shots/index.json')]);
+  const shots = manifest ? JSON.parse(manifest) : { themes: [], apps: [] };
   for (const url of extra) document.head.append(el('link', { rel: 'stylesheet', href: url }));
   const catalog = parseCatalog({ css, sprite });
-  render(catalog);
-  renderMenu(catalog);
+  render(catalog, shots);
+  renderMenu(catalog, shots);
   // The anchor of the address was not on the page before the render.
   if (location.hash) document.getElementById(decodeURIComponent(location.hash.slice(1)))?.scrollIntoView();
   markCurrent();

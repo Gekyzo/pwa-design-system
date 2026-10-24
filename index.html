@@ -31,6 +31,18 @@
       .ds-icons { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; }
       .ds-icons > div { display: grid; justify-items: center; gap: 4px; padding: 12px 4px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
       .ds-icons > div > code { font-size: 0.75rem; }
+      .ds-shots { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-top: 12px; }
+      .ds-shot { margin: 0; }
+      .ds-shot > img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 12px; }
+      .ds-shot > figcaption { padding-top: 4px; color: var(--muted); font-family: ui-monospace, monospace; font-size: 0.75rem; text-align: center; }
+      /* A shot in the theme of the page: the Theme select, else the system. */
+      .ds-shot > .ds-shot-dark { display: none; }
+      :root[data-theme="dark"] .ds-shot > .ds-shot-light { display: none; }
+      :root[data-theme="dark"] .ds-shot > .ds-shot-dark { display: block; }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) .ds-shot > .ds-shot-light { display: none; }
+        :root:not([data-theme="light"]) .ds-shot > .ds-shot-dark { display: block; }
+      }
       .ds-error { color: var(--danger); }
       .ds-layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 24px; align-items: start; }
       .ds-section, .ds-card { scroll-margin-top: 76px; }

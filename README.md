@@ -27,6 +27,10 @@ npm run serve    # http://localhost:8090
   http://localhost:8090/. Add the CSS of an app with `?css=styles.css,more.css`.
 - `scripts/serve.mjs`: the server of `npm run serve`. It sends `Cache-Control: no-cache`, so a
   normal reload shows a CSS edit.
+- `shots/`: phone screenshots of each app (360×760 at 2×, light and dark), shown in the App screens
+  section of the catalogue. `node scripts/shots.mjs [app…]` takes them again: it copies each sibling
+  app to a temp dir, syncs this design system into the copy, seeds it from `scripts/seeds.mjs` and
+  drives `agent-browser` through its screens. Like `sync.mjs`, it needs the copied files committed.
 - `sync.mjs`: copies the shared files into an app. It refuses a target with no `package.json` or
   one that holds `design-system.css`, and a source with uncommitted changes to a copied file or to
   `version.json`.

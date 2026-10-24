@@ -1,0 +1,72 @@
+{
+  "themes": [
+    "light",
+    "dark"
+  ],
+  "apps": [
+    {
+      "name": "pwa-shopping-list",
+      "title": "Bodega",
+      "screens": [
+        "list",
+        "add",
+        "recipes",
+        "menu",
+        "settings"
+      ]
+    },
+    {
+      "name": "pwa-template",
+      "title": "Template",
+      "screens": [
+        "notes",
+        "add",
+        "detail",
+        "settings"
+      ]
+    },
+    {
+      "name": "pwa-wardrobe",
+      "title": "Attire",
+      "screens": [
+        "wardrobe",
+        "garment",
+        "edit",
+        "palettes",
+        "settings"
+      ]
+    },
+    {
+      "name": "pwa-nexus",
+      "title": "Nexus",
+      "screens": [
+        "projects",
+        "roadmap",
+        "item",
+        "settings"
+      ]
+    },
+    {
+      "name": "pwa-shifts",
+      "title": "Turnos",
+      "screens": [
+        "month",
+        "day",
+        "agenda",
+        "plan",
+        "settings"
+      ]
+    },
+    {
+      "name": "pwa-financial-calculator",
+      "title": "Calculadora",
+      "screens": [
+        "loan",
+        "deposit",
+        "savings",
+        "interest",
+        "settings"
+      ]
+    }
+  ]
+}

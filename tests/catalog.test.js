@@ -132,6 +132,15 @@ test('menuOf leaves out a layer with no part', () => {
 
 const part2 = (name) => ({ name, layer: 'components', scope: null });
 
+test('menuOf ends with the app screens, one item for each app', () => {
+  const apps = [{ name: 'pwa-a', title: 'A', screens: ['one'] }, { name: 'pwa-b', title: 'B', screens: ['two'] }];
+  assert.deepEqual(menuOf({ components: [part2('button')] }, apps).at(-1), { id: 'apps', title: 'App screens', items: ['pwa-a', 'pwa-b'] });
+});
+
+test('menuOf leaves out the app screens when there is none', () => {
+  assert.deepEqual(menuOf({ components: [part2('button')] }, []).map((section) => section.id), ['colours', 'scales', 'icons', 'components']);
+});
+
 test('parseCatalog joins an array of css', () => {
   const block = (name) => `@layer components {\n  /* @component ${name}\n   @summary Text.\n   @example <i class="${name}"></i> */\n  .${name} { color: red; }\n}\n`;
   const [a, b] = [block('alpha'), block('beta')];
