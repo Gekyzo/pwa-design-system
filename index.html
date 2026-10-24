@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="./design-system.css">
     <style>
       /* The frame of the catalogue only. The parts inside each example are drawn by design-system.css. */
-      body { display: block; height: auto; }
+      /* The apps set these on body in their own styles.css; design-system.css leaves body to them. */
+      body { display: block; height: auto; margin: 0; background: var(--bg); color: var(--text); font: var(--text-m)/1.4 var(--font); }
       .ds-page { max-width: 1200px; margin: 0 auto; padding: 16px 16px 64px; }
       .ds-page > h1 { margin: 0 0 4px; }
       .ds-section > h2 { margin: 32px 0 8px; font-size: 1.25rem; }
