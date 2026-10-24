@@ -2,9 +2,14 @@
 
 User-visible changes, newest first.
 
-## Unreleased
+## 0.7.2 - 2026-10-24
 
 - The `toast` is a raised surface: `--toast-bg` is `--surface` in light and `--surface-2` in dark, a step up from the rows, and `--toast-text` is `--text`, with a `--line` border and the `--shadow-l` it had. It is no longer an ink box, black in light and white in dark.
+
+Migration per app (`node scripts/try-apps.mjs`, an app with DS 0.7.2 synced into a copy; failing tests):
+
+- pwa-template, pwa-wardrobe, pwa-shifts, pwa-nexus, pwa-financial-calculator, pwa-shopping-list, pwa-lists — none
+- pwa-overlord — STATE-1, vendor.test: it is still on 0.2.1 and has not taken 0.7.x
 
 ## 0.7.1 - 2026-10-23
 
