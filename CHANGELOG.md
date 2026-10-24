@@ -2,6 +2,10 @@
 
 User-visible changes, newest first.
 
+## Unreleased
+
+- The `toast` is a raised surface: `--toast-bg` is `--surface` in light and `--surface-2` in dark, a step up from the rows, and `--toast-text` is `--text`, with a `--line` border and the `--shadow-l` it had. It is no longer an ink box, black in light and white in dark.
+
 ## 0.7.1 - 2026-10-23
 
 - With the left hand, the divider of an `item-row` with a check and an `item-row-end` starts after the slot, where the text starts. 0.7.0 started it at `--space-4`, under the buttons of the slot.

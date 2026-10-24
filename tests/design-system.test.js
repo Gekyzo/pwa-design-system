@@ -109,9 +109,11 @@ test('a banner is neutral, and its done variant is documented', () => {
   assert.ok(banner.variants.some((variant) => variant.name === 'done'));
 });
 
-test('the toast tokens are the ink roles', () => {
-  assert.equal(valueIn('tokens', ':root', '--toast-bg'), 'var(--ink)');
-  assert.equal(valueIn('tokens', ':root', '--toast-text'), 'var(--on-ink)');
+test('the toast is a raised surface, not an ink box', () => {
+  assert.equal(valueIn('tokens', ':root', '--toast-bg'), 'light-dark(var(--surface), var(--surface-2))');
+  assert.equal(valueIn('tokens', ':root', '--toast-text'), 'var(--text)');
+  assert.equal(valueIn('components', '.toast', 'border'), '1px solid var(--line)');
+  assert.equal(valueIn('components', '.toast', 'box-shadow'), 'var(--shadow-l)');
 });
 
 test('the accent tokens are aliases of the roles for one release', () => {
