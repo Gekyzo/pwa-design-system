@@ -2,6 +2,10 @@
 
 User-visible changes, newest first.
 
+## 0.8.1 - 2026-10-30
+
+- With a `header-add`, the `fab` stays hidden from 600px also while the view has a visible `dock-add`. In 0.8.0 the rule that shows the `fab` beside a dock from 600px was more specific and won, so an app with a dock showed both add buttons.
+
 ## 0.8.0 - 2026-10-30
 
 - The wide layout of Bodega and Attire is shared (LAY-1, LAY-2, LAY-3, LAY-5). A large class from 1024px: the app stands in a centred frame of at most `--frame-max` (1280px), and the rail is a sidebar of `--sidebar-width` (232px) with the optional parts `nav-brand`, `nav-count` and `nav-foot`. New tokens `--frame-side`, `--frame-max`, `--sidebar-width`, `--gutter`, `--page-max`, `--header-height`; `--rail-width` includes `--frame-side` from 1024px.

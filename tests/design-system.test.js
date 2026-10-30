@@ -549,8 +549,12 @@ test('fab shows from 600px', () => {
 test('fab hides only beside a dock-add or a header-add', () => {
   const hiding = rules.filter((rule) => /\.fab$/.test(rule.selector)
     && rule.declarations.some((d) => d.property === 'display' && d.value === 'none'));
-  assert.deepEqual(hiding.map((rule) => rule.selector), [FAB_BESIDE_DOCK_ADD, 'body:has(.app-header > .header-add) .fab']);
+  const header = ['body:has(.app-header > .header-add) .fab', `body:has(.app-header > .header-add):has(${FAB_BESIDE_DOCK_ADD.slice('body:has('.length)}`];
+  assert.deepEqual(hiding.map((rule) => rule.selector), [FAB_BESIDE_DOCK_ADD, header.join(', ')]);
   assert.equal(mediaOf(hiding[1]), '@media (min-width: 600px)');
+  // The dock-add rule from 600px shows the fab; the header-add rule comes after it and is as specific.
+  const show = rules.filter((rule) => rule.selector === FAB_BESIDE_DOCK_ADD && mediaOf(rule) === '@media (min-width: 600px)').at(-1);
+  assert.ok(show.line < hiding[1].line);
 });
 
 test('the current nav item is a --secondary pill behind its icon with a plain label', () => {
