@@ -30,8 +30,8 @@ the 🎯 indicators (terminal status bar, tab ring, overlord tile) draw from thi
 |---|---|---|---|---|---|
 | 1 | Shared wide layout in design-system.css | ☑ |  | 2026-10-30 | rules.js DS-8/LAY-2 landed here, not in task 2: the DS-8 check over design-system.css needs them |
 | 2 | Rules, spec and release 0.8.0 | ☑ |  | 2026-10-30 |  |
-| 3 | Attire on 0.8.0 | ☐ |  |  |  |
-| 4 | Bodega on 0.8.0 | ☐ |  |  |  |
+| 3 | Attire on 0.8.0 | ☑ | pwa-wardrobe dafb336 | 2026-10-30 |  |
+| 4 | Bodega on 0.8.0 | ☑ | pwa-shopping-list a3b194b | 2026-10-30 | DS 0.8.1 (ac3ba3b) fixed the fab beside a dock, found here |
 
 ## Blockers
 
