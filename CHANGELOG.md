@@ -2,6 +2,22 @@
 
 User-visible changes, newest first.
 
+## 0.8.0 - 2026-10-30
+
+- The wide layout of Bodega and Attire is shared (LAY-1, LAY-2, LAY-3, LAY-5). A large class from 1024px: the app stands in a centred frame of at most `--frame-max` (1280px), and the rail is a sidebar of `--sidebar-width` (232px) with the optional parts `nav-brand`, `nav-count` and `nav-foot`. New tokens `--frame-side`, `--frame-max`, `--sidebar-width`, `--gutter`, `--page-max`, `--header-height`; `--rail-width` includes `--frame-side` from 1024px.
+- From 600px the rail stands at the start with either hand. `:root[data-hand="right"]` no longer moves the rail, the toast, the `fab` or a side sheet.
+- From 600px `.app-header` and `main` share one side padding, `max(var(--gutter), (100% - var(--page-max)) / 2)`, so the title lines up with the edge of the content. `--gutter` is 16px, 24px from 840px.
+- `header-add`, a part of `app-header`, is the add button from 600px; while the header has one, the `fab` does not show from 600px.
+- From 600px a sheet keeps the width of the column beside the rail. From 840px a sheet with a head is a card at the end of the frame, from below the header (`--header-height`) and as high as its content, not a full-height side sheet at the side of the hand.
+- From 840px the `pane` fills the content area, `--gutter` apart, and `pane-detail` is a sticky card on `--surface`, no longer an area with a start border.
+- DS-8 accepts `min-width: 1024px`. LAY-2 now reports a rule that moves the rail with the right hand.
+- Breaking for an app: a `body` that padded the rail at the end for the right hand, and any `[data-hand="right"] .nav-bar` rule, go. The app pads its body with `--rail-width` at the start and `--frame-side` at the end, and writes `--header-height`.
+
+Migration per app (`node scripts/try-apps.mjs`, an app with DS 0.8.0 synced into a copy; failing tests):
+
+- pwa-template, pwa-shifts, pwa-nexus, pwa-financial-calculator, pwa-lists, pwa-tenant — none
+- pwa-wardrobe, pwa-shopping-list, pwa-landlord — LAY-2: their own `[data-hand="right"] .nav-bar` rule goes
+
 ## 0.7.2 - 2026-10-24
 
 - The `toast` is a raised surface: `--toast-bg` is `--surface` in light and `--surface-2` in dark, a step up from the rows, and `--toast-text` is `--text`, with a `--line` border and the `--shadow-l` it had. It is no longer an ink box, black in light and white in dark.

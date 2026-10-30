@@ -52,8 +52,9 @@ app holds its screens and its own overrides. `rules.js` checks the rules; each a
   lists each section and part and links to its anchor (`#button`): a sidebar on a wide screen, a
   drawer on a phone. Its list of views names each view of the app, and its frame styles do not
   reach into the examples.
-- **DS-8** A width condition of `@media` is `min-width: 600px` or `min-width: 840px`, the
-  breakpoints of the size classes (LAY-1). No other width and no `max-width` condition. A rule for
+- **DS-8** A width condition of `@media` is `min-width: 600px`, `min-width: 840px` or
+  `min-width: 1024px`, the breakpoints of the size classes (LAY-1). No other width and no
+  `max-width` condition. A rule for
   a size class sits inside the block of its component.
 
 ## Touch, text and focus

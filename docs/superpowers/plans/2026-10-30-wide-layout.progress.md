@@ -29,7 +29,7 @@ the 🎯 indicators (terminal status bar, tab ring, overlord tile) draw from thi
 | # | Task | Status | Commit (subject) | Landed | Notes |
 |---|---|---|---|---|---|
 | 1 | Shared wide layout in design-system.css | ☑ |  | 2026-10-30 | rules.js DS-8/LAY-2 landed here, not in task 2: the DS-8 check over design-system.css needs them |
-| 2 | Rules, spec and release 0.8.0 | ☐ |  |  |  |
+| 2 | Rules, spec and release 0.8.0 | ☑ |  | 2026-10-30 |  |
 | 3 | Attire on 0.8.0 | ☐ |  |  |  |
 | 4 | Bodega on 0.8.0 | ☐ |  |  |  |
 

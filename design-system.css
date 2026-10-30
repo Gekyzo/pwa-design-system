@@ -772,6 +772,7 @@
      @part nav-count  A count at the end of an item, from 1024px only. It is not part of the name for a screen reader.
      @part nav-foot   A line at the foot of the rail: its icon from 600px, its icon and its text from 1024px.
      @part nav-foot-text  The text of nav-foot, shown from 1024px.
+     @example <nav class="nav-bar" style="position: static; width: 232px; min-height: 280px"><div class="nav-brand"><span>App</span></div><button class="nav-item" type="button" aria-current="page"><svg class="icon" aria-hidden="true"><use href="icons.svg#note"/></svg><span>Notes</span><span class="nav-count">4</span></button><button class="nav-item" type="button"><svg class="icon" aria-hidden="true"><use href="icons.svg#settings"/></svg><span>Settings</span></button><p class="nav-foot"><svg class="icon small" aria-hidden="true"><use href="icons.svg#settings"/></svg><span class="nav-foot-text">On this device</span></p></nav>
      @example <nav class="nav-bar" style="width: 100%"><button class="nav-item" type="button" aria-current="page"><svg class="icon" aria-hidden="true"><use href="icons.svg#note"/></svg><span>Notes</span></button><button class="nav-item" type="button"><svg class="icon" aria-hidden="true"><use href="icons.svg#settings"/></svg><span>Later</span><em class="badge">2</em></button></nav> */
   .nav-bar {
     display: flex;
