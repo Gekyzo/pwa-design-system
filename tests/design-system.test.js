@@ -546,10 +546,11 @@ test('fab shows from 600px', () => {
   assert.equal(order.at(-1), inside[0]);
 });
 
-test('fab stays without a dock-add', () => {
-  const hiding = rules.filter((rule) => /\.fab$/.test(rule.selector) && !rule.selector.includes('.dock-add')
+test('fab hides only beside a dock-add or a header-add', () => {
+  const hiding = rules.filter((rule) => /\.fab$/.test(rule.selector)
     && rule.declarations.some((d) => d.property === 'display' && d.value === 'none'));
-  assert.deepEqual(hiding.map((rule) => rule.selector), []);
+  assert.deepEqual(hiding.map((rule) => rule.selector), [FAB_BESIDE_DOCK_ADD, 'body:has(.app-header > .header-add) .fab']);
+  assert.equal(mediaOf(hiding[1]), '@media (min-width: 600px)');
 });
 
 test('the current nav item is a --secondary pill behind its icon with a plain label', () => {
@@ -562,14 +563,30 @@ test('the current nav item is a --secondary pill behind its icon with a plain la
   assert.equal(declaration(current, 'font-weight'), 'var(--weight-medium)');
 });
 
-test('the rail stands at the start side by default and at the end side for the right hand', () => {
+test('the rail stands at the start side with either hand, and clears the frame at the end', () => {
   assert.equal(declaration('.nav-bar', 'inset-inline-start'), '0');
-  assert.equal(declaration(':root[data-hand="right"] .nav-bar', 'right'), '0');
-  assert.equal(declaration(':root[data-hand="right"] .nav-bar', 'inset-inline-start'), 'auto');
-  assert.match(declaration(':root[data-hand="right"] .nav-bar', 'width'), /safe-area-inset-right/);
-  assert.match(declaration(':root[data-hand="right"] .toast', 'right'), /var\(--rail-width\) \+ env\(safe-area-inset-right\)/);
-  assert.match(declaration(':root[data-hand="right"] .toast', 'left'), /safe-area-inset-left/);
-  assert.match(declaration(':root[data-hand="right"] .fab', 'right'), /var\(--rail-width\) \+ env\(safe-area-inset-right\)/);
+  assert.ok(!rules.some((rule) => rule.selector.includes('[data-hand="right"] .nav-bar')));
+  assert.match(allValues('.toast', 'right').at(-1), /var\(--frame-side\) \+ env\(safe-area-inset-right\)/);
+  assert.match(allValues('.fab', 'right').at(-1), /var\(--frame-side\) \+ env\(safe-area-inset-right\)/);
+});
+
+test('from 1024px the rail is a sidebar at the start of a centred frame', () => {
+  const sidebar = rules.find((rule) => rule.selector === '.nav-bar' && mediaOf(rule) === '@media (min-width: 1024px)');
+  assert.ok(sidebar);
+  assert.deepEqual(['inset-inline-start', 'width'].map((name) => sidebar.declarations.find((d) => d.property === name)?.value), ['var(--frame-side)', 'var(--sidebar-width)']);
+  assert.equal(valueIn('tokens', ':root', '--frame-max'), '1280px');
+  assert.equal(valueIn('tokens', ':root', '--sidebar-width'), '232px');
+  const nav = catalog.components.find((part) => part.name === 'nav-bar');
+  assert.deepEqual(nav.parts.map((part) => part.name).sort(), ['nav-brand', 'nav-count', 'nav-foot', 'nav-foot-text', 'nav-item']);
+});
+
+test('from 600px the header and main share one side padding from --gutter and --page-max', () => {
+  const pad = 'max(var(--gutter), (100% - var(--page-max)) / 2)';
+  for (const selector of ['main', '.app-header']) {
+    const rule = rules.find((r) => r.selector === selector && mediaOf(r) === '@media (min-width: 600px)' && r.declarations.some((d) => d.property === 'padding-inline'));
+    assert.equal(rule?.declarations.find((d) => d.property === 'padding-inline').value, pad, selector);
+  }
+  assert.equal(valueIn('tokens', ':root', '--page-max'), 'var(--content-max)');
 });
 
 test('the dock field has a --control border that takes --text on focus', () => {
@@ -598,28 +615,28 @@ test('the compact density sets three tokens in the tokens layer and leaves --tap
   assert.equal(valueIn('tokens', ':root', '--side-sheet'), '400px');
 });
 
-test('from 840px a sheet with a head is a side sheet next to the rail', () => {
+test('from 840px a sheet with a head is a card at the end of the frame, below the header', () => {
   const layer = '.sheet-layer:has(.sheet-head)';
   const sheet = '.sheet-layer:has(.sheet-head) .sheet';
-  assert.equal(declaration(layer, 'flex-direction'), 'row');
-  assert.match(declaration(layer, 'padding-inline-start'), /var\(--rail-width\) \+ env\(safe-area-inset-left\)/);
-  assert.equal(declaration(sheet, 'height'), '100%');
-  assert.equal(declaration(sheet, 'max-height'), '100%');
+  assert.equal(declaration(layer, 'align-items'), 'flex-end');
+  assert.match(declaration(layer, 'padding'), /^calc\(var\(--header-height\) \+ var\(--space-4\)\) calc\(var\(--frame-side\) \+ var\(--gutter\)/);
+  assert.equal(declaration(sheet, 'height'), 'auto');
   assert.equal(declaration(sheet, 'width'), 'var(--side-sheet)');
-  assert.equal(declaration(sheet, 'border-start-end-radius'), 'var(--radius-xl)');
-  assert.equal(declaration(sheet, 'border-start-start-radius'), '0');
-  assert.equal(declaration(`${layer}[hidden] .sheet`, 'transform'), 'translateX(-100%)');
+  assert.equal(declaration(sheet, 'border-radius'), 'var(--radius-l)');
+  assert.equal(declaration(`${layer}[hidden] .sheet`, 'opacity'), '0');
   assert.equal(declaration('.sheet:has(.sheet-head) .sheet-grab', 'display'), 'none');
 });
 
-test('the right hand puts the side sheet at the end, next to the rail', () => {
-  const layer = ':root[data-hand="right"] .sheet-layer:has(.sheet-head)';
-  assert.equal(declaration(layer, 'justify-content'), 'flex-end');
-  assert.match(declaration(layer, 'padding-inline-end'), /var\(--rail-width\) \+ env\(safe-area-inset-right\)/);
-  assert.equal(declaration(layer, 'padding-inline-start'), '0');
-  assert.equal(declaration(`${layer} .sheet`, 'border-start-start-radius'), 'var(--radius-xl)');
-  assert.equal(declaration(`${layer} .sheet`, 'border-start-end-radius'), '0');
-  assert.equal(declaration(`${layer}[hidden] .sheet`, 'transform'), 'translateX(100%)');
+test('no rule moves a sheet with the hand', () => {
+  assert.ok(!rules.some((rule) => rule.selector.includes('[data-hand="right"] .sheet')));
+});
+
+test('from 840px the pane fills the content area and its detail is a card', () => {
+  assert.equal(valueIn('layouts', 'body:has(main > .pane:not([hidden]))', '--page-max'), '100%');
+  assert.equal(valueIn('layouts', '.pane', 'column-gap'), 'var(--gutter)');
+  assert.equal(valueIn('layouts', '.pane > .pane-detail', 'background'), 'var(--surface)');
+  assert.equal(valueIn('layouts', '.pane > .pane-detail', 'position'), 'sticky');
+  assert.ok(!rules.some((rule) => rule.selector === '.pane > .pane-detail' && rule.declarations.some((d) => d.property === 'border-inline-start')));
 });
 
 test('the dock input shows one focus indicator and no native clear', () => {
@@ -636,11 +653,10 @@ test('a visible dock lifts the toast above itself below 600px and not from 600px
   assert.equal(values[1], allValues('.toast', 'bottom')[1]);
 });
 
-test('a headed sheet clears the bottom and the top safe areas', () => {
+test('a headed sheet clears the bottom safe area', () => {
   const inset = (name) => new RegExp(`calc\\(var\\(--space-\\d\\) \\+ env\\(safe-area-inset-${name}\\)\\)`);
   assert.match(declaration('.sheet:has(.sheet-head):not(:has(.sheet-foot)) .sheet-body', 'padding-bottom'), inset('bottom'));
   assert.match(inLayouts('.input-row.pinned:last-child', 'padding-bottom'), inset('bottom'));
-  assert.match(declaration('.sheet-layer:has(.sheet-head) .sheet-head', 'padding-top'), inset('top'));
 });
 
 test('the dock field fits the compact dock and its input fills the field', () => {

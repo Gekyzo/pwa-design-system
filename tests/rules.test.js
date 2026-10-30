@@ -66,16 +66,17 @@ test('DS-8 reports a width query that is not a min-width breakpoint', () => {
   const base = '@media (min-width: 600px) {} @media (min-width: 840px) {}';
   assert.deepEqual(check({ css: [base] }), []);
   assert.deepEqual(check({ css: [`${base} @media (max-width: 500px) {}`] }), ['max-500px']);
+  assert.deepEqual(check({ css: [`${base} @media (min-width: 1024px) {}`] }), []);
+  assert.deepEqual(check({ css: [`${base} @media (min-width: 1200px) {}`] }), ['min-1200px']);
 });
 
-test('LAY-2 needs a rail at the end side beside the rail at the start side', () => {
+test('LAY-2 reports a rule that moves the rail with the right hand', () => {
   const check = rule('LAY-2', 'rail').check;
   assert.deepEqual(check({ css: [shared] }), []);
   const start = `${LAYERS}@layer components { @media (min-width: 600px) { .nav-bar { inset-inline-start: 0; } } }`;
-  assert.deepEqual(check({ css: [start] }), ['no [data-hand="right"] .nav-bar']);
-  const both = start.replace(/ \}$/, ' @media (min-width: 600px) { :root[data-hand="right"] .nav-bar { right: 0; } } }');
-  assert.deepEqual(check({ css: [both] }), []);
-  assert.deepEqual(check({ css: [`${LAYERS}@layer components { .nav-bar { display: flex; } }`] }), []);
+  assert.deepEqual(check({ css: [start] }), []);
+  const end = start.replace(/ \}$/, ' @media (min-width: 600px) { :root[data-hand="right"] .nav-bar { right: 0; } } }');
+  assert.deepEqual(check({ css: [end] }), [':root[data-hand="right"] .nav-bar']);
 });
 
 test('LAY-4 reads the body padding from the app sheet only', () => {
